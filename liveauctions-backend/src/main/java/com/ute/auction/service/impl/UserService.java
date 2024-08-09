@@ -1,42 +1,35 @@
 package com.ute.auction.service.impl;
 
 import java.util.Base64;
+import java.util.Collections;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ute.auction.converter.UserConverter;
 import com.ute.auction.dto.UserDTO;
 import com.ute.auction.entity.CityEntity;
+import com.ute.auction.entity.RoleEntity;
 import com.ute.auction.entity.UserEntity;
-import com.ute.auction.repository.UserRepository;
-import com.ute.auction.service.IUserService;
+import com.ute.auction.exception.ResourceExistedException;
 import com.ute.auction.exception.ResourceNotFoundException;
 import com.ute.auction.repository.CityRepository;
+import com.ute.auction.repository.RoleRepository;
+import com.ute.auction.repository.UserRepository;
+import com.ute.auction.service.IUserService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-/**
- * UserService
- *
- * Version 1.0
- *
- * Date: 17-07-2024
- *
- * Copyright 
- *
- * Modification Logs:
- * DATE                 AUTHOR          DESCRIPTION
- * --------------------------------------------------------
- * 17-07-2024           ManhDao         Create
- */
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
+    private final RoleRepository roleRepository;
     private final UserConverter userConverter;
+    private final PasswordEncoder passwordEncoder;
     
     /*
      * get seller by id
@@ -118,6 +111,71 @@ public class UserService implements IUserService {
             throw new ResourceNotFoundException("User not found with email: " + email);
         }
         userEntity.setPassword(password);
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    @Transactional
+    public void register(UserDTO userDTO) {
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new ResourceExistedException("Email is taken!");
+        }
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setEmail(userDTO.getEmail());
+        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
+        RoleEntity roles = roleRepository.findByName("ROLE_BUYER").get();
+        userEntity.setRoles(Collections.singletonList(roles));
+
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void registerSeller(UserDTO userDTO) {
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new ResourceExistedException("Email is taken!");
+        }
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setEmail(userDTO.getEmail());
+        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
+        RoleEntity roles = roleRepository.findByName("ROLE_SELLER").get();
+        userEntity.setRoles(Collections.singletonList(roles));
+
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void registerStaff(UserDTO userDTO) {
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new ResourceExistedException("Email is taken!");
+        }
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setEmail(userDTO.getEmail());
+        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
+        RoleEntity roles = roleRepository.findByName("ROLE_STAFF").get();
+        userEntity.setRoles(Collections.singletonList(roles));
+
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void registerAdmin(UserDTO userDTO) {
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new ResourceExistedException("Email is taken!");
+        }
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setEmail(userDTO.getEmail());
+        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
+        RoleEntity roles = roleRepository.findByName("ROLE_ADMIN").get();
+        userEntity.setRoles(Collections.singletonList(roles));
+
         userRepository.save(userEntity);
     }
 

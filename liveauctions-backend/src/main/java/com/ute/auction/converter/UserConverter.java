@@ -43,10 +43,12 @@ public class UserConverter {
         userDTO.setDelFlag(entity.getDelFlag());
         userDTO.setAvatar(entity.getAvatar() != null ? Base64.getEncoder().encodeToString(entity.getAvatar()) : null);
         userDTO.setDob(entity.getDob());
-        if (entity.getGender().contains("F")) {
-            userDTO.setGender("Female");
+        if (entity.getGender().isEmpty()) {
+            userDTO.setGender("Male");
         } else if (entity.getGender().contains("M")) {
             userDTO.setGender("Male");
+        } else if (entity.getGender().contains("F")) {
+            userDTO.setGender("Female");
         } else if (entity.getGender().contains("L")) {
             userDTO.setGender("Other");
         }

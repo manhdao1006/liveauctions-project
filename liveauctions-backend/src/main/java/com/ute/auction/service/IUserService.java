@@ -12,4 +12,12 @@ public interface IUserService {
 
     void forgotPassword(String email, String password);
     
+    void register(UserDTO userDTO);
+
+    void registerSeller(UserDTO userDTO);
+
+    void registerStaff(UserDTO userDTO);
+
+    void registerAdmin(UserDTO userDTO);
+
 }
