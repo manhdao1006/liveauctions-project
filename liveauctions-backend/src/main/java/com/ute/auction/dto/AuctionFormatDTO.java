@@ -9,6 +9,7 @@ public class AuctionFormatDTO {
 
     private Long id;
     private String name;
+    private String delFlag;
     private List<RegistrationProductDTO> registrationProducts;
     private List<AuctionDTO> auctions;
     private List<ProductDTO> products;

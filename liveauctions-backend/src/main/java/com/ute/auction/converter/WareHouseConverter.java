@@ -28,6 +28,7 @@ public class WareHouseConverter {
         wareHouseDTO.setOperationalStatus(entity.getOperationalStatus());
         wareHouseDTO.setSlotStatus(entity.getSlotStatus());
         wareHouseDTO.setOperatingDay(entity.getOperatingDay());
+        wareHouseDTO.setDelFlag(entity.getDelFlag());
         wareHouseDTO.setCity(toCityDTO(entity.getCity()));
 
         return wareHouseDTO;
@@ -42,6 +43,7 @@ public class WareHouseConverter {
         wareHouseEntity.setOperationalStatus(dto.getOperationalStatus());
         wareHouseEntity.setSlotStatus(dto.getSlotStatus());
         wareHouseEntity.setOperatingDay(dto.getOperatingDay());
+        wareHouseEntity.setDelFlag("1");
         wareHouseEntity.setCity(toCityEntity(dto.getCity()));
 
         return wareHouseEntity;

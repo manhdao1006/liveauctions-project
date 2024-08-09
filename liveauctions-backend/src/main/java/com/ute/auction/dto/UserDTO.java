@@ -19,6 +19,7 @@ public class UserDTO {
     private String avatar;
     private LocalDate dob;
     private String gender;
+    private String delFlag;
     private List<RoleDTO> roles;
     private CityDTO city;
     private BuyerDTO buyer;

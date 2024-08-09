@@ -23,6 +23,7 @@ public class BuyerConverter {
         BuyerDTO buyerDTO = new BuyerDTO();
         buyerDTO.setBuyerId(entity.getBuyerId());
         buyerDTO.setRegistrationDate(entity.getRegistrationDate());
+        buyerDTO.setDelFlag(entity.getDelFlag());
         buyerDTO.setUser(toUserDTO(entity.getUser()));
 
         return buyerDTO;
@@ -32,6 +33,7 @@ public class BuyerConverter {
         BuyerEntity buyerEntity = new BuyerEntity();
         buyerEntity.setBuyerId(dto.getBuyerId());
         buyerEntity.setRegistrationDate(dto.getRegistrationDate());
+        buyerEntity.setDelFlag("1");
         buyerEntity.setUser(toUserEntity(dto.getUser()));
 
         return buyerEntity;

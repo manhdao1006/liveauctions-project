@@ -17,9 +17,10 @@ public class SellerDTO {
     private LocalDate expiration;
     private String cvv;
     private String billingAddress;
+    private String delFlag;
     private UserDTO user;
     private List<SellerTaxDTO> sellerTaxes;
     private List<RegistrationProductDTO> registrationProducts;
     private List<ProductDTO> products;
-    
+
 }

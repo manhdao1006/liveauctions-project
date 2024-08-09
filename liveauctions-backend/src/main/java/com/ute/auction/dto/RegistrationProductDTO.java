@@ -14,8 +14,9 @@ public class RegistrationProductDTO {
     private String status;
     private LocalDate registrationDate;
     private String description;
+    private String delFlag;
     private SellerDTO seller;
     private SubCategoryDTO subCategory;
     private AuctionFormatDTO auctionFormat;
-    
+
 }

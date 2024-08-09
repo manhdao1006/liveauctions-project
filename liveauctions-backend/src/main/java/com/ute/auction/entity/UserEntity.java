@@ -19,7 +19,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
-
 import lombok.Data;
 
 @Data
@@ -37,7 +36,7 @@ public class UserEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", message = "Email should be valid")
     private String email;
 
@@ -45,7 +44,6 @@ public class UserEntity {
     private String password;
 
     @Column(name = "phone_number")
-    @Pattern(regexp = "\\d{10}", message = "Phone number must contain exactly 10 digits")
     private String phoneNumber;
 
     @Column(name = "address")
@@ -63,6 +61,9 @@ public class UserEntity {
 
     @Column(name = "gender")
     private String gender;
+    
+    @Column(name = "del_flag")
+    private String delFlag;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", 

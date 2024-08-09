@@ -12,7 +12,7 @@ public class AuctionHistoryDTO {
     private ProductDTO product;
     private BuyerDTO buyer;
     private FeeDTO fee;
-    private HolidaysDTO holiday;
+    private HolidayDTO holiday;
     private BigDecimal auctionedPrice;
     private LocalDate bidTime;
     private String status;

@@ -15,6 +15,7 @@ public class ProductDTO {
     private BigDecimal minPrice;
     private BigDecimal maxPrice;
     private String description;
+    private String delFlag;
     private SellerDTO seller;
     private SubCategoryDTO subCategory;
     private AuctionFormatDTO auctionFormat;

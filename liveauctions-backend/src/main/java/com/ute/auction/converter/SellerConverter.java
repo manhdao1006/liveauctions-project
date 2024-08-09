@@ -24,6 +24,7 @@ public class SellerConverter {
         sellerDTO.setSellerId(entity.getSellerId());
         sellerDTO.setTaxCode(entity.getTaxCode());
         sellerDTO.setRegistrationDate(entity.getRegistrationDate());
+        sellerDTO.setDelFlag(entity.getDelFlag());
         sellerDTO.setUser(toUserDTO(entity.getUser()));
 
         return sellerDTO;
@@ -34,6 +35,7 @@ public class SellerConverter {
         sellerEntity.setSellerId(dto.getSellerId());
         sellerEntity.setTaxCode(dto.getTaxCode());
         sellerEntity.setRegistrationDate(dto.getRegistrationDate());
+        sellerEntity.setDelFlag("1");
         sellerEntity.setUser(toUserEntity(dto.getUser()));
 
         return sellerEntity;

@@ -48,6 +48,9 @@ public class SellerEntity {
     @Column(name = "billing_address")
     private String billingAddress;
 
+    @Column(name = "del_flag")
+    private String delFlag;
+
     @MapsId
     @OneToOne
     @JoinColumn(name = "seller_id", referencedColumnName = "id")

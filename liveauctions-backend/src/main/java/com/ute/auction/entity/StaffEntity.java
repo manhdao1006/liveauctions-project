@@ -25,6 +25,9 @@ public class StaffEntity {
     @Column(name = "position")
     private String position;
 
+    @Column(name = "del_flag")
+    private String delFlag;
+
     @MapsId
     @OneToOne
     @JoinColumn(name = "staff_id", referencedColumnName = "id")

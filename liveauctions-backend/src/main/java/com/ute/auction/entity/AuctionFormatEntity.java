@@ -22,8 +22,11 @@ public class AuctionFormatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "del_flag")
+    private String delFlag;
 
     @OneToMany(mappedBy = "auctionFormat")
     private List<RegistrationProductEntity> registrationProducts = new ArrayList<>();

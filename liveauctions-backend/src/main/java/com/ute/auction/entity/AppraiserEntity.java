@@ -13,7 +13,6 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
-
 import lombok.Data;
 
 @Data
@@ -36,7 +35,6 @@ public class AppraiserEntity {
     private String gender;
 
     @Column(name = "phone_number")
-    @Pattern(regexp = "\\d{10}", message = "Phone number must contain exactly 10 digits")
     private String phoneNumber;
 
     @Column(name = "address")

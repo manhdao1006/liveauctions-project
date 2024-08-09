@@ -11,7 +11,7 @@ import com.ute.auction.entity.ProductEntity;
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, String> {
 
-    @Query(value = "SELECT p.id, p.name, p.starting_price, p.status, p.min_price, p.max_price, p.description, p.seller_id, p.sub_category_id, p.auction_format_id, p.warehouse_id, p.appraiser_id, " + 
+    @Query(value = "SELECT p.id, p.name, p.starting_price, p.status, p.min_price, p.max_price, p.description, p.del_flag, p.seller_id, p.sub_category_id, p.auction_format_id, p.warehouse_id, p.appraiser_id, " + 
                     "ap.auction_id " + 
                     "FROM product p " + 
                     "LEFT JOIN warehouse w ON p.warehouse_id = w.id " + 

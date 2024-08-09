@@ -36,6 +36,7 @@ public class AuctionConverter {
         auctionDTO.setBuyerPremium(entity.getBuyerPremium());
         auctionDTO.setStatus(entity.getStatus());
         auctionDTO.setDescription(entity.getDescription());
+        auctionDTO.setDelFlag(entity.getDelFlag());
         auctionDTO.setStaff(toStaffDTO(entity.getStaff()));
         auctionDTO.setAuctionFormat(toAuctionFormatDTO(entity.getAuctionFormat()));
 
@@ -51,6 +52,7 @@ public class AuctionConverter {
         auctionEntity.setBuyerPremium(dto.getBuyerPremium());
         auctionEntity.setStatus(dto.getStatus());
         auctionEntity.setDescription(dto.getDescription());
+        auctionEntity.setDelFlag("1");
         auctionEntity.setStaff(toStaffEntity(dto.getStaff()));
         auctionEntity.setAuctionFormat(toAuctionFormatEntity(dto.getAuctionFormat()));
 

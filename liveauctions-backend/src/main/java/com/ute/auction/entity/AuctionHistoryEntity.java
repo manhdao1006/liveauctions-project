@@ -46,7 +46,7 @@ public class AuctionHistoryEntity {
     @ManyToOne
     @MapsId("holidayId")
     @JoinColumn(name = "holiday_id")
-    private HolidaysEntity holiday;
+    private HolidayEntity holiday;
 
     @Column(name = "auctioned_price")
     private BigDecimal auctionedPrice;

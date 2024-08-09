@@ -40,6 +40,7 @@ public class UserConverter {
         userDTO.setPhoneNumber(entity.getPhoneNumber());
         userDTO.setAddress(entity.getAddress());
         userDTO.setStatus(entity.getStatus());
+        userDTO.setDelFlag(entity.getDelFlag());
         userDTO.setAvatar(entity.getAvatar() != null ? Base64.getEncoder().encodeToString(entity.getAvatar()) : null);
         userDTO.setDob(entity.getDob());
         if (entity.getGender().contains("F")) {
@@ -65,6 +66,7 @@ public class UserConverter {
         userEntity.setPhoneNumber(dto.getPhoneNumber());
         userEntity.setAddress(dto.getAddress());
         userEntity.setStatus(dto.getStatus());
+        userEntity.setDelFlag("1");
         userEntity.setAvatar(dto.getAvatar() != null ? Base64.getDecoder().decode(dto.getAvatar()) : null);
         userEntity.setDob(dto.getDob());
         if (dto.getGender() == null || dto.getGender().toUpperCase().equals("Male".toUpperCase())) {

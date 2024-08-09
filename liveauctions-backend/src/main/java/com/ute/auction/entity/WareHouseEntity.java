@@ -13,7 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
 import lombok.Data;
 
 @Data
@@ -25,10 +24,10 @@ public class WareHouseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "manager", nullable = false)
+    @Column(name = "manager")
     private String manager;
 
     @Column(name = "address")
@@ -42,6 +41,9 @@ public class WareHouseEntity {
 
     @Column(name = "operating_day")
     private String operatingDay;
+
+    @Column(name = "del_flag")
+    private String delFlag;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id")

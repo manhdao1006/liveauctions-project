@@ -12,6 +12,7 @@ public class AuctionFormatConverter {
         AuctionFormatDTO auctionFormatDTO = new AuctionFormatDTO();
         auctionFormatDTO.setId(entity.getId());
         auctionFormatDTO.setName(entity.getName());
+        auctionFormatDTO.setDelFlag(entity.getDelFlag());
 
         return auctionFormatDTO;
     }
@@ -20,6 +21,7 @@ public class AuctionFormatConverter {
         AuctionFormatEntity auctionFormatEntity = new AuctionFormatEntity();
         auctionFormatEntity.setId(dto.getId());
         auctionFormatEntity.setName(dto.getName());
+        auctionFormatEntity.setDelFlag("1");
 
         return auctionFormatEntity;
     }

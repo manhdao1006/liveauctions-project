@@ -14,6 +14,7 @@ public class WareHouseDTO {
     private String operationalStatus;
     private String slotStatus;
     private String operatingDay;
+    private String delFlag;
     private CityDTO city;
     private List<ProductDTO> products;
     

@@ -70,6 +70,7 @@ public class ProductConverter {
         productDTO.setStatus(entity.getStatus());
         productDTO.setMinPrice(entity.getMinPrice());
         productDTO.setMaxPrice(entity.getMaxPrice());
+        productDTO.setDelFlag(entity.getDelFlag());
         productDTO.setSeller(toSellerDTO(entity.getSeller()));
         productDTO.setSubCategory(toSubCategoryDTO(entity.getSubCategory()));
         productDTO.setAuctionFormat(toAuctionFormatDTO(entity.getAuctionFormat()));
@@ -89,6 +90,7 @@ public class ProductConverter {
         productEntity.setStatus(dto.getStatus());
         productEntity.setMinPrice(dto.getMinPrice());
         productEntity.setMaxPrice(dto.getMaxPrice());
+        productEntity.setDelFlag("1");
         productEntity.setSeller(toSellerEntity(dto.getSeller()));
         productEntity.setSubCategory(toSubCategoryEntity(dto.getSubCategory()));
         productEntity.setAuctionFormat(toAuctionFormatEntity(dto.getAuctionFormat()));

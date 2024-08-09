@@ -9,6 +9,7 @@ public class StaffDTO {
 
     private Long staffId;
     private String position;
+    private String delFlag;
     private UserDTO user;
     private List<AuctionDTO> auctions;
     

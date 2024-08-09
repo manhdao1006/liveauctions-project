@@ -23,6 +23,7 @@ public class StaffConverter {
         StaffDTO staffDTO = new StaffDTO();
         staffDTO.setStaffId(entity.getStaffId());
         staffDTO.setPosition(entity.getPosition());
+        staffDTO.setDelFlag(entity.getDelFlag());
         staffDTO.setUser(toUserDTO(entity.getUser()));
 
         return staffDTO;
@@ -32,6 +33,7 @@ public class StaffConverter {
         StaffEntity staffEntity = new StaffEntity();
         staffEntity.setStaffId(dto.getStaffId());
         staffEntity.setPosition(dto.getPosition());
+        staffEntity.setDelFlag("1");
         staffEntity.setUser(toUserEntity(dto.getUser()));
 
         return staffEntity;

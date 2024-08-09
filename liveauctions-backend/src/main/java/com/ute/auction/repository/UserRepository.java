@@ -11,7 +11,7 @@ import com.ute.auction.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    @Query(value = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.city_id, u.role_id, " + 
+    @Query(value = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.del_flag, u.city_id, u.role_id, " + 
                     "c.state_id " + 
                     "FROM [user] u " + 
                     "JOIN city c ON u.city_id = c.id " + 
@@ -21,7 +21,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             nativeQuery = true)
     UserEntity findUserById(Long id);
 
-    @Query(value = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.city_id, u.role_id, " + 
+    @Query(value = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.del_flag, u.city_id, u.role_id, " + 
                     "c.state_id " + 
                     "FROM [user] u " + 
                     "JOIN city c ON u.city_id = c.id " + 

@@ -45,6 +45,7 @@ public class RegistrationProductConverter {
         registrationProductDTO.setStatus(entity.getStatus());
         registrationProductDTO.setRegistrationDate(entity.getRegistrationDate());
         registrationProductDTO.setDescription(entity.getDescription());
+        registrationProductDTO.setDelFlag(entity.getDelFlag());
         registrationProductDTO.setSeller(toSellerDTO(entity.getSeller()));
         registrationProductDTO.setSubCategory(toSubCategoryDTO(entity.getSubCategory()));
         registrationProductDTO.setAuctionFormat(toAuctionFormatDTO(entity.getAuctionFormat()));
@@ -59,6 +60,7 @@ public class RegistrationProductConverter {
         registrationProductEntity.setStatus("Pending");
         registrationProductEntity.setRegistrationDate(LocalDate.now());
         registrationProductEntity.setDescription(dto.getDescription());
+        registrationProductEntity.setDelFlag("1");
         registrationProductEntity.setSeller(toSellerEntity(dto.getSeller()));
         registrationProductEntity.setSubCategory(toSubCategoryEntity(dto.getSubCategory()));
         registrationProductEntity.setAuctionFormat(toAuctionFormatEntity(dto.getAuctionFormat()));

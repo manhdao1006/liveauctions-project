@@ -29,6 +29,7 @@ public class AppraiserConverter {
         appraiserDTO.setStatus(entity.getStatus());
         appraiserDTO.setDob(entity.getDob());
         appraiserDTO.setDescription(entity.getDescription());
+        appraiserDTO.setDelFlag(entity.getDelFlag());
 
         return appraiserDTO;
     }
@@ -52,6 +53,7 @@ public class AppraiserConverter {
         appraiserEntity.setStatus(dto.getStatus() == null ? "Active" : dto.getStatus());
         appraiserEntity.setDob(dto.getDob());
         appraiserEntity.setDescription(dto.getDescription());
+        appraiserEntity.setDelFlag("1");
 
         return appraiserEntity;
     }

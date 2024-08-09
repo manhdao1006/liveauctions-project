@@ -46,7 +46,7 @@ public class AuthController {
         user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-        RoleEntity roles = roleRepository.findByName("BUYER").get();
+        RoleEntity roles = roleRepository.findByName("ROLE_BUYER").get();
         user.setRoles(Collections.singletonList(roles));
 
         userRepository.save(user);
@@ -65,7 +65,7 @@ public class AuthController {
         user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-        RoleEntity roles = roleRepository.findByName("SELLER").get();
+        RoleEntity roles = roleRepository.findByName("ROLE_SELLER").get();
         user.setRoles(Collections.singletonList(roles));
 
         userRepository.save(user);
@@ -84,7 +84,7 @@ public class AuthController {
         user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-        RoleEntity roles = roleRepository.findByName("STAFF").get();
+        RoleEntity roles = roleRepository.findByName("ROLE_STAFF").get();
         user.setRoles(Collections.singletonList(roles));
 
         userRepository.save(user);
@@ -103,7 +103,7 @@ public class AuthController {
         user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-        RoleEntity roles = roleRepository.findByName("ADMIN").get();
+        RoleEntity roles = roleRepository.findByName("ROLE_ADMIN").get();
         user.setRoles(Collections.singletonList(roles));
 
         userRepository.save(user);

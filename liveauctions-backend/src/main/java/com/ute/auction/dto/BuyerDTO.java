@@ -16,6 +16,7 @@ public class BuyerDTO {
     private LocalDate expiration;
     private String cvv;
     private String billingAddress;
+    private String delFlag;
     private UserDTO user;
     private List<DepositDTO> deposits;
     private List<AuctionHistoryDTO> auctionHistories;

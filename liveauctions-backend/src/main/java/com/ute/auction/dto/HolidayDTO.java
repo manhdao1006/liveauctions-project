@@ -7,7 +7,7 @@ import com.ute.auction.entity.AuctionHistoryEntity;
 import lombok.Data;
 
 @Data
-public class HolidaysDTO {
+public class HolidayDTO {
 
     private Long id;
     private String name;
