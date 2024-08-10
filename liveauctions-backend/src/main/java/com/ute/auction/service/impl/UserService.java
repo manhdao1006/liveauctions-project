@@ -114,69 +114,89 @@ public class UserService implements IUserService {
         userRepository.save(userEntity);
     }
 
+    /*
+     * register buyer
+     * @param user
+     * @return buyer
+     */
     @Override
     @Transactional
-    public void register(UserDTO userDTO) {
+    public UserDTO register(UserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = userConverter.toEntity(userDTO);
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-        RoleEntity roles = roleRepository.findByName("ROLE_BUYER").get();
+        RoleEntity roles = roleRepository.findByName("ROLE_BUYER").orElseThrow(() -> new RuntimeException("Role not found!"));
         userEntity.setRoles(Collections.singletonList(roles));
 
-        userRepository.save(userEntity);
+        return userConverter.toDTO(userRepository.save(userEntity));
     }
 
+    /*
+     * register seller
+     * @param user
+     * @return seller
+     */
     @Override
-    public void registerSeller(UserDTO userDTO) {
+    public UserDTO registerSeller(UserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = userConverter.toEntity(userDTO);
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-        RoleEntity roles = roleRepository.findByName("ROLE_SELLER").get();
+        RoleEntity roles = roleRepository.findByName("ROLE_SELLER").orElseThrow(() -> new RuntimeException("Role not found!"));
         userEntity.setRoles(Collections.singletonList(roles));
 
-        userRepository.save(userEntity);
+        return userConverter.toDTO(userRepository.save(userEntity));
     }
 
+    /*
+     * register staff
+     * @param user
+     * @return staff
+     */
     @Override
-    public void registerStaff(UserDTO userDTO) {
+    public UserDTO registerStaff(UserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = userConverter.toEntity(userDTO);
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-        RoleEntity roles = roleRepository.findByName("ROLE_STAFF").get();
+        RoleEntity roles = roleRepository.findByName("ROLE_STAFF").orElseThrow(() -> new RuntimeException("Role not found!"));
         userEntity.setRoles(Collections.singletonList(roles));
 
-        userRepository.save(userEntity);
+        return userConverter.toDTO(userRepository.save(userEntity));
     }
 
+    /*
+     * register admin
+     * @param user
+     * @return admin
+     */
     @Override
-    public void registerAdmin(UserDTO userDTO) {
+    public UserDTO registerAdmin(UserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = userConverter.toEntity(userDTO);
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-        RoleEntity roles = roleRepository.findByName("ROLE_ADMIN").get();
+        RoleEntity roles = roleRepository.findByName("ROLE_ADMIN").orElseThrow(() -> new RuntimeException("Role not found!"));
         userEntity.setRoles(Collections.singletonList(roles));
 
-        userRepository.save(userEntity);
+        return userConverter.toDTO(userRepository.save(userEntity));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.ute.auction.converter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
@@ -28,11 +29,11 @@ public class RoleConverter {
     }
 
     public List<RoleDTO> toDTOs(List<RoleEntity> entities) {
-        return entities.stream().map(this::toDTO).collect(Collectors.toList());
+        return entities.stream().map(this::toDTO).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     public List<RoleEntity> toEntities(List<RoleDTO> dtos) {
-        return dtos.stream().map(this::toEntity).collect(Collectors.toList());
+        return dtos.stream().map(this::toEntity).filter(Objects::nonNull).collect(Collectors.toList());
     }
     
 }

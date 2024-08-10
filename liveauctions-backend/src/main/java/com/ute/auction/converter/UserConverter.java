@@ -52,8 +52,8 @@ public class UserConverter {
         } else if (entity.getGender().contains("L")) {
             userDTO.setGender("Other");
         }
-        userDTO.setRoles(toRolesDTO(entity.getRoles()));
-        userDTO.setCity(toCityDTO(entity.getCity()));
+        userDTO.setRoles(entity.getRoles() != null ? toRolesDTO(entity.getRoles()) : null);
+        userDTO.setCity(entity.getCity() != null ? toCityDTO(entity.getCity()) : null);
 
         return userDTO;
     }
@@ -78,8 +78,8 @@ public class UserConverter {
         } else if (dto.getGender().toUpperCase().equals("Other".toUpperCase())) {
             userEntity.setGender("L");
         }
-        userEntity.setRoles(toRolesEntity(dto.getRoles()));
-        userEntity.setCity(toCityEntity(dto.getCity()));
+        userEntity.setRoles(dto.getRoles() != null ? toRolesEntity(dto.getRoles()) : null);
+        userEntity.setCity(dto.getCity() != null ? toCityEntity(dto.getCity()) : null);
 
         return userEntity;
     }
