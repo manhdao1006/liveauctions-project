@@ -3,6 +3,7 @@ package com.ute.auction.service.impl;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -22,20 +23,6 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 
-/**
- * AppraiserService
- *
- * Version 1.0
- *
- * Date: 17-07-2024
- *
- * Copyright 
- *
- * Modification Logs:
- * DATE                 AUTHOR          DESCRIPTION
- * --------------------------------------------------------
- * 17-07-2024           ManhDao         Create
- */
 @Service
 @RequiredArgsConstructor
 public class AppraiserService implements IAppraiserService {
@@ -162,19 +149,27 @@ public class AppraiserService implements IAppraiserService {
         appraiserRepository.save(appraiserEntity);
     }
 
+    /*
+     * search appraiser
+     * @param keyword, page, size
+     * @return appraiser
+     */
     @Override
-    public List<AppraiserDTO> getAllTest() {
-        List<AppraiserEntity> entities = appraiserRepository.getAllTest();
-        if (entities.isEmpty()) {
-            throw new ResourceNotFoundException("No appraisers!");
-        }
-        List<AppraiserDTO> models = new ArrayList<>();
-        for (AppraiserEntity item: entities) {
-            AppraiserDTO appraiserDTO = appraiserConverter.toDTO(item);
-            models.add(appraiserDTO);
+    public List<AppraiserDTO> searchAppraiser(String keyword, int page, int size) {
+        List<AppraiserEntity> appraiserExists = appraiserRepository.existsAppraiser(keyword);
+        if (appraiserExists.isEmpty()) {
+            throw new ResourceNotFoundException("No appraisers with keyword: " + keyword);
         }
 
-        return models;
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AppraiserEntity> entities = appraiserRepository.searchAppraiser(keyword, pageable);
+        if (page > entities.getTotalPages() || page <= 0) {
+            throw new ResourceNotFoundException("No appraisers with page: " + page);
+        }
+
+        return entities.stream()
+                        .map(appraiserConverter::toDTO)
+                        .collect(Collectors.toList());
     }
-
+    
 }

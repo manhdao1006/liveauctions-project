@@ -33,11 +33,14 @@ public class AppraiserController {
 
     private final IAppraiserService appraiserService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<AppraiserDTO>> getAllTest() {
-        List<AppraiserDTO> appraisers = appraiserService.getAllTest();
+    // Build API search appraiser
+    @GetMapping("/search")
+    public ResponseEntity<List<AppraiserDTO>> searchAppraiser(@RequestParam("keyword") String keyword, 
+                                @RequestParam("page") int page, 
+                                @RequestParam(defaultValue = "10") int size) {
+        List<AppraiserDTO> appraisers = appraiserService.searchAppraiser(keyword, page, size);
         return ResponseEntity.ok(appraisers);
-    }
+    }    
 
     // Build API get all appraisers
     @GetMapping("/list")

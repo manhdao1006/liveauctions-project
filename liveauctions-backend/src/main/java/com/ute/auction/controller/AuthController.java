@@ -37,21 +37,21 @@ public class AuthController {
     // Build API register for SELLER
     @PostMapping("/register-seller")
     public ResponseEntity<String> registerSeller(@RequestBody UserDTO userDTO) {
-        userService.register(userDTO);
+        userService.registerSeller(userDTO);
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 
     // Build API register for STAFF
     @PostMapping("/register-staff")
     public ResponseEntity<String> registerStaff(@RequestBody UserDTO userDTO) {
-        userService.register(userDTO);
+        userService.registerStaff(userDTO);
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 
     // Build API register for ADMIN
     @PostMapping("/register-admin")
     public ResponseEntity<String> registerAdmin(@RequestBody UserDTO userDTO) {
-        userService.register(userDTO);
+        userService.registerAdmin(userDTO);
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 

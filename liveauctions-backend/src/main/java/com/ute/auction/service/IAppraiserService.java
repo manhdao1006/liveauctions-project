@@ -8,8 +8,6 @@ public interface IAppraiserService {
 
     List<AppraiserDTO> getAll(int page, int size);
 
-    List<AppraiserDTO> getAllTest();
-
     AppraiserDTO getAppraiserById(Long id);
 
     AppraiserDTO getAppraiserByEmail(String email);
@@ -21,5 +19,7 @@ public interface IAppraiserService {
     void deleteAppraiser(Long id);
 
     void banAppraiser(Long id);
+
+    List<AppraiserDTO> searchAppraiser(String keyword, int page, int size);
 
 }
