@@ -28,4 +28,24 @@ public interface AppraiserRepository extends JpaRepository<AppraiserEntity, Long
             nativeQuery = true)
     List<AppraiserEntity> existsAppraiser(String keyword);
 
+    @Query(value = "SELECT ap.* FROM appraiser ap ORDER BY ap.name ASC", 
+            countQuery = "SELECT COUNT(ap.id) FROM appraiser ap", 
+            nativeQuery = true)
+    Page<AppraiserEntity> sortedAscByName(Pageable pageable);
+
+    @Query(value = "SELECT ap.* FROM appraiser ap ORDER BY ap.name DESC", 
+            countQuery = "SELECT COUNT(ap.id) FROM appraiser ap", 
+            nativeQuery = true)
+    Page<AppraiserEntity> sortedDescByName(Pageable pageable);
+
+    @Query(value = "SELECT ap.* FROM appraiser ap ORDER BY ap.dob ASC", 
+            countQuery = "SELECT COUNT(ap.id) FROM appraiser ap", 
+            nativeQuery = true)
+    Page<AppraiserEntity> sortedAscByDoB(Pageable pageable);
+
+    @Query(value = "SELECT ap.* FROM appraiser ap ORDER BY ap.dob DESC", 
+            countQuery = "SELECT COUNT(ap.id) FROM appraiser ap", 
+            nativeQuery = true)
+    Page<AppraiserEntity> sortedDescByDoB(Pageable pageable);
+
 }

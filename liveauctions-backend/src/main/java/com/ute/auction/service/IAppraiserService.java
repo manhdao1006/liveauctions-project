@@ -22,4 +22,12 @@ public interface IAppraiserService {
 
     List<AppraiserDTO> searchAppraiser(String keyword, int page, int size);
 
+    List<AppraiserDTO> sortedAscByName(int page, int size);
+
+    List<AppraiserDTO> sortedDescByName(int page, int size);
+
+    List<AppraiserDTO> sortedAscByDoB(int page, int size);
+
+    List<AppraiserDTO> sortedDescByDoB(int page, int size);
+
 }

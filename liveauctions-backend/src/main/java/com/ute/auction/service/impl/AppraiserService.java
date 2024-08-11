@@ -171,5 +171,85 @@ public class AppraiserService implements IAppraiserService {
                         .map(appraiserConverter::toDTO)
                         .collect(Collectors.toList());
     }
+
+    /*
+     * sorted appraiser asc by name
+     * @param page, size
+     * @return appraisers
+     */
+    @Override
+    public List<AppraiserDTO> sortedAscByName(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AppraiserEntity> entities = appraiserRepository.sortedAscByName(pageable);
+        if (entities.isEmpty()) {
+            if (page > entities.getTotalPages() || page <= 0) {
+                throw new ResourceNotFoundException("No appraisers with page: " + page);
+            }
+        }
+
+        return entities.stream()
+                        .map(appraiserConverter::toDTO)
+                        .collect(Collectors.toList());
+    }
+
+    /*
+     * sorted appraiser desc by name
+     * @param page, size
+     * @return appraisers
+     */
+    @Override
+    public List<AppraiserDTO> sortedDescByName(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AppraiserEntity> entities = appraiserRepository.sortedDescByName(pageable);
+        if (entities.isEmpty()) {
+            if (page > entities.getTotalPages() || page <= 0) {
+                throw new ResourceNotFoundException("No appraisers with page: " + page);
+            }
+        }
+
+        return entities.stream()
+                        .map(appraiserConverter::toDTO)
+                        .collect(Collectors.toList());
+    }
+
+    /*
+     * sorted appraiser from young to old by dob
+     * @param page, size
+     * @return appraisers
+     */
+    @Override
+    public List<AppraiserDTO> sortedAscByDoB(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AppraiserEntity> entities = appraiserRepository.sortedAscByDoB(pageable);
+        if (entities.isEmpty()) {
+            if (page > entities.getTotalPages() || page <= 0) {
+                throw new ResourceNotFoundException("No appraisers with page: " + page);
+            }
+        }
+
+        return entities.stream()
+                        .map(appraiserConverter::toDTO)
+                        .collect(Collectors.toList());
+    }
+
+    /*
+     * sorted appraiser from old to young by dob
+     * @param page, size
+     * @return appraisers
+     */
+    @Override
+    public List<AppraiserDTO> sortedDescByDoB(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AppraiserEntity> entities = appraiserRepository.sortedDescByDoB(pageable);
+        if (entities.isEmpty()) {
+            if (page > entities.getTotalPages() || page <= 0) {
+                throw new ResourceNotFoundException("No appraisers with page: " + page);
+            }
+        }
+
+        return entities.stream()
+                        .map(appraiserConverter::toDTO)
+                        .collect(Collectors.toList());
+    }
     
 }

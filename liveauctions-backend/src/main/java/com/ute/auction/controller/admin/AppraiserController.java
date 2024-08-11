@@ -33,11 +33,43 @@ public class AppraiserController {
 
     private final IAppraiserService appraiserService;
 
+    // Build API sorted asc appraiser by dob
+    @GetMapping("/sorted-dob-asc")
+    public ResponseEntity<List<AppraiserDTO>> sortedAscByDoB(@RequestParam("page") int page, 
+                                                            @RequestParam(defaultValue = "10") int size) {
+        List<AppraiserDTO> appraisers = appraiserService.sortedAscByDoB(page, size);
+        return ResponseEntity.ok(appraisers);
+    }
+
+    // Build API sorted desc appraiser by dob
+    @GetMapping("/sorted-dob-desc")
+    public ResponseEntity<List<AppraiserDTO>> sortedDescByDoB(@RequestParam("page") int page, 
+                                                            @RequestParam(defaultValue = "10") int size) {
+        List<AppraiserDTO> appraisers = appraiserService.sortedDescByDoB(page, size);
+        return ResponseEntity.ok(appraisers);
+    }
+
+    // Build API sorted desc appraiser by name
+    @GetMapping("/sorted-name-desc")
+    public ResponseEntity<List<AppraiserDTO>> sortedDescByName(@RequestParam("page") int page, 
+                                                            @RequestParam(defaultValue = "10") int size) {
+        List<AppraiserDTO> appraisers = appraiserService.sortedDescByName(page, size);
+        return ResponseEntity.ok(appraisers);
+    }
+
+    // Build API sorted asc appraiser by name
+    @GetMapping("/sorted-name-asc")
+    public ResponseEntity<List<AppraiserDTO>> sortedAscByName(@RequestParam("page") int page, 
+                                                            @RequestParam(defaultValue = "10") int size) {
+        List<AppraiserDTO> appraisers = appraiserService.sortedAscByName(page, size);
+        return ResponseEntity.ok(appraisers);
+    }
+
     // Build API search appraiser
     @GetMapping("/search")
     public ResponseEntity<List<AppraiserDTO>> searchAppraiser(@RequestParam("keyword") String keyword, 
-                                @RequestParam("page") int page, 
-                                @RequestParam(defaultValue = "10") int size) {
+                                                            @RequestParam("page") int page, 
+                                                            @RequestParam(defaultValue = "10") int size) {
         List<AppraiserDTO> appraisers = appraiserService.searchAppraiser(keyword, page, size);
         return ResponseEntity.ok(appraisers);
     }    
