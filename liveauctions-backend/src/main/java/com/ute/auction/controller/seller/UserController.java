@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ute.auction.dto.CityDTO;
 import com.ute.auction.dto.UserDTO;
-import com.ute.auction.exception.DuplicateEmailException;
+import com.ute.auction.exception.ResourceExistedException;
 import com.ute.auction.service.IUserService;
 
 import jakarta.validation.ConstraintViolationException;
@@ -88,7 +88,7 @@ public class UserController {
             UserDTO updatedUser = userService.updateProfile(id, userDTO);
             return ResponseEntity.ok(updatedUser);
         } catch (DataIntegrityViolationException | ConstraintViolationException ex) {
-            throw new DuplicateEmailException("Email already exists!");
+            throw new ResourceExistedException("Email already exists!");
         }
     }
 

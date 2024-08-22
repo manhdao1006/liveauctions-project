@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ute.auction.dto.AppraiserDTO;
-import com.ute.auction.exception.DuplicateEmailException;
+import com.ute.auction.exception.ResourceExistedException;
 import com.ute.auction.service.IAppraiserService;
 
 import jakarta.validation.ConstraintViolationException;
@@ -172,7 +172,7 @@ public class AppraiserController {
             AppraiserDTO updatedAppraiser = appraiserService.updateAppraiser(id, appraiserDTO);
             return new ResponseEntity<>(updatedAppraiser, HttpStatus.OK);
         } catch (DataIntegrityViolationException | ConstraintViolationException ex) {
-            throw new DuplicateEmailException("Email already exists!");
+            throw new ResourceExistedException("Email already exists!");
         }
     }
 

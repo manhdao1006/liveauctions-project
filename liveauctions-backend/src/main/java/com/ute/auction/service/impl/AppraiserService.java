@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.ute.auction.converter.AppraiserConverter;
 import com.ute.auction.dto.AppraiserDTO;
 import com.ute.auction.entity.AppraiserEntity;
-import com.ute.auction.exception.DuplicateEmailException;
+import com.ute.auction.exception.ResourceExistedException;
 import com.ute.auction.exception.ResourceNotFoundException;
 import com.ute.auction.repository.AppraiserRepository;
 import com.ute.auction.service.IAppraiserService;
@@ -90,7 +90,7 @@ public class AppraiserService implements IAppraiserService {
             appraiserEntity = appraiserRepository.save(appraiserEntity);
             return appraiserConverter.toDTO(appraiserEntity);
         } catch (DataIntegrityViolationException ex) {
-            throw new DuplicateEmailException("Email already exists!");
+            throw new ResourceExistedException("Email already exists!");
         }        
     }
 
@@ -119,7 +119,7 @@ public class AppraiserService implements IAppraiserService {
             AppraiserEntity appraiserUpdated = appraiserRepository.save(appraiserEntity);
             return appraiserConverter.toDTO(appraiserUpdated);
         } catch (DataIntegrityViolationException | ConstraintViolationException ex) {
-            throw new DuplicateEmailException("Email already exists!");
+            throw new ResourceExistedException("Email already exists!");
         }
     }
 
