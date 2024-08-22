@@ -24,6 +24,42 @@ public class RegistrationProductController {
 
     private final IRegistrationProductService registrationProductService;
 
+    // Build API sorted asc starting price
+    @GetMapping("/registration-products/{id}/sorted-price-asc")
+    public ResponseEntity<List<RegistrationProductDTO>> sortedAscByStartingPrice(@PathVariable("id") Long sellerId, 
+                                                                                @RequestParam("page") int page, 
+                                                                                @RequestParam(defaultValue = "10") int size) {
+        List<RegistrationProductDTO> models = registrationProductService.sortedAscByStartingPrice(sellerId, page, size);
+        return ResponseEntity.ok(models);
+    }
+
+    // Build API sorted desc starting price
+    @GetMapping("/registration-products/{id}/sorted-price-desc")
+    public ResponseEntity<List<RegistrationProductDTO>> sortedDescByStartingPrice(@PathVariable("id") Long sellerId, 
+                                                                                @RequestParam("page") int page, 
+                                                                                @RequestParam(defaultValue = "10") int size) {
+        List<RegistrationProductDTO> models = registrationProductService.sortedDescByStartingPrice(sellerId, page, size);
+        return ResponseEntity.ok(models);
+    }
+
+    // Build API sorted asc registration date
+    @GetMapping("/registration-products/{id}/sorted-date-asc")
+    public ResponseEntity<List<RegistrationProductDTO>> sortedAscByRegistrationDate(@PathVariable("id") Long sellerId, 
+                                                                                    @RequestParam("page") int page, 
+                                                                                    @RequestParam(defaultValue = "10") int size) {
+        List<RegistrationProductDTO> models = registrationProductService.sortedAscByRegistrationDate(sellerId, page, size);
+        return ResponseEntity.ok(models);
+    }
+
+    // Build API sorted desc registration date
+    @GetMapping("/registration-products/{id}/sorted-date-desc")
+    public ResponseEntity<List<RegistrationProductDTO>> sortedDescByRegistrationDate(@PathVariable("id") Long sellerId, 
+                                                                                    @RequestParam("page") int page, 
+                                                                                    @RequestParam(defaultValue = "10") int size) {
+        List<RegistrationProductDTO> models = registrationProductService.sortedDescByRegistrationDate(sellerId, page, size);
+        return ResponseEntity.ok(models);
+    }    
+
     // Build API get registration products by seller id
     @GetMapping("/registration-products/{id}")
     public ResponseEntity<List<RegistrationProductDTO>> getRegistrationProductsBySellerId(@PathVariable("id") Long sellerId, 
