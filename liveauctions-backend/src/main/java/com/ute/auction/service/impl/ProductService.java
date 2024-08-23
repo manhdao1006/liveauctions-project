@@ -1,7 +1,7 @@
 package com.ute.auction.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,20 +18,6 @@ import com.ute.auction.service.IProductService;
 
 import lombok.RequiredArgsConstructor;
 
-/**
- * ProductService
- *
- * Version 1.0
- *
- * Date: 17-07-2024
- *
- * Copyright 
- *
- * Modification Logs:
- * DATE                 AUTHOR          DESCRIPTION
- * --------------------------------------------------------
- * 17-07-2024           ManhDao         Create
- */
 @Service
 @RequiredArgsConstructor
 public class ProductService implements IProductService {
@@ -47,23 +33,51 @@ public class ProductService implements IProductService {
      */
     @Override
     public List<ProductDTO> getProductsBySellerId(Long sellerId, int page, int size) {
-        boolean sellerExists = sellerRepository.existsBySellerId(sellerId);
-        if (!sellerExists) {
-            throw new ResourceNotFoundException("No seller with id: " + sellerId);
-        }
+        checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<ProductEntity> entities = productRepository.findProductsBySellerId(sellerId, pageable);
 
         if (page > entities.getTotalPages() || page <= 0) {
-            throw new ResourceNotFoundException("No orders with page: " + page);
-        }
-        List<ProductDTO> models = new ArrayList<>();
-        for (ProductEntity item: entities) {
-            ProductDTO productDTO = productConverter.toDTO(item);
-            models.add(productDTO);
+            throw new ResourceNotFoundException("No products with page: " + page);
         }
 
-        return models;
+        return entities.stream().map(productConverter::toDTO).collect(Collectors.toList());
     }
+
+    @Override
+    public List<ProductDTO> sortedAscByStartingPrice(Long sellerId, int page, int size) {
+        checkExistedSeller(sellerId);
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<ProductEntity> entities = productRepository.sortedAscByStartingPrice(sellerId, pageable);
+
+        if (page > entities.getTotalPages() || page <= 0) {
+            throw new ResourceNotFoundException("No products with page: " + page);
+        }
+
+        return entities.stream().map(productConverter::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDTO> sortedDescByStartingPrice(Long sellerId, int page, int size) {
+        checkExistedSeller(sellerId);
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<ProductEntity> entities = productRepository.sortedAscByStartingPrice(sellerId, pageable);
+
+        if (page > entities.getTotalPages() || page <= 0) {
+            throw new ResourceNotFoundException("No products with page: " + page);
+        }
+
+        return entities.stream().map(productConverter::toDTO).collect(Collectors.toList());
+    }
+
+    private void checkExistedSeller(Long sellerId) {
+        boolean sellerExists = sellerRepository.existsBySellerId(sellerId);
+        if (!sellerExists) {
+            throw new ResourceNotFoundException("No seller with id: " + sellerId);
+        }
+    }
+
 }
