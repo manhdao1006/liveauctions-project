@@ -21,6 +21,54 @@ public class AuctionHistoryController {
 
     private final IAuctionHistoryService auctionHistoryService;
 
+    @GetMapping("/orders/{id}/sorted-price-asc")
+    public ResponseEntity<List<AuctionHistoryDTO>> sortedAscByAuctionedPrice(@PathVariable("id") Long sellerId, 
+                                                                            @RequestParam("page") int page, 
+                                                                            @RequestParam(defaultValue = "10") int size) {
+        List<AuctionHistoryDTO> models = auctionHistoryService.sortedAscByAuctionedPrice(sellerId, page, size);
+        return ResponseEntity.ok(models);
+    }
+
+    @GetMapping("/orders/{id}/sorted-price-desc")
+    public ResponseEntity<List<AuctionHistoryDTO>> sortedDescByAuctionedPrice(@PathVariable("id") Long sellerId, 
+                                                                            @RequestParam("page") int page, 
+                                                                            @RequestParam(defaultValue = "10") int size) {
+        List<AuctionHistoryDTO> models = auctionHistoryService.sortedDescByAuctionedPrice(sellerId, page, size);
+        return ResponseEntity.ok(models);
+    }
+
+    @GetMapping("/orders/{id}/sorted-order-date-asc")
+    public ResponseEntity<List<AuctionHistoryDTO>> sortedAscByOrderDate(@PathVariable("id") Long sellerId, 
+                                                                        @RequestParam("page") int page, 
+                                                                        @RequestParam(defaultValue = "10") int size) {
+        List<AuctionHistoryDTO> models = auctionHistoryService.sortedAscByOrderDate(sellerId, page, size);
+        return ResponseEntity.ok(models);
+    }
+
+    @GetMapping("/orders/{id}/sorted-order-date-desc")
+    public ResponseEntity<List<AuctionHistoryDTO>> sortedDescByOrderDate(@PathVariable("id") Long sellerId, 
+                                                                        @RequestParam("page") int page, 
+                                                                        @RequestParam(defaultValue = "10") int size) {
+        List<AuctionHistoryDTO> models = auctionHistoryService.sortedDescByOrderDate(sellerId, page, size);
+        return ResponseEntity.ok(models);
+    }
+
+    @GetMapping("/orders/{id}/sorted-delivery-date-asc")
+    public ResponseEntity<List<AuctionHistoryDTO>> sortedAscByDeliveryDate(@PathVariable("id") Long sellerId, 
+                                                                        @RequestParam("page") int page, 
+                                                                        @RequestParam(defaultValue = "10") int size) {
+        List<AuctionHistoryDTO> models = auctionHistoryService.sortedAscByDeliveryDate(sellerId, page, size);
+        return ResponseEntity.ok(models);
+    }
+
+    @GetMapping("/orders/{id}/sorted-delivery-date-desc")
+    public ResponseEntity<List<AuctionHistoryDTO>> sortedDescByDeliveryDate(@PathVariable("id") Long sellerId, 
+                                                                            @RequestParam("page") int page, 
+                                                                            @RequestParam(defaultValue = "10") int size) {
+        List<AuctionHistoryDTO> models = auctionHistoryService.sortedDescByDeliveryDate(sellerId, page, size);
+        return ResponseEntity.ok(models);
+    }    
+
     // Build API get orders by seller id
     @GetMapping("/order-history/{id}")
     public ResponseEntity<List<AuctionHistoryDTO>> getOrders(@PathVariable("id") Long sellerId, 

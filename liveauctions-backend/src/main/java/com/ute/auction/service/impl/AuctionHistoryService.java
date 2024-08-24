@@ -1,7 +1,7 @@
 package com.ute.auction.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,20 +18,6 @@ import com.ute.auction.service.IAuctionHistoryService;
 
 import lombok.RequiredArgsConstructor;
 
-/**
- * AuctionHistoryService
- *
- * Version 1.0
- *
- * Date: 17-07-2024
- *
- * Copyright 
- *
- * Modification Logs:
- * DATE                 AUTHOR          DESCRIPTION
- * --------------------------------------------------------
- * 17-07-2024           ManhDao         Create
- */
 @Service
 @RequiredArgsConstructor
 public class AuctionHistoryService implements IAuctionHistoryService {
@@ -47,10 +33,7 @@ public class AuctionHistoryService implements IAuctionHistoryService {
      */
     @Override
     public List<AuctionHistoryDTO> getOrders(Long sellerId, int page, int size) {
-        boolean sellerExists = sellerRepository.existsBySellerId(sellerId);
-        if (!sellerExists) {
-            throw new ResourceNotFoundException("No seller with id: " + sellerId);
-        }
+        checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<AuctionHistoryEntity> entities = auctionHistoryRepository.findOrdersBySellerId(sellerId, pageable);
@@ -58,13 +41,8 @@ public class AuctionHistoryService implements IAuctionHistoryService {
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No orders with page: " + page);
         }
-        List<AuctionHistoryDTO> models = new ArrayList<>();
-        for (AuctionHistoryEntity item: entities) {
-            AuctionHistoryDTO auctionHistoryDTO = auctionHistoryConverter.toDTO(item);
-            models.add(auctionHistoryDTO);
-        }
-
-        return models;
+        
+        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
     }
 
     /*
@@ -74,10 +52,7 @@ public class AuctionHistoryService implements IAuctionHistoryService {
      */
     @Override
     public List<AuctionHistoryDTO> getOrdersByOrderStatus(Long sellerId, String orderStatus, int page, int size) {
-        boolean sellerExists = sellerRepository.existsBySellerId(sellerId);
-        if (!sellerExists) {
-            throw new ResourceNotFoundException("No seller with id: " + sellerId);
-        }
+        checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<AuctionHistoryEntity> entities = auctionHistoryRepository.findOrdersByOrderStatus(sellerId, orderStatus, pageable);
@@ -85,13 +60,75 @@ public class AuctionHistoryService implements IAuctionHistoryService {
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No orders with page: " + page);
         }
-        List<AuctionHistoryDTO> models = new ArrayList<>();
-        for (AuctionHistoryEntity item: entities) {
-            AuctionHistoryDTO auctionHistoryDTO = auctionHistoryConverter.toDTO(item);
-            models.add(auctionHistoryDTO);
-        }
+        
+        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+    }
 
-        return models;
+    private void checkExistedSeller(Long sellerId) {
+        boolean sellerExists = sellerRepository.existsBySellerId(sellerId);
+        if (!sellerExists) {
+            throw new ResourceNotFoundException("No seller with id: " + sellerId);
+        }
+    }
+
+    @Override
+    public List<AuctionHistoryDTO> sortedAscByAuctionedPrice(Long sellerId, int page, int size) {
+        checkExistedSeller(sellerId);
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AuctionHistoryEntity> entities = auctionHistoryRepository.sortedAscByAuctionedPrice(sellerId, pageable);
+
+        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AuctionHistoryDTO> sortedDescByAuctionedPrice(Long sellerId, int page, int size) {
+        checkExistedSeller(sellerId);
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AuctionHistoryEntity> entities = auctionHistoryRepository.sortedDescByAuctionedPrice(sellerId, pageable);
+
+        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AuctionHistoryDTO> sortedAscByOrderDate(Long sellerId, int page, int size) {
+        checkExistedSeller(sellerId);
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AuctionHistoryEntity> entities = auctionHistoryRepository.sortedAscByOrderDate(sellerId, pageable);
+
+        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AuctionHistoryDTO> sortedDescByOrderDate(Long sellerId, int page, int size) {
+        checkExistedSeller(sellerId);
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AuctionHistoryEntity> entities = auctionHistoryRepository.sortedDescByOrderDate(sellerId, pageable);
+
+        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AuctionHistoryDTO> sortedAscByDeliveryDate(Long sellerId, int page, int size) {
+        checkExistedSeller(sellerId);
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AuctionHistoryEntity> entities = auctionHistoryRepository.sortedAscByDeliveryDate(sellerId, pageable);
+
+        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AuctionHistoryDTO> sortedDescByDeliveryDate(Long sellerId, int page, int size) {
+        checkExistedSeller(sellerId);
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AuctionHistoryEntity> entities = auctionHistoryRepository.sortedDescByDeliveryDate(sellerId, pageable);
+
+        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
     }
 
 }
