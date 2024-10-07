@@ -6,20 +6,20 @@ import com.ute.auction.dto.AuctionHistoryDTO;
 
 public interface IAuctionHistoryService {
 
-    List<AuctionHistoryDTO> getOrders(Long sellerId, int page, int size);
+    List<AuctionHistoryDTO> getOrders(int sellerId, int page, int size);
 
-    List<AuctionHistoryDTO> getOrdersByOrderStatus(Long sellerId, String orderStatus, int page, int size);
+    List<AuctionHistoryDTO> getOrdersByOrderStatus(int sellerId, String orderStatus, int page, int size);
 
-    List<AuctionHistoryDTO> sortedAscByAuctionedPrice(Long sellerId, int page, int size);
+    List<AuctionHistoryDTO> sortedAscByAuctionedPrice(int sellerId, int page, int size);
 
-    List<AuctionHistoryDTO> sortedDescByAuctionedPrice(Long sellerId, int page, int size);
+    List<AuctionHistoryDTO> sortedDescByAuctionedPrice(int sellerId, int page, int size);
 
-    List<AuctionHistoryDTO> sortedAscByOrderDate(Long sellerId, int page, int size);
+    List<AuctionHistoryDTO> sortedAscByOrderDate(int sellerId, int page, int size);
 
-    List<AuctionHistoryDTO> sortedDescByOrderDate(Long sellerId, int page, int size);
+    List<AuctionHistoryDTO> sortedDescByOrderDate(int sellerId, int page, int size);
 
-    List<AuctionHistoryDTO> sortedAscByDeliveryDate(Long sellerId, int page, int size);
+    List<AuctionHistoryDTO> sortedAscByDeliveryDate(int sellerId, int page, int size);
 
-    List<AuctionHistoryDTO> sortedDescByDeliveryDate(Long sellerId, int page, int size);
+    List<AuctionHistoryDTO> sortedDescByDeliveryDate(int sellerId, int page, int size);
 
 }

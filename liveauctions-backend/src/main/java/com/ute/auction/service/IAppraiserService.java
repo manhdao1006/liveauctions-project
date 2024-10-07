@@ -8,17 +8,17 @@ public interface IAppraiserService {
 
     List<AppraiserDTO> getAll(int page, int size);
 
-    AppraiserDTO getAppraiserById(Long id);
+    AppraiserDTO getAppraiserById(int id);
 
     AppraiserDTO getAppraiserByEmail(String email);
 
     AppraiserDTO addAppraiser(AppraiserDTO appraiser);
 
-    AppraiserDTO updateAppraiser(Long id, AppraiserDTO updatedAppraiser);
+    AppraiserDTO updateAppraiser(int id, AppraiserDTO updatedAppraiser);
 
-    void deleteAppraiser(Long id);
+    void deleteAppraiser(int id);
 
-    void banAppraiser(Long id);
+    void banAppraiser(int id);
 
     List<AppraiserDTO> searchAppraiser(String keyword, int page, int size);
 

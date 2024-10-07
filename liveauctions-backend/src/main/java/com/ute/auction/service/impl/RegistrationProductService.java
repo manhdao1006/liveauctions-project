@@ -35,24 +35,27 @@ public class RegistrationProductService implements IRegistrationProductService {
     private final AuctionFormatRepository auctionFormatRepository;
     private final RegistrationProductConverter registrationProductConverter;
 
-    private void checkExistedSeller(Long sellerId) {
+    private void checkExistedSeller(int sellerId) {
         boolean sellerExists = sellerRepository.existsBySellerId(sellerId);
         if (!sellerExists) {
             throw new ResourceNotFoundException("No seller with id: " + sellerId);
         }
     }
-    
+
     /*
      * get all registration products by seller id
+     * 
      * @param sellerId, page, size
+     * 
      * @return registration products
      */
     @Override
-    public List<RegistrationProductDTO> getRegistrationProductsBySellerId(Long sellerId, int page, int size) {
+    public List<RegistrationProductDTO> getRegistrationProductsBySellerId(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<RegistrationProductEntity> entities = registrationProductRepository.findRegistrationProductsBySellerId(sellerId, pageable);
+        Page<RegistrationProductEntity> entities = registrationProductRepository
+                .findRegistrationProductsBySellerId(sellerId, pageable);
 
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No products with page: " + page);
@@ -63,7 +66,9 @@ public class RegistrationProductService implements IRegistrationProductService {
 
     /*
      * register product
+     * 
      * @param regisProduct
+     * 
      * @return regisProduct
      */
     @Override
@@ -71,8 +76,10 @@ public class RegistrationProductService implements IRegistrationProductService {
     public RegistrationProductDTO registerProduct(RegistrationProductDTO regisProduct) {
 
         SellerEntity seller = sellerRepository.findOneBySellerId(regisProduct.getSeller().getSellerId());
-        Optional<SubCategoryEntity> subCategory = subCategoryRepository.findById(regisProduct.getSubCategory().getId());
-        Optional<AuctionFormatEntity> auctionFormat = auctionFormatRepository.findById(regisProduct.getAuctionFormat().getId());
+        Optional<SubCategoryEntity> subCategory = subCategoryRepository
+                .findById(regisProduct.getSubCategory().getSubCategoryId());
+        Optional<AuctionFormatEntity> auctionFormat = auctionFormatRepository
+                .findById(regisProduct.getAuctionFormat().getAuctionFormatId());
 
         RegistrationProductEntity registrationProductEntity = registrationProductConverter.toEntity(regisProduct);
         registrationProductEntity.setSeller(seller);
@@ -85,11 +92,12 @@ public class RegistrationProductService implements IRegistrationProductService {
     }
 
     @Override
-    public List<RegistrationProductDTO> sortedAscByStartingPrice(Long sellerId, int page, int size) {
+    public List<RegistrationProductDTO> sortedAscByStartingPrice(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedAscByStartingPrice(sellerId, pageable);
+        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedAscByStartingPrice(sellerId,
+                pageable);
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No registration products with page: " + page);
         }
@@ -98,11 +106,12 @@ public class RegistrationProductService implements IRegistrationProductService {
     }
 
     @Override
-    public List<RegistrationProductDTO> sortedDescByStartingPrice(Long sellerId, int page, int size) {
+    public List<RegistrationProductDTO> sortedDescByStartingPrice(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedDescByStartingPrice(sellerId, pageable);
+        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedDescByStartingPrice(sellerId,
+                pageable);
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No registration products with page: " + page);
         }
@@ -111,11 +120,12 @@ public class RegistrationProductService implements IRegistrationProductService {
     }
 
     @Override
-    public List<RegistrationProductDTO> sortedAscByRegistrationDate(Long sellerId, int page, int size) {
+    public List<RegistrationProductDTO> sortedAscByRegistrationDate(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedAscByRegistrationDate(sellerId, pageable);
+        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedAscByRegistrationDate(sellerId,
+                pageable);
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No registration products with page: " + page);
         }
@@ -124,11 +134,12 @@ public class RegistrationProductService implements IRegistrationProductService {
     }
 
     @Override
-    public List<RegistrationProductDTO> sortedDescByRegistrationDate(Long sellerId, int page, int size) {
+    public List<RegistrationProductDTO> sortedDescByRegistrationDate(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedDescByRegistrationDate(sellerId, pageable);
+        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedDescByRegistrationDate(sellerId,
+                pageable);
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No registration products with page: " + page);
         }

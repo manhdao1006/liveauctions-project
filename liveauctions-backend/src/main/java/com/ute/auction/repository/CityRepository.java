@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.ute.auction.entity.CityEntity;
 
 @Repository
-public interface CityRepository extends JpaRepository<CityEntity, Long>{
+public interface CityRepository extends JpaRepository<CityEntity, Integer> {
 
 }

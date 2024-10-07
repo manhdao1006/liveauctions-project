@@ -2,7 +2,6 @@ package com.ute.auction.controller.seller;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Base64;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +31,7 @@ public class UserController {
 
     // Build API get seller by id
     @GetMapping("/profile/id={id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") int id) {
         UserDTO userDTO = userService.getUserById(id);
         return ResponseEntity.ok(userDTO);
     }
@@ -47,18 +46,18 @@ public class UserController {
     // Build API update profile of seller
     @SuppressWarnings("null")
     @PutMapping("/update-profile/{id}")
-    public ResponseEntity<?> updateProfile(@PathVariable("id") Long id, 
-                                                @RequestParam(value = "firstName", required = false) String firstName, 
-                                                @RequestParam(value = "lastName", required = false) String lastName, 
-                                                @Valid @RequestParam(value = "email", required = false) String email, 
-                                                @RequestParam(value = "password", required = false) String password, 
-                                                @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber, 
-                                                @RequestParam(value = "address", required = false) String address, 
-                                                @RequestParam(value = "dob", required = false) LocalDate dob, 
-                                                @RequestParam(value = "gender", required = false) String gender, 
-                                                @RequestParam(value = "avatar", required = false) MultipartFile avatar, 
-                                                @RequestParam(value = "cityId", required = false) Long cityId) throws IOException {
-        
+    public ResponseEntity<?> updateProfile(@PathVariable("id") int id,
+            @RequestParam(value = "firstName", required = false) String firstName,
+            @RequestParam(value = "lastName", required = false) String lastName,
+            @Valid @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "password", required = false) String password,
+            @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
+            @RequestParam(value = "address", required = false) String address,
+            @RequestParam(value = "dob", required = false) LocalDate dob,
+            @RequestParam(value = "gender", required = false) String gender,
+            @RequestParam(value = "avatar", required = false) MultipartFile avatar,
+            @RequestParam(value = "cityId", required = false) Integer cityId) throws IOException {
+
         UserDTO userDTO = new UserDTO();
         userDTO.setFirstName(firstName);
         userDTO.setLastName(lastName);
@@ -71,21 +70,12 @@ public class UserController {
 
         if (cityId != null) {
             CityDTO cityDTO = new CityDTO();
-            cityDTO.setId(cityId);
+            cityDTO.setCityId(cityId);
             userDTO.setCity(cityDTO);
         }
 
-        if (avatar != null && !avatar.isEmpty()) {
-            if (!avatar.getContentType().startsWith("image/")) {
-                return ResponseEntity.badRequest().body("The file is not an image format!");
-            }
-            userDTO.setAvatar(Base64.getEncoder().encodeToString(avatar.getBytes()));
-        } else {
-            userDTO.setAvatar(null);
-        }
-
         try {
-            UserDTO updatedUser = userService.updateProfile(id, userDTO);
+            UserDTO updatedUser = userService.updateProfile(id, userDTO, avatar);
             return ResponseEntity.ok(updatedUser);
         } catch (DataIntegrityViolationException | ConstraintViolationException ex) {
             throw new ResourceExistedException("Email already exists!");

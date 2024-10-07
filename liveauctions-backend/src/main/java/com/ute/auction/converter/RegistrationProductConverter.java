@@ -2,7 +2,6 @@ package com.ute.auction.converter;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -18,29 +17,25 @@ import com.ute.auction.entity.SubCategoryEntity;
 @Component
 public class RegistrationProductConverter {
 
-    private SellerConverter sellerConverter;
-    private SubCategoryConverter subCategoryConverter;
-    private AuctionFormatConverter auctionFormatConverter;
+    private final SellerConverter sellerConverter;
+    private final SubCategoryConverter subCategoryConverter;
+    private final AuctionFormatConverter auctionFormatConverter;
 
-    @Autowired
-    public void setSellerConverter(@Lazy SellerConverter sellerConverter) {
+    public RegistrationProductConverter(@Lazy SellerConverter sellerConverter,
+            @Lazy SubCategoryConverter subCategoryConverter, @Lazy AuctionFormatConverter auctionFormatConverter) {
         this.sellerConverter = sellerConverter;
-    }
-
-    @Autowired
-    public void setSubCategoryConverter(@Lazy SubCategoryConverter subCategoryConverter) {
         this.subCategoryConverter = subCategoryConverter;
-    }
-
-    @Autowired
-    public void setAuctionFormatConverter(@Lazy AuctionFormatConverter auctionFormatConverter) {
         this.auctionFormatConverter = auctionFormatConverter;
     }
-    
+
     public RegistrationProductDTO toDTO(RegistrationProductEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         RegistrationProductDTO registrationProductDTO = new RegistrationProductDTO();
-        registrationProductDTO.setId(entity.getId());
-        registrationProductDTO.setName(entity.getName());
+        registrationProductDTO.setRegistrationProductId(entity.getRegistrationProductId());
+        registrationProductDTO.setRegistrationProductName(entity.getRegistrationProductName());
         registrationProductDTO.setStartingPrice(entity.getStartingPrice());
         registrationProductDTO.setStatus(entity.getStatus());
         registrationProductDTO.setRegistrationDate(entity.getRegistrationDate());
@@ -54,8 +49,13 @@ public class RegistrationProductConverter {
     }
 
     public RegistrationProductEntity toEntity(RegistrationProductDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         RegistrationProductEntity registrationProductEntity = new RegistrationProductEntity();
-        registrationProductEntity.setName(dto.getName());
+        registrationProductEntity.setRegistrationProductId(dto.getRegistrationProductId());
+        registrationProductEntity.setRegistrationProductName(dto.getRegistrationProductName());
         registrationProductEntity.setStartingPrice(dto.getStartingPrice());
         registrationProductEntity.setStatus("Pending");
         registrationProductEntity.setRegistrationDate(LocalDate.now());
@@ -64,32 +64,50 @@ public class RegistrationProductConverter {
         registrationProductEntity.setSeller(toSellerEntity(dto.getSeller()));
         registrationProductEntity.setSubCategory(toSubCategoryEntity(dto.getSubCategory()));
         registrationProductEntity.setAuctionFormat(toAuctionFormatEntity(dto.getAuctionFormat()));
-        
+
         return registrationProductEntity;
     }
 
     private SellerEntity toSellerEntity(SellerDTO sellerDTO) {
+        if (sellerDTO == null) {
+            return null;
+        }
         return sellerConverter.toEntity(sellerDTO);
     }
 
     private SellerDTO toSellerDTO(SellerEntity sellerEntity) {
+        if (sellerEntity == null) {
+            return null;
+        }
         return sellerConverter.toDTO(sellerEntity);
     }
 
     private SubCategoryEntity toSubCategoryEntity(SubCategoryDTO subCategoryDTO) {
+        if (subCategoryDTO == null) {
+            return null;
+        }
         return subCategoryConverter.toEntity(subCategoryDTO);
     }
 
     private SubCategoryDTO toSubCategoryDTO(SubCategoryEntity subCategoryEntity) {
+        if (subCategoryEntity == null) {
+            return null;
+        }
         return subCategoryConverter.toDTO(subCategoryEntity);
     }
 
     private AuctionFormatEntity toAuctionFormatEntity(AuctionFormatDTO auctionFormatDTO) {
+        if (auctionFormatDTO == null) {
+            return null;
+        }
         return auctionFormatConverter.toEntity(auctionFormatDTO);
     }
 
     private AuctionFormatDTO toAuctionFormatDTO(AuctionFormatEntity auctionFormatEntity) {
+        if (auctionFormatEntity == null) {
+            return null;
+        }
         return auctionFormatConverter.toDTO(auctionFormatEntity);
     }
-    
+
 }

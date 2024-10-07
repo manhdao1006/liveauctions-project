@@ -10,23 +10,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "auction_format")
+@Table(name = "auction_formats")
 public class AuctionFormatEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "auction_format_id")
+    private Integer auctionFormatId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "auction_format_name")
+    private String auctionFormatName;
 
-    @Column(name = "del_flag")
-    private String delFlag;
+    @Column(name = "del_flag", nullable = false)
+    private String delFlag = "1";
 
     @OneToMany(mappedBy = "auctionFormat")
     private List<RegistrationProductEntity> registrationProducts = new ArrayList<>();
@@ -36,5 +40,5 @@ public class AuctionFormatEntity {
 
     @OneToMany(mappedBy = "auctionFormat")
     private List<ProductEntity> products = new ArrayList<>();
-    
+
 }

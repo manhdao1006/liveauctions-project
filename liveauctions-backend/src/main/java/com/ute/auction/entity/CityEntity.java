@@ -13,21 +13,26 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "city")
+@Table(name = "cities")
 public class CityEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "city_id")
+    private Integer cityId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "city_name")
+    private String cityName;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "state_id")
     private StateEntity state;
 
@@ -36,5 +41,5 @@ public class CityEntity {
 
     @OneToMany(mappedBy = "city")
     private List<UserEntity> users = new ArrayList<>();
-    
+
 }

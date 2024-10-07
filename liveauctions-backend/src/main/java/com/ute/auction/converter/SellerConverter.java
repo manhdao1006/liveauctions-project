@@ -1,6 +1,5 @@
 package com.ute.auction.converter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -12,14 +11,17 @@ import com.ute.auction.entity.UserEntity;
 @Component
 public class SellerConverter {
 
-    private UserConverter userConverter;
+    private final UserConverter userConverter;
 
-    @Autowired
-    public void setUserConverter(@Lazy UserConverter userConverter) {
+    public SellerConverter(@Lazy UserConverter userConverter) {
         this.userConverter = userConverter;
     }
 
     public SellerDTO toDTO(SellerEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         SellerDTO sellerDTO = new SellerDTO();
         sellerDTO.setSellerId(entity.getSellerId());
         sellerDTO.setTaxCode(entity.getTaxCode());
@@ -31,6 +33,10 @@ public class SellerConverter {
     }
 
     public SellerEntity toEntity(SellerDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         SellerEntity sellerEntity = new SellerEntity();
         sellerEntity.setSellerId(dto.getSellerId());
         sellerEntity.setTaxCode(dto.getTaxCode());
@@ -42,11 +48,17 @@ public class SellerConverter {
     }
 
     private UserDTO toUserDTO(UserEntity userEntity) {
+        if (userEntity == null) {
+            return null;
+        }
         return userConverter.toDTO(userEntity);
     }
 
     private UserEntity toUserEntity(UserDTO userDTO) {
+        if (userDTO == null) {
+            return null;
+        }
         return userConverter.toEntity(userDTO);
     }
-    
+
 }

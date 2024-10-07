@@ -13,16 +13,20 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "buyer")
+@Table(name = "buyers")
 public class BuyerEntity {
 
     @Id
-    private Long buyerId;
+    @Column(name = "buyer_id")
+    private Integer buyerId;
 
     @Column(name = "registration_date")
     private LocalDate registrationDate;
@@ -45,12 +49,12 @@ public class BuyerEntity {
     @Column(name = "billing_address")
     private String billingAddress;
 
-    @Column(name = "del_flag")
-    private String delFlag;
+    @Column(name = "del_flag", nullable = false)
+    private String delFlag = "1";
 
     @MapsId
     @OneToOne
-    @JoinColumn(name = "buyer_id", referencedColumnName = "id")
+    @JoinColumn(name = "buyer_id", referencedColumnName = "user_id")
     private UserEntity user;
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -58,5 +62,5 @@ public class BuyerEntity {
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuctionHistoryEntity> auctionHistories = new ArrayList<>();
-    
+
 }

@@ -6,10 +6,10 @@ import org.springframework.stereotype.Repository;
 import com.ute.auction.entity.SellerEntity;
 
 @Repository
-public interface SellerRepository extends JpaRepository<SellerEntity, Long> {
+public interface SellerRepository extends JpaRepository<SellerEntity, Integer> {
 
-    SellerEntity findOneBySellerId(Long sellerId);
+    SellerEntity findOneBySellerId(int sellerId);
 
-    boolean existsBySellerId(Long sellerId);
-    
+    boolean existsBySellerId(int sellerId);
+
 }

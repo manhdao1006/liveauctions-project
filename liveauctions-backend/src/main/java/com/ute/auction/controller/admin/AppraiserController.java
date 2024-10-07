@@ -35,60 +35,60 @@ public class AppraiserController {
 
     // Build API sorted asc appraiser by dob
     @GetMapping("/sorted-dob-asc")
-    public ResponseEntity<List<AppraiserDTO>> sortedAscByDoB(@RequestParam("page") int page, 
-                                                            @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<AppraiserDTO>> sortedAscByDoB(@RequestParam("page") int page,
+            @RequestParam(defaultValue = "10") int size) {
         List<AppraiserDTO> appraisers = appraiserService.sortedAscByDoB(page, size);
         return ResponseEntity.ok(appraisers);
     }
 
     // Build API sorted desc appraiser by dob
     @GetMapping("/sorted-dob-desc")
-    public ResponseEntity<List<AppraiserDTO>> sortedDescByDoB(@RequestParam("page") int page, 
-                                                            @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<AppraiserDTO>> sortedDescByDoB(@RequestParam("page") int page,
+            @RequestParam(defaultValue = "10") int size) {
         List<AppraiserDTO> appraisers = appraiserService.sortedDescByDoB(page, size);
         return ResponseEntity.ok(appraisers);
     }
 
     // Build API sorted desc appraiser by name
     @GetMapping("/sorted-name-desc")
-    public ResponseEntity<List<AppraiserDTO>> sortedDescByName(@RequestParam("page") int page, 
-                                                            @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<AppraiserDTO>> sortedDescByName(@RequestParam("page") int page,
+            @RequestParam(defaultValue = "10") int size) {
         List<AppraiserDTO> appraisers = appraiserService.sortedDescByName(page, size);
         return ResponseEntity.ok(appraisers);
     }
 
     // Build API sorted asc appraiser by name
     @GetMapping("/sorted-name-asc")
-    public ResponseEntity<List<AppraiserDTO>> sortedAscByName(@RequestParam("page") int page, 
-                                                            @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<AppraiserDTO>> sortedAscByName(@RequestParam("page") int page,
+            @RequestParam(defaultValue = "10") int size) {
         List<AppraiserDTO> appraisers = appraiserService.sortedAscByName(page, size);
         return ResponseEntity.ok(appraisers);
     }
 
     // Build API search appraiser
     @GetMapping("/search")
-    public ResponseEntity<List<AppraiserDTO>> searchAppraiser(@RequestParam("keyword") String keyword, 
-                                                            @RequestParam("page") int page, 
-                                                            @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<AppraiserDTO>> searchAppraiser(@RequestParam("keyword") String keyword,
+            @RequestParam("page") int page,
+            @RequestParam(defaultValue = "10") int size) {
         List<AppraiserDTO> appraisers = appraiserService.searchAppraiser(keyword, page, size);
         return ResponseEntity.ok(appraisers);
-    }    
+    }
 
     // Build API get all appraisers
     @GetMapping("/list")
-    public ResponseEntity<List<AppraiserDTO>> getAll(@RequestParam("page") int page, 
-                                                    @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<AppraiserDTO>> getAll(@RequestParam("page") int page,
+            @RequestParam(defaultValue = "10") int size) {
         List<AppraiserDTO> appraisers = appraiserService.getAll(page, size);
         return ResponseEntity.ok(appraisers);
     }
-    
+
     // Build API get appraiser by id
     @GetMapping("/id={id}")
-    public ResponseEntity<AppraiserDTO> getAppraiserById(@PathVariable("id") Long appraiserId) {
+    public ResponseEntity<AppraiserDTO> getAppraiserById(@PathVariable("id") int appraiserId) {
         AppraiserDTO appraiserDTO = appraiserService.getAppraiserById(appraiserId);
         return ResponseEntity.ok(appraiserDTO);
     }
-    
+
     // Build API get appraiser by email
     @GetMapping("/email={email}")
     public ResponseEntity<AppraiserDTO> getAppraiserByEmail(@PathVariable("email") String email) {
@@ -99,18 +99,18 @@ public class AppraiserController {
     // Build API add an appraiser
     @SuppressWarnings("null")
     @PostMapping("/add")
-    public ResponseEntity<?> addAppraiser(@Valid @RequestParam(value = "name", required = false) String name, 
-                                        @Valid @RequestParam(value = "email", required = false) String email, 
-                                        @RequestParam(value = "gender", required = false) String gender, 
-                                        @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber, 
-                                        @RequestParam(value = "address", required = false) String address, 
-                                        @RequestParam(value = "type", required = false) String type, 
-                                        @RequestParam(value = "status", required = false) String status, 
-                                        @RequestParam(value = "avatar", required = false) MultipartFile avatar, 
-                                        @RequestParam(value = "dob", required = false) LocalDate dob, 
-                                        @RequestParam(value = "description", required = false) String description) throws IOException {
+    public ResponseEntity<?> addAppraiser(@Valid @RequestParam(value = "name", required = false) String name,
+            @Valid @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "gender", required = false) String gender,
+            @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
+            @RequestParam(value = "address", required = false) String address,
+            @RequestParam(value = "type", required = false) String type,
+            @RequestParam(value = "status", required = false) String status,
+            @RequestParam(value = "avatar", required = false) MultipartFile avatar,
+            @RequestParam(value = "dob", required = false) LocalDate dob,
+            @RequestParam(value = "description", required = false) String description) throws IOException {
         AppraiserDTO newAppraiser = new AppraiserDTO();
-        newAppraiser.setName(name);
+        newAppraiser.setAppraiserName(name);
         newAppraiser.setEmail(email);
         newAppraiser.setGender(gender);
         newAppraiser.setPhoneNumber(phoneNumber);
@@ -130,26 +130,26 @@ public class AppraiserController {
         }
 
         AppraiserDTO savedAppraiser = appraiserService.addAppraiser(newAppraiser);
-        
+
         return new ResponseEntity<>(savedAppraiser, HttpStatus.OK);
     }
 
     // Build API edit an existed appraiser
     @SuppressWarnings("null")
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> updateAppraiser(@PathVariable("id") Long id, 
-                                            @Valid @RequestParam(value = "name", required = false) String name, 
-                                            @Valid @RequestParam(value = "email", required = false) String email, 
-                                            @RequestParam(value = "gender", required = false) String gender, 
-                                            @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber, 
-                                            @RequestParam(value = "address", required = false) String address, 
-                                            @RequestParam(value = "type", required = false) String type, 
-                                            @RequestParam(value = "status", required = false) String status, 
-                                            @RequestParam(value = "avatar", required = false) MultipartFile avatar, 
-                                            @RequestParam(value = "dob", required = false) LocalDate dob, 
-                                            @RequestParam(value = "description", required = false) String description) throws IOException {
+    public ResponseEntity<?> updateAppraiser(@PathVariable("id") int id,
+            @Valid @RequestParam(value = "name", required = false) String name,
+            @Valid @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "gender", required = false) String gender,
+            @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
+            @RequestParam(value = "address", required = false) String address,
+            @RequestParam(value = "type", required = false) String type,
+            @RequestParam(value = "status", required = false) String status,
+            @RequestParam(value = "avatar", required = false) MultipartFile avatar,
+            @RequestParam(value = "dob", required = false) LocalDate dob,
+            @RequestParam(value = "description", required = false) String description) throws IOException {
         AppraiserDTO appraiserDTO = new AppraiserDTO();
-        appraiserDTO.setName(name);
+        appraiserDTO.setAppraiserName(name);
         appraiserDTO.setEmail(email);
         appraiserDTO.setGender(gender);
         appraiserDTO.setPhoneNumber(phoneNumber);
@@ -178,16 +178,16 @@ public class AppraiserController {
 
     // Build API delete an existed appraiser
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteAppraiser(@PathVariable("id") Long appraiserId) {
+    public ResponseEntity<String> deleteAppraiser(@PathVariable("id") int appraiserId) {
         appraiserService.deleteAppraiser(appraiserId);
         return ResponseEntity.ok("Deleting appraiser is successfully");
     }
 
     // Build API ban an appraiser
     @PutMapping("ban/{id}")
-    public ResponseEntity<String> banAppraiser(@PathVariable("id") Long id) {
+    public ResponseEntity<String> banAppraiser(@PathVariable("id") int id) {
         appraiserService.banAppraiser(id);
         return ResponseEntity.ok("Banning appraiser is successfully!");
     }
-    
+
 }

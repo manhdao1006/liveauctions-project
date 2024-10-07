@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.ute.auction.entity.RoleEntity;
 
 @Repository
-public interface RoleRepository extends JpaRepository<RoleEntity, Long>{
+public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
 
-    Optional<RoleEntity> findByName(String name);
-    
+    Optional<RoleEntity> findByRoleName(String name);
+
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.ute.auction.entity.SubCategoryEntity;
 
 @Repository
-public interface SubCategoryRepository extends JpaRepository<SubCategoryEntity, Long> {
+public interface SubCategoryRepository extends JpaRepository<SubCategoryEntity, Integer> {
 
 }

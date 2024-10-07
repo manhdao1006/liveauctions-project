@@ -11,12 +11,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "deposit")
+@Table(name = "deposits")
 public class DepositEntity {
 
     @EmbeddedId
@@ -34,5 +37,5 @@ public class DepositEntity {
 
     @Column(name = "deposit_percentage")
     private BigDecimal depositPercentage;
-    
+
 }

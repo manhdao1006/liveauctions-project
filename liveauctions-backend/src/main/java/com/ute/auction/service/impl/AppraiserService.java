@@ -1,7 +1,6 @@
 package com.ute.auction.service.impl;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +31,9 @@ public class AppraiserService implements IAppraiserService {
 
     /*
      * get all appraisers
+     * 
      * @param page, size
+     * 
      * @return appraisers
      */
     @Override
@@ -45,7 +46,7 @@ public class AppraiserService implements IAppraiserService {
             }
         }
         List<AppraiserDTO> models = new ArrayList<>();
-        for (AppraiserEntity item: entities) {
+        for (AppraiserEntity item : entities) {
             AppraiserDTO appraiserDTO = appraiserConverter.toDTO(item);
             models.add(appraiserDTO);
         }
@@ -55,31 +56,39 @@ public class AppraiserService implements IAppraiserService {
 
     /*
      * get an appraiser by id
+     * 
      * @param id
+     * 
      * @return appraiser
      */
     @Override
-    public AppraiserDTO getAppraiserById(Long id) {
-        AppraiserEntity appraiserEntity = appraiserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " not found"));
+    public AppraiserDTO getAppraiserById(int id) {
+        AppraiserEntity appraiserEntity = appraiserRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " not found"));
         AppraiserDTO appraiserDTO = appraiserConverter.toDTO(appraiserEntity);
         return appraiserDTO;
     }
 
     /*
      * get an appraiser by email
+     * 
      * @param email
+     * 
      * @return appraiser
      */
     @Override
     public AppraiserDTO getAppraiserByEmail(String email) {
-        AppraiserEntity appraiserEntity = appraiserRepository.findOneByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + email + " not found"));
+        AppraiserEntity appraiserEntity = appraiserRepository.findOneByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + email + " not found"));
         AppraiserDTO appraiserDTO = appraiserConverter.toDTO(appraiserEntity);
         return appraiserDTO;
     }
 
     /*
      * add an appraiser
+     * 
      * @param appraiser
+     * 
      * @return appraiser
      */
     @Override
@@ -91,30 +100,32 @@ public class AppraiserService implements IAppraiserService {
             return appraiserConverter.toDTO(appraiserEntity);
         } catch (DataIntegrityViolationException ex) {
             throw new ResourceExistedException("Email already exists!");
-        }        
+        }
     }
 
     /*
      * edit an existed appraiser
+     * 
      * @param id, updatedAppraiser
+     * 
      * @return appraiserUpdated
      */
     @Override
     @Transactional
-    public AppraiserDTO updateAppraiser(Long id, AppraiserDTO updatedAppraiser) {
+    public AppraiserDTO updateAppraiser(int id, AppraiserDTO updatedAppraiser) {
         AppraiserEntity appraiserEntity = appraiserRepository.findById(id)
-                                                            .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
-        appraiserEntity.setName(updatedAppraiser.getName());
+                .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
+        appraiserEntity.setAppraiserName(updatedAppraiser.getAppraiserName());
         appraiserEntity.setEmail(updatedAppraiser.getEmail());
         appraiserEntity.setGender(updatedAppraiser.getGender());
         appraiserEntity.setPhoneNumber(updatedAppraiser.getPhoneNumber());
         appraiserEntity.setAddress(updatedAppraiser.getAddress());
         appraiserEntity.setType(updatedAppraiser.getType());
         appraiserEntity.setStatus(updatedAppraiser.getStatus());
-        appraiserEntity.setAvatar(updatedAppraiser.getAvatar() != null ? Base64.getDecoder().decode(updatedAppraiser.getAvatar()) : null);
+        appraiserEntity.setAvatar(updatedAppraiser.getAvatar());
         appraiserEntity.setDob(updatedAppraiser.getDob());
         appraiserEntity.setDescription(updatedAppraiser.getDescription());
-        
+
         try {
             AppraiserEntity appraiserUpdated = appraiserRepository.save(appraiserEntity);
             return appraiserConverter.toDTO(appraiserUpdated);
@@ -125,12 +136,13 @@ public class AppraiserService implements IAppraiserService {
 
     /*
      * delete an existed appraiser
+     * 
      * @param id
      */
     @Override
-    public void deleteAppraiser(Long id) {
+    public void deleteAppraiser(int id) {
         AppraiserEntity appraiserEntity = appraiserRepository.findById(id)
-                                                            .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
         if (appraiserEntity != null) {
             appraiserRepository.deleteById(id);
         }
@@ -138,20 +150,23 @@ public class AppraiserService implements IAppraiserService {
 
     /*
      * ban an existed appraiser
+     * 
      * @param id
      */
     @Override
     @Transactional
-    public void banAppraiser(Long id) {
+    public void banAppraiser(int id) {
         AppraiserEntity appraiserEntity = appraiserRepository.findById(id)
-                                                            .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
         appraiserEntity.setStatus("Inactive");
         appraiserRepository.save(appraiserEntity);
     }
 
     /*
      * search appraiser
+     * 
      * @param keyword, page, size
+     * 
      * @return appraiser
      */
     @Override
@@ -168,13 +183,15 @@ public class AppraiserService implements IAppraiserService {
         }
 
         return entities.stream()
-                        .map(appraiserConverter::toDTO)
-                        .collect(Collectors.toList());
+                .map(appraiserConverter::toDTO)
+                .collect(Collectors.toList());
     }
 
     /*
      * sorted appraiser asc by name
+     * 
      * @param page, size
+     * 
      * @return appraisers
      */
     @Override
@@ -188,13 +205,15 @@ public class AppraiserService implements IAppraiserService {
         }
 
         return entities.stream()
-                        .map(appraiserConverter::toDTO)
-                        .collect(Collectors.toList());
+                .map(appraiserConverter::toDTO)
+                .collect(Collectors.toList());
     }
 
     /*
      * sorted appraiser desc by name
+     * 
      * @param page, size
+     * 
      * @return appraisers
      */
     @Override
@@ -208,13 +227,15 @@ public class AppraiserService implements IAppraiserService {
         }
 
         return entities.stream()
-                        .map(appraiserConverter::toDTO)
-                        .collect(Collectors.toList());
+                .map(appraiserConverter::toDTO)
+                .collect(Collectors.toList());
     }
 
     /*
      * sorted appraiser from young to old by dob
+     * 
      * @param page, size
+     * 
      * @return appraisers
      */
     @Override
@@ -228,13 +249,15 @@ public class AppraiserService implements IAppraiserService {
         }
 
         return entities.stream()
-                        .map(appraiserConverter::toDTO)
-                        .collect(Collectors.toList());
+                .map(appraiserConverter::toDTO)
+                .collect(Collectors.toList());
     }
 
     /*
      * sorted appraiser from old to young by dob
+     * 
      * @param page, size
+     * 
      * @return appraisers
      */
     @Override
@@ -248,8 +271,8 @@ public class AppraiserService implements IAppraiserService {
         }
 
         return entities.stream()
-                        .map(appraiserConverter::toDTO)
-                        .collect(Collectors.toList());
+                .map(appraiserConverter::toDTO)
+                .collect(Collectors.toList());
     }
-    
+
 }

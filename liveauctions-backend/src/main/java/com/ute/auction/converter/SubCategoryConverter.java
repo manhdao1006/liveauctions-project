@@ -1,6 +1,5 @@
 package com.ute.auction.converter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -12,37 +11,50 @@ import com.ute.auction.entity.SubCategoryEntity;
 @Component
 public class SubCategoryConverter {
 
-    private CategoryConverter categoryConverter;
+    private final CategoryConverter categoryConverter;
 
-    @Autowired
-    public void setCategoryConverter(@Lazy CategoryConverter categoryConverter) {
+    public SubCategoryConverter(@Lazy CategoryConverter categoryConverter) {
         this.categoryConverter = categoryConverter;
     }
 
     public SubCategoryDTO toDTO(SubCategoryEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         SubCategoryDTO subCategoryDTO = new SubCategoryDTO();
-        subCategoryDTO.setId(entity.getId());
-        subCategoryDTO.setName(entity.getName());
+        subCategoryDTO.setSubCategoryId(entity.getSubCategoryId());
+        subCategoryDTO.setSubCategoryName(entity.getSubCategoryName());
         subCategoryDTO.setCategory(toCategoryDTO(entity.getCategory()));
 
         return subCategoryDTO;
     }
 
     public SubCategoryEntity toEntity(SubCategoryDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         SubCategoryEntity subCategoryEntity = new SubCategoryEntity();
-        subCategoryEntity.setId(dto.getId());
-        subCategoryEntity.setName(dto.getName());
+        subCategoryEntity.setSubCategoryId(dto.getSubCategoryId());
+        subCategoryEntity.setSubCategoryName(dto.getSubCategoryName());
         subCategoryEntity.setCategory(toCategoryEntity(dto.getCategory()));
 
         return subCategoryEntity;
     }
 
     private CategoryEntity toCategoryEntity(CategoryDTO categoryDTO) {
+        if (categoryDTO == null) {
+            return null;
+        }
         return categoryConverter.toEntity(categoryDTO);
     }
 
     private CategoryDTO toCategoryDTO(CategoryEntity categoryEntity) {
+        if (categoryEntity == null) {
+            return null;
+        }
         return categoryConverter.toDTO(categoryEntity);
     }
-    
+
 }

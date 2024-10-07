@@ -1,6 +1,5 @@
 package com.ute.auction.converter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -14,23 +13,22 @@ import com.ute.auction.entity.StaffEntity;
 @Component
 public class AuctionConverter {
 
-    private StaffConverter staffConverter;
-    private AuctionFormatConverter auctionFormatConverter;
+    private final StaffConverter staffConverter;
+    private final AuctionFormatConverter auctionFormatConverter;
 
-    @Autowired
-    public void setStaffConverter(@Lazy StaffConverter staffConverter) {
+    public AuctionConverter(@Lazy StaffConverter staffConverter, @Lazy AuctionFormatConverter auctionFormatConverter) {
         this.staffConverter = staffConverter;
+        this.auctionFormatConverter = auctionFormatConverter;
     }
 
-    @Autowired
-    public void setAuctionFormatConverter(@Lazy AuctionFormatConverter auctionFormatConverter) {
-        this.auctionFormatConverter = auctionFormatConverter;
-    }    
-
     public AuctionDTO toDTO(AuctionEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         AuctionDTO auctionDTO = new AuctionDTO();
-        auctionDTO.setId(entity.getId());
-        auctionDTO.setName(entity.getName());
+        auctionDTO.setAuctionId(entity.getAuctionId());
+        auctionDTO.setAuctionName(entity.getAuctionName());
         auctionDTO.setStartDate(entity.getStartDate());
         auctionDTO.setEndDate(entity.getEndDate());
         auctionDTO.setBuyerPremium(entity.getBuyerPremium());
@@ -44,9 +42,13 @@ public class AuctionConverter {
     }
 
     public AuctionEntity toEntity(AuctionDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         AuctionEntity auctionEntity = new AuctionEntity();
-        auctionEntity.setId(dto.getId());
-        auctionEntity.setName(dto.getName());
+        auctionEntity.setAuctionId(dto.getAuctionId());
+        auctionEntity.setAuctionName(dto.getAuctionName());
         auctionEntity.setStartDate(dto.getStartDate());
         auctionEntity.setEndDate(dto.getEndDate());
         auctionEntity.setBuyerPremium(dto.getBuyerPremium());
@@ -60,19 +62,31 @@ public class AuctionConverter {
     }
 
     private AuctionFormatEntity toAuctionFormatEntity(AuctionFormatDTO auctionFormatDTO) {
+        if (auctionFormatDTO == null) {
+            return null;
+        }
         return auctionFormatConverter.toEntity(auctionFormatDTO);
     }
 
     private StaffEntity toStaffEntity(StaffDTO staffDTO) {
+        if (staffDTO == null) {
+            return null;
+        }
         return staffConverter.toEntity(staffDTO);
     }
 
     private AuctionFormatDTO toAuctionFormatDTO(AuctionFormatEntity auctionFormatEntity) {
+        if (auctionFormatEntity == null) {
+            return null;
+        }
         return auctionFormatConverter.toDTO(auctionFormatEntity);
     }
 
     private StaffDTO toStaffDTO(StaffEntity staffEntity) {
+        if (staffEntity == null) {
+            return null;
+        }
         return staffConverter.toDTO(staffEntity);
     }
-    
+
 }

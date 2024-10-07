@@ -13,18 +13,23 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 public class ProductEntity {
 
     @Id
-    private String id;
+    @Column(name = "product_id")
+    private String productId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "product_name")
+    private String productName;
 
     @Column(name = "starting_price")
     private BigDecimal startingPrice;
@@ -41,8 +46,8 @@ public class ProductEntity {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "del_flag")
-    private String delFlag;
+    @Column(name = "del_flag", nullable = false)
+    private String delFlag = "1";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
@@ -64,13 +69,13 @@ public class ProductEntity {
     @JoinColumn(name = "appraiser_id")
     private AppraiserEntity appraiser;
 
-    @OneToMany(mappedBy = "product")
-    private List<ImagesEntity> images = new ArrayList<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ImageEntity> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuctionProductEntity> auctionProducts = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuctionHistoryEntity> auctionHistories = new ArrayList<>();
-    
+
 }

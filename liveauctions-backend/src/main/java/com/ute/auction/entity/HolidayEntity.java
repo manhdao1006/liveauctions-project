@@ -10,24 +10,29 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "holiday")
+@Table(name = "holidays")
 public class HolidayEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "holiday_id")
+    private Integer holidayId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "holiday_name")
+    private String holidayName;
 
     @Column(name = "break_time")
     private String breakTime;
 
     @OneToMany(mappedBy = "holiday")
     private List<AuctionHistoryEntity> auctionHistories = new ArrayList<>();
-    
+
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.ute.auction.entity.TaxEntity;
 
 @Repository
-public interface TaxRepository extends JpaRepository<TaxEntity, Long> {
+public interface TaxRepository extends JpaRepository<TaxEntity, Integer> {
 
 }

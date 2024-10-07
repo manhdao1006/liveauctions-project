@@ -12,20 +12,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "fee")
+@Table(name = "fees")
 public class FeeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "fee_id")
+    private Integer feeId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "fee_name")
+    private String feeName;
 
     @Column(name = "cost")
     private BigDecimal cost;
@@ -35,5 +39,5 @@ public class FeeEntity {
 
     @OneToMany(mappedBy = "fee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuctionHistoryEntity> auctionHistories = new ArrayList<>();
-    
+
 }

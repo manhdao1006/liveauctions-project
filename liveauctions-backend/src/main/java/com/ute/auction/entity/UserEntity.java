@@ -13,22 +13,26 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "[user]")
+@Table(name = "users")
 public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id")
+    private Integer userId;
 
     @Column(name = "first_name")
     private String firstName;
@@ -53,22 +57,19 @@ public class UserEntity {
     private String status;
 
     @Column(name = "avatar")
-    @Lob
-    private byte[] avatar;
+    private String avatar;
 
     @Column(name = "dob")
     private LocalDate dob;
 
     @Column(name = "gender")
     private String gender;
-    
-    @Column(name = "del_flag")
-    private String delFlag;
+
+    @Column(name = "del_flag", nullable = false)
+    private String delFlag = "1";
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_role", 
-                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
-                inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private List<RoleEntity> roles = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

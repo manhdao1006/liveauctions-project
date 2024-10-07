@@ -9,19 +9,27 @@ import com.ute.auction.entity.StateEntity;
 public class StateConverter {
 
     public StateDTO toDTO(StateEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         StateDTO stateDTO = new StateDTO();
-        stateDTO.setId(entity.getId());
-        stateDTO.setName(entity.getName());
+        stateDTO.setStateId(entity.getStateId());
+        stateDTO.setStateName(entity.getStateName());
 
         return stateDTO;
     }
 
     public StateEntity toEntity(StateDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         StateEntity stateEntity = new StateEntity();
-        stateEntity.setId(dto.getId());
-        stateEntity.setName(dto.getName());
+        stateEntity.setStateId(dto.getStateId());
+        stateEntity.setStateName(dto.getStateName());
 
         return stateEntity;
     }
-    
+
 }

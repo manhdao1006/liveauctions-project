@@ -9,21 +9,29 @@ import com.ute.auction.entity.AuctionFormatEntity;
 public class AuctionFormatConverter {
 
     public AuctionFormatDTO toDTO(AuctionFormatEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         AuctionFormatDTO auctionFormatDTO = new AuctionFormatDTO();
-        auctionFormatDTO.setId(entity.getId());
-        auctionFormatDTO.setName(entity.getName());
+        auctionFormatDTO.setAuctionFormatId(entity.getAuctionFormatId());
+        auctionFormatDTO.setAuctionFormatName(entity.getAuctionFormatName());
         auctionFormatDTO.setDelFlag(entity.getDelFlag());
 
         return auctionFormatDTO;
     }
 
     public AuctionFormatEntity toEntity(AuctionFormatDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         AuctionFormatEntity auctionFormatEntity = new AuctionFormatEntity();
-        auctionFormatEntity.setId(dto.getId());
-        auctionFormatEntity.setName(dto.getName());
+        auctionFormatEntity.setAuctionFormatId(dto.getAuctionFormatId());
+        auctionFormatEntity.setAuctionFormatName(dto.getAuctionFormatName());
         auctionFormatEntity.setDelFlag("1");
 
         return auctionFormatEntity;
     }
-    
+
 }

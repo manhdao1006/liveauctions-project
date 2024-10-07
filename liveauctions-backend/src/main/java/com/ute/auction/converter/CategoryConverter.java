@@ -10,18 +10,18 @@ public class CategoryConverter {
 
     public CategoryDTO toDTO(CategoryEntity entity) {
         CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setId(entity.getId());
-        categoryDTO.setName(entity.getName());
+        categoryDTO.setCategoryId(entity.getCategoryId());
+        categoryDTO.setCategoryName(entity.getCategoryName());
 
         return categoryDTO;
     }
 
     public CategoryEntity toEntity(CategoryDTO dto) {
         CategoryEntity categoryEntity = new CategoryEntity();
-        categoryEntity.setId(dto.getId());
-        categoryEntity.setName(dto.getName());
+        categoryEntity.setCategoryId(dto.getCategoryId());
+        categoryEntity.setCategoryName(dto.getCategoryName());
 
         return categoryEntity;
     }
-    
+
 }

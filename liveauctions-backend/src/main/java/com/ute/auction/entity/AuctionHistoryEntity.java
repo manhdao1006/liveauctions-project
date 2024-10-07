@@ -12,10 +12,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "auction_history")
 public class AuctionHistoryEntity {
@@ -59,11 +62,14 @@ public class AuctionHistoryEntity {
 
     @Column(name = "order_date")
     private LocalDate orderDate;
-    
+
     @Column(name = "delivery_date")
     private LocalDate deliveryDate;
-    
+
     @Column(name = "order_status")
     private String orderStatus;
-    
+
+    @Column(name = "del_flag", nullable = false)
+    private String delFlag = "1";
+
 }

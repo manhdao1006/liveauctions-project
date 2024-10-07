@@ -9,10 +9,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "auction_product")
 public class AuctionProductEntity {
@@ -30,10 +33,13 @@ public class AuctionProductEntity {
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @Column(name = "slots")
-    private Long slots;
+    @Column(name = "slot")
+    private Integer slot;
 
     @Column(name = "status")
     private String status;
-    
+
+    @Column(name = "del_flag", nullable = false)
+    private String delFlag = "1";
+
 }

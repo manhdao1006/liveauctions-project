@@ -1,8 +1,7 @@
 package com.ute.auction.converter;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -13,27 +12,41 @@ import com.ute.auction.entity.RoleEntity;
 public class RoleConverter {
 
     public RoleDTO toDTO(RoleEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setId(entity.getId());
-        roleDTO.setName(entity.getName());
+        roleDTO.setRoleId(entity.getRoleId());
+        roleDTO.setRoleName(entity.getRoleName());
 
         return roleDTO;
     }
 
     public RoleEntity toEntity(RoleDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         RoleEntity roleEntity = new RoleEntity();
-        roleEntity.setId(dto.getId());
-        roleEntity.setName(dto.getName());
+        roleEntity.setRoleId(dto.getRoleId());
+        roleEntity.setRoleName(dto.getRoleName());
 
         return roleEntity;
     }
 
     public List<RoleDTO> toDTOs(List<RoleEntity> entities) {
-        return entities.stream().map(this::toDTO).filter(Objects::nonNull).collect(Collectors.toList());
+        if (entities == null) {
+            return new ArrayList<>();
+        }
+        return entities.stream().map(this::toDTO).toList();
     }
 
     public List<RoleEntity> toEntities(List<RoleDTO> dtos) {
-        return dtos.stream().map(this::toEntity).filter(Objects::nonNull).collect(Collectors.toList());
+        if (dtos == null) {
+            return new ArrayList<>();
+        }
+        return dtos.stream().map(this::toEntity).toList();
     }
-    
+
 }

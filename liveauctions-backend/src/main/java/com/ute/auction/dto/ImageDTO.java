@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuctionProductDTO {
+public class ImageDTO {
 
-    private AuctionDTO auction;
+    private Integer imageId;
+    private String imageName;
     private ProductDTO product;
-    private Integer slot;
-    private String status;
 
 }

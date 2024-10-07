@@ -16,20 +16,24 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "auction")
+@Table(name = "auctions")
 public class AuctionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "auction_id")
+    private Integer auctionId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "auction_name")
+    private String auctionName;
 
     @Column(name = "start_date")
     private LocalDate startDate;
@@ -46,8 +50,8 @@ public class AuctionEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "del_flag")
-    private String delFlag;
+    @Column(name = "del_flag", nullable = false)
+    private String delFlag = "1";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id")
@@ -65,5 +69,5 @@ public class AuctionEntity {
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuctionHistoryEntity> auctionHistories = new ArrayList<>();
-    
+
 }

@@ -28,11 +28,13 @@ public class ProductService implements IProductService {
 
     /*
      * get all products by seller id
+     * 
      * @param sellerId, page, size
+     * 
      * @return products
      */
     @Override
-    public List<ProductDTO> getProductsBySellerId(Long sellerId, int page, int size) {
+    public List<ProductDTO> getProductsBySellerId(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -46,7 +48,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> sortedAscByStartingPrice(Long sellerId, int page, int size) {
+    public List<ProductDTO> sortedAscByStartingPrice(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -60,7 +62,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> sortedDescByStartingPrice(Long sellerId, int page, int size) {
+    public List<ProductDTO> sortedDescByStartingPrice(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -73,7 +75,7 @@ public class ProductService implements IProductService {
         return entities.stream().map(productConverter::toDTO).collect(Collectors.toList());
     }
 
-    private void checkExistedSeller(Long sellerId) {
+    private void checkExistedSeller(int sellerId) {
         boolean sellerExists = sellerRepository.existsBySellerId(sellerId);
         if (!sellerExists) {
             throw new ResourceNotFoundException("No seller with id: " + sellerId);

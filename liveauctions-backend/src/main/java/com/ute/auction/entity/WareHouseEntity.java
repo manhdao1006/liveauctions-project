@@ -3,6 +3,7 @@ package com.ute.auction.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,19 +14,24 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "warehouse")
+@Table(name = "warehouses")
 public class WareHouseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "warehouse_id")
+    private Integer warehouseId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "warehouse_name")
+    private String warehouseName;
 
     @Column(name = "manager")
     private String manager;
@@ -42,14 +48,14 @@ public class WareHouseEntity {
     @Column(name = "operating_day")
     private String operatingDay;
 
-    @Column(name = "del_flag")
-    private String delFlag;
+    @Column(name = "del_flag", nullable = false)
+    private String delFlag = "1";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id")
     private CityEntity city;
 
-    @OneToMany(mappedBy = "wareHouse")
+    @OneToMany(mappedBy = "wareHouse", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductEntity> products = new ArrayList<>();
-    
+
 }

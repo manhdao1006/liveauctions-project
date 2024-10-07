@@ -9,30 +9,30 @@ import org.springframework.stereotype.Repository;
 import com.ute.auction.entity.UserEntity;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
-    @Query(value = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.del_flag, u.city_id, u.role_id, " + 
-                    "c.state_id " + 
-                    "FROM [user] u " + 
-                    "JOIN city c ON u.city_id = c.id " + 
-                    "JOIN state st ON c.state_id = st.id " + 
-                    "JOIN seller se ON u.id = se.seller_id " + 
-                    "WHERE u.id like ?1", 
-            nativeQuery = true)
-    UserEntity findUserById(Long id);
+        @Query(value = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.del_flag, u.city_id, u.role_id, "
+                        +
+                        "c.state_id " +
+                        "FROM [user] u " +
+                        "JOIN city c ON u.city_id = c.id " +
+                        "JOIN state st ON c.state_id = st.id " +
+                        "JOIN seller se ON u.id = se.seller_id " +
+                        "WHERE u.id like ?1", nativeQuery = true)
+        UserEntity findByUserId(int userId);
 
-    @Query(value = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.del_flag, u.city_id, u.role_id, " + 
-                    "c.state_id " + 
-                    "FROM [user] u " + 
-                    "JOIN city c ON u.city_id = c.id " + 
-                    "JOIN state st ON c.state_id = st.id " + 
-                    "JOIN seller se ON u.id = se.seller_id " + 
-                    "WHERE u.email like ?1", 
-            nativeQuery = true)
-    UserEntity findUserByEmail(String email);
+        @Query(value = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.del_flag, u.city_id, u.role_id, "
+                        +
+                        "c.state_id " +
+                        "FROM [user] u " +
+                        "JOIN city c ON u.city_id = c.id " +
+                        "JOIN state st ON c.state_id = st.id " +
+                        "JOIN seller se ON u.id = se.seller_id " +
+                        "WHERE u.email like ?1", nativeQuery = true)
+        UserEntity findUserByEmail(String email);
 
-    Optional<UserEntity> findByEmail(String email);
+        Optional<UserEntity> findByEmail(String email);
 
-    Boolean existsByEmail(String email);
-    
+        Boolean existsByEmail(String email);
+
 }

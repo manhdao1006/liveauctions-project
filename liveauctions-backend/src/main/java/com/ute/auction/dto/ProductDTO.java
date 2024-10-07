@@ -3,13 +3,19 @@ package com.ute.auction.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductDTO {
 
-    private String id;
-    private String name;
+    private String productId;
+    private String productName;
     private BigDecimal startingPrice;
     private String status;
     private BigDecimal minPrice;
@@ -21,8 +27,8 @@ public class ProductDTO {
     private AuctionFormatDTO auctionFormat;
     private WareHouseDTO wareHouse;
     private AppraiserDTO appraiser;
-    private List<ImagesDTO> images;
+    private List<ImageDTO> images;
     private List<AuctionProductDTO> auctionProducts;
     private List<AuctionHistoryDTO> auctionHistories;
-    
+
 }

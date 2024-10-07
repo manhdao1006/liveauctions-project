@@ -11,5 +11,5 @@ public class AuthResponseDTO {
     public AuthResponseDTO(String accessToken) {
         this.accessToken = accessToken;
     }
-    
+
 }

@@ -3,13 +3,19 @@ package com.ute.auction.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AppraiserDTO {
 
-    private Long id;
-    private String name;
+    private Integer appraiserId;
+    private String appraiserName;
     private String email;
     private String gender;
     private String phoneNumber;
@@ -21,5 +27,5 @@ public class AppraiserDTO {
     private String description;
     private String delFlag;
     private List<ProductDTO> products;
-    
+
 }

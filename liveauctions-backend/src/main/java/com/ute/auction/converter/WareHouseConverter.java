@@ -13,16 +13,20 @@ import com.ute.auction.entity.WareHouseEntity;
 public class WareHouseConverter {
 
     private CityConverter cityConverter;
-    
+
     @Autowired
     public void setCityConverter(@Lazy CityConverter cityConverter) {
         this.cityConverter = cityConverter;
     }
 
     public WareHouseDTO toDTO(WareHouseEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         WareHouseDTO wareHouseDTO = new WareHouseDTO();
-        wareHouseDTO.setId(entity.getId());
-        wareHouseDTO.setName(entity.getName());
+        wareHouseDTO.setWarehouseId(entity.getWarehouseId());
+        wareHouseDTO.setWarehouseName(entity.getWarehouseName());
         wareHouseDTO.setManager(entity.getManager());
         wareHouseDTO.setAddress(entity.getAddress());
         wareHouseDTO.setOperationalStatus(entity.getOperationalStatus());
@@ -35,9 +39,13 @@ public class WareHouseConverter {
     }
 
     public WareHouseEntity toEntity(WareHouseDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         WareHouseEntity wareHouseEntity = new WareHouseEntity();
-        wareHouseEntity.setId(dto.getId());
-        wareHouseEntity.setName(dto.getName());
+        wareHouseEntity.setWarehouseId(dto.getWarehouseId());
+        wareHouseEntity.setWarehouseName(dto.getWarehouseName());
         wareHouseEntity.setManager(dto.getManager());
         wareHouseEntity.setAddress(dto.getAddress());
         wareHouseEntity.setOperationalStatus(dto.getOperationalStatus());
@@ -50,11 +58,17 @@ public class WareHouseConverter {
     }
 
     private CityEntity toCityEntity(CityDTO cityDTO) {
+        if (cityDTO == null) {
+            return null;
+        }
         return cityConverter.toEntity(cityDTO);
     }
 
     private CityDTO toCityDTO(CityEntity cityEntity) {
+        if (cityEntity == null) {
+            return null;
+        }
         return cityConverter.toDTO(cityEntity);
     }
-    
+
 }

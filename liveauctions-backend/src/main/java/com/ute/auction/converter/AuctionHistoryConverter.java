@@ -1,6 +1,5 @@
 package com.ute.auction.converter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -16,26 +15,22 @@ import com.ute.auction.entity.ProductEntity;
 @Component
 public class AuctionHistoryConverter {
 
-    private ProductConverter productConverter;
-    private AuctionConverter auctionConverter;
-    private BuyerConverter buyerConverter;
+    private final ProductConverter productConverter;
+    private final AuctionConverter auctionConverter;
+    private final BuyerConverter buyerConverter;
 
-    @Autowired
-    public void setProductConverter(@Lazy ProductConverter productConverter) {
+    public AuctionHistoryConverter(@Lazy ProductConverter productConverter, @Lazy AuctionConverter auctionConverter,
+            @Lazy BuyerConverter buyerConverter) {
         this.productConverter = productConverter;
-    }
-
-    @Autowired
-    public void setAuctionConverter(@Lazy AuctionConverter auctionConverter) {
         this.auctionConverter = auctionConverter;
-    }
-
-    @Autowired
-    public void setBuyerConverter(@Lazy BuyerConverter buyerConverter) {
         this.buyerConverter = buyerConverter;
     }
 
     public AuctionHistoryDTO toDTO(AuctionHistoryEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         AuctionHistoryDTO auctionHistoryDTO = new AuctionHistoryDTO();
         auctionHistoryDTO.setAuction(toAuctionDTO(entity.getAuction()));
         auctionHistoryDTO.setProduct(toProductDTO(entity.getProduct()));
@@ -48,6 +43,10 @@ public class AuctionHistoryConverter {
     }
 
     public AuctionHistoryEntity toEntity(AuctionHistoryDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         AuctionHistoryEntity auctionHistoryEntity = new AuctionHistoryEntity();
         auctionHistoryEntity.setAuction(toAuctionEntity(dto.getAuction()));
         auctionHistoryEntity.setProduct(toProductEntity(dto.getProduct()));
@@ -60,27 +59,45 @@ public class AuctionHistoryConverter {
     }
 
     private BuyerDTO toBuyerDTO(BuyerEntity buyerEntity) {
+        if (buyerEntity == null) {
+            return null;
+        }
         return buyerConverter.toDTO(buyerEntity);
     }
 
     private ProductDTO toProductDTO(ProductEntity productEntity) {
+        if (productEntity == null) {
+            return null;
+        }
         return productConverter.toDTO(productEntity);
     }
 
     private AuctionDTO toAuctionDTO(AuctionEntity auctionEntity) {
+        if (auctionEntity == null) {
+            return null;
+        }
         return auctionConverter.toDTO(auctionEntity);
     }
 
     private BuyerEntity toBuyerEntity(BuyerDTO buyerDTO) {
+        if (buyerDTO == null) {
+            return null;
+        }
         return buyerConverter.toEntity(buyerDTO);
     }
 
     private ProductEntity toProductEntity(ProductDTO productDTO) {
+        if (productDTO == null) {
+            return null;
+        }
         return productConverter.toEntity(productDTO);
     }
 
     private AuctionEntity toAuctionEntity(AuctionDTO auctionDTO) {
+        if (auctionDTO == null) {
+            return null;
+        }
         return auctionConverter.toEntity(auctionDTO);
     }
-    
+
 }

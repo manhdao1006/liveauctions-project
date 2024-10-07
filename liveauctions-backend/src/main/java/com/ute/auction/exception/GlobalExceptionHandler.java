@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     // @ExceptionHandler(ConstraintViolationException.class)
-    // public ResponseEntity<List<String>> handleValidationExceptions(ConstraintViolationException ex) {
-    //     List<String> errors = new ArrayList<>();
-    //     ex.getConstraintViolations().forEach(error -> {
-    //         errors.add(error.getPropertyPath() + ": " + error.getMessage());
-    //     });
-    //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    // public ResponseEntity<List<String>>
+    // handleValidationExceptions(ConstraintViolationException ex) {
+    // List<String> errors = new ArrayList<>();
+    // ex.getConstraintViolations().forEach(error -> {
+    // errors.add(error.getPropertyPath() + ": " + error.getMessage());
+    // });
+    // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     // }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -30,6 +31,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceExistedException.class)
     public ResponseEntity<String> handleResourceExistedException(ResourceExistedException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ResourceNotFormatException.class)
+    public ResponseEntity<String> handleResourceNotFormatException(ResourceNotFormatException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ex.getMessage());
     }
 
 }

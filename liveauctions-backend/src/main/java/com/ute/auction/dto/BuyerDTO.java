@@ -3,12 +3,18 @@ package com.ute.auction.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BuyerDTO {
 
-    private Long buyerId;
+    private Integer buyerId;
     private LocalDate registrationDate;
     private String nameOnCard;
     private String cardNumber;
@@ -20,5 +26,5 @@ public class BuyerDTO {
     private UserDTO user;
     private List<DepositDTO> deposits;
     private List<AuctionHistoryDTO> auctionHistories;
-    
+
 }

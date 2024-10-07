@@ -28,11 +28,13 @@ public class AuctionHistoryService implements IAuctionHistoryService {
 
     /*
      * get all orders by seller id
+     * 
      * @param sellerId, page, size
+     * 
      * @return orders
      */
     @Override
-    public List<AuctionHistoryDTO> getOrders(Long sellerId, int page, int size) {
+    public List<AuctionHistoryDTO> getOrders(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -41,30 +43,33 @@ public class AuctionHistoryService implements IAuctionHistoryService {
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No orders with page: " + page);
         }
-        
+
         return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
     }
 
     /*
      * get all orders by order status
+     * 
      * @param sellerId, orderStatus, page, size
+     * 
      * @return orders
      */
     @Override
-    public List<AuctionHistoryDTO> getOrdersByOrderStatus(Long sellerId, String orderStatus, int page, int size) {
+    public List<AuctionHistoryDTO> getOrdersByOrderStatus(int sellerId, String orderStatus, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<AuctionHistoryEntity> entities = auctionHistoryRepository.findOrdersByOrderStatus(sellerId, orderStatus, pageable);
+        Page<AuctionHistoryEntity> entities = auctionHistoryRepository.findOrdersByOrderStatus(sellerId, orderStatus,
+                pageable);
 
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No orders with page: " + page);
         }
-        
+
         return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
     }
 
-    private void checkExistedSeller(Long sellerId) {
+    private void checkExistedSeller(int sellerId) {
         boolean sellerExists = sellerRepository.existsBySellerId(sellerId);
         if (!sellerExists) {
             throw new ResourceNotFoundException("No seller with id: " + sellerId);
@@ -72,7 +77,7 @@ public class AuctionHistoryService implements IAuctionHistoryService {
     }
 
     @Override
-    public List<AuctionHistoryDTO> sortedAscByAuctionedPrice(Long sellerId, int page, int size) {
+    public List<AuctionHistoryDTO> sortedAscByAuctionedPrice(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -82,7 +87,7 @@ public class AuctionHistoryService implements IAuctionHistoryService {
     }
 
     @Override
-    public List<AuctionHistoryDTO> sortedDescByAuctionedPrice(Long sellerId, int page, int size) {
+    public List<AuctionHistoryDTO> sortedDescByAuctionedPrice(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -92,7 +97,7 @@ public class AuctionHistoryService implements IAuctionHistoryService {
     }
 
     @Override
-    public List<AuctionHistoryDTO> sortedAscByOrderDate(Long sellerId, int page, int size) {
+    public List<AuctionHistoryDTO> sortedAscByOrderDate(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -102,7 +107,7 @@ public class AuctionHistoryService implements IAuctionHistoryService {
     }
 
     @Override
-    public List<AuctionHistoryDTO> sortedDescByOrderDate(Long sellerId, int page, int size) {
+    public List<AuctionHistoryDTO> sortedDescByOrderDate(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -112,7 +117,7 @@ public class AuctionHistoryService implements IAuctionHistoryService {
     }
 
     @Override
-    public List<AuctionHistoryDTO> sortedAscByDeliveryDate(Long sellerId, int page, int size) {
+    public List<AuctionHistoryDTO> sortedAscByDeliveryDate(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -122,7 +127,7 @@ public class AuctionHistoryService implements IAuctionHistoryService {
     }
 
     @Override
-    public List<AuctionHistoryDTO> sortedDescByDeliveryDate(Long sellerId, int page, int size) {
+    public List<AuctionHistoryDTO> sortedDescByDeliveryDate(int sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);

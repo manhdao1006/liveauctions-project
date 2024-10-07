@@ -23,27 +23,27 @@ public class ProductController {
 
     // Build API sorted asc starting price
     @GetMapping("/products/{id}/sorted-price-asc")
-    public ResponseEntity<List<ProductDTO>> sortedAscByStartingPrice(@PathVariable("id") Long sellerId, 
-                                                                    @RequestParam("page") int page, 
-                                                                    @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<ProductDTO>> sortedAscByStartingPrice(@PathVariable("id") int sellerId,
+            @RequestParam("page") int page,
+            @RequestParam(defaultValue = "10") int size) {
         List<ProductDTO> models = productService.sortedAscByStartingPrice(sellerId, page, size);
         return ResponseEntity.ok(models);
     }
 
     // Build API sorted desc starting price
     @GetMapping("/products/{id}/sorted-price-desc")
-    public ResponseEntity<List<ProductDTO>> sortedDescByStartingPrice(@PathVariable("id") Long sellerId, 
-                                                                    @RequestParam("page") int page, 
-                                                                    @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<ProductDTO>> sortedDescByStartingPrice(@PathVariable("id") int sellerId,
+            @RequestParam("page") int page,
+            @RequestParam(defaultValue = "10") int size) {
         List<ProductDTO> models = productService.sortedDescByStartingPrice(sellerId, page, size);
         return ResponseEntity.ok(models);
     }
 
     // Build API get products by seller id
     @GetMapping("/products/{id}")
-    public ResponseEntity<List<ProductDTO>> getProductsBySellerId(@PathVariable("id") Long sellerId, 
-                                                                @RequestParam("page") int page, 
-                                                                @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<ProductDTO>> getProductsBySellerId(@PathVariable("id") int sellerId,
+            @RequestParam("page") int page,
+            @RequestParam(defaultValue = "10") int size) {
         List<ProductDTO> products = productService.getProductsBySellerId(sellerId, page, size);
         return ResponseEntity.ok(products);
     }

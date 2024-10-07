@@ -3,14 +3,17 @@ package com.ute.auction.entity.impl;
 import java.io.Serializable;
 
 import jakarta.persistence.Embeddable;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Embeddable
-public class DepositId implements Serializable{
+public class DepositId implements Serializable {
 
-    private Long auctionId;
-    private Long buyerId;
-    
+    private Integer auctionId;
+    private Integer buyerId;
+
 }

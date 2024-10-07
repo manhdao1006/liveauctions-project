@@ -4,13 +4,19 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuctionDTO {
 
-    private Long id;
-    private String name;
+    private Integer auctionId;
+    private String auctionName;
     private LocalDate startDate;
     private LocalDate endDate;
     private BigDecimal buyerPremium;
@@ -22,5 +28,5 @@ public class AuctionDTO {
     private List<AuctionProductDTO> auctionProducts;
     private List<DepositDTO> deposits;
     private List<AuctionHistoryDTO> auctionHistories;
-    
+
 }

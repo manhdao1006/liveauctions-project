@@ -1,7 +1,5 @@
 package com.ute.auction.converter;
 
-import java.util.Base64;
-
 import org.springframework.stereotype.Component;
 
 import com.ute.auction.dto.AppraiserDTO;
@@ -11,9 +9,13 @@ import com.ute.auction.entity.AppraiserEntity;
 public class AppraiserConverter {
 
     public AppraiserDTO toDTO(AppraiserEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         AppraiserDTO appraiserDTO = new AppraiserDTO();
-        appraiserDTO.setId(entity.getId());
-        appraiserDTO.setName(entity.getName());
+        appraiserDTO.setAppraiserId(entity.getAppraiserId());
+        appraiserDTO.setAppraiserName(entity.getAppraiserName());
         appraiserDTO.setEmail(entity.getEmail());
         if (entity.getGender().contains("F")) {
             appraiserDTO.setGender("Female");
@@ -25,7 +27,7 @@ public class AppraiserConverter {
         appraiserDTO.setPhoneNumber(entity.getPhoneNumber());
         appraiserDTO.setAddress(entity.getAddress());
         appraiserDTO.setType(entity.getType());
-        appraiserDTO.setAvatar(entity.getAvatar() != null ? Base64.getEncoder().encodeToString(entity.getAvatar()) : null);
+        appraiserDTO.setAvatar(entity.getAvatar());
         appraiserDTO.setStatus(entity.getStatus());
         appraiserDTO.setDob(entity.getDob());
         appraiserDTO.setDescription(entity.getDescription());
@@ -35,9 +37,13 @@ public class AppraiserConverter {
     }
 
     public AppraiserEntity toEntity(AppraiserDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         AppraiserEntity appraiserEntity = new AppraiserEntity();
-        appraiserEntity.setId(dto.getId());
-        appraiserEntity.setName(dto.getName());
+        appraiserEntity.setAppraiserId(dto.getAppraiserId());
+        appraiserEntity.setAppraiserName(dto.getAppraiserName());
         appraiserEntity.setEmail(dto.getEmail());
         if (dto.getGender() == null || dto.getGender().toUpperCase().equals("Male".toUpperCase())) {
             appraiserEntity.setGender("M");
@@ -49,7 +55,7 @@ public class AppraiserConverter {
         appraiserEntity.setPhoneNumber(dto.getPhoneNumber());
         appraiserEntity.setAddress(dto.getAddress());
         appraiserEntity.setType(dto.getType() == null ? "Internal" : dto.getType());
-        appraiserEntity.setAvatar(dto.getAvatar() != null ? Base64.getDecoder().decode(dto.getAvatar()) : null);
+        appraiserEntity.setAvatar(dto.getAvatar());
         appraiserEntity.setStatus(dto.getStatus() == null ? "Active" : dto.getStatus());
         appraiserEntity.setDob(dto.getDob());
         appraiserEntity.setDescription(dto.getDescription());

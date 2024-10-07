@@ -1,9 +1,7 @@
 package com.ute.auction.converter;
 
-import java.util.Base64;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -17,22 +15,21 @@ import com.ute.auction.entity.UserEntity;
 @Component
 public class UserConverter {
 
-    private RoleConverter roleConverter;
-    private CityConverter cityConverter;
+    private final RoleConverter roleConverter;
+    private final CityConverter cityConverter;
 
-    @Autowired
-    public void setRoleConverter(@Lazy RoleConverter roleConverter) {
+    public UserConverter(@Lazy RoleConverter roleConverter, @Lazy CityConverter cityConverter) {
         this.roleConverter = roleConverter;
-    }
-
-    @Autowired
-    public void setCityConverter(@Lazy CityConverter cityConverter) {
         this.cityConverter = cityConverter;
     }
 
     public UserDTO toDTO(UserEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         UserDTO userDTO = new UserDTO();
-        userDTO.setId(entity.getId());
+        userDTO.setUserId(entity.getUserId());
         userDTO.setFirstName(entity.getFirstName());
         userDTO.setLastName(entity.getLastName());
         userDTO.setEmail(entity.getEmail());
@@ -41,7 +38,7 @@ public class UserConverter {
         userDTO.setAddress(entity.getAddress());
         userDTO.setStatus(entity.getStatus());
         userDTO.setDelFlag(entity.getDelFlag());
-        userDTO.setAvatar(entity.getAvatar() != null ? Base64.getEncoder().encodeToString(entity.getAvatar()) : null);
+        userDTO.setAvatar(entity.getAvatar() != null ? entity.getAvatar() : null);
         userDTO.setDob(entity.getDob());
         if (entity.getGender().isEmpty()) {
             userDTO.setGender("Male");
@@ -59,8 +56,12 @@ public class UserConverter {
     }
 
     public UserEntity toEntity(UserDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(dto.getId());
+        userEntity.setUserId(dto.getUserId());
         userEntity.setFirstName(dto.getFirstName());
         userEntity.setLastName(dto.getLastName());
         userEntity.setEmail(dto.getEmail());
@@ -69,7 +70,7 @@ public class UserConverter {
         userEntity.setAddress(dto.getAddress());
         userEntity.setStatus(dto.getStatus());
         userEntity.setDelFlag("1");
-        userEntity.setAvatar(dto.getAvatar() != null ? Base64.getDecoder().decode(dto.getAvatar()) : null);
+        userEntity.setAvatar(dto.getAvatar() != null ? dto.getAvatar() : null);
         userEntity.setDob(dto.getDob());
         if (dto.getGender() == null || dto.getGender().toUpperCase().equals("Male".toUpperCase())) {
             userEntity.setGender("M");
@@ -85,19 +86,31 @@ public class UserConverter {
     }
 
     private CityEntity toCityEntity(CityDTO cityDTO) {
+        if (cityDTO == null) {
+            return null;
+        }
         return cityConverter.toEntity(cityDTO);
     }
 
     private List<RoleEntity> toRolesEntity(List<RoleDTO> roleDTO) {
+        if (roleDTO == null) {
+            return null;
+        }
         return roleConverter.toEntities(roleDTO);
     }
 
     private CityDTO toCityDTO(CityEntity cityEntity) {
+        if (cityEntity == null) {
+            return null;
+        }
         return cityConverter.toDTO(cityEntity);
     }
 
     private List<RoleDTO> toRolesDTO(List<RoleEntity> roleEntity) {
+        if (roleEntity == null) {
+            return null;
+        }
         return roleConverter.toDTOs(roleEntity);
     }
-    
+
 }

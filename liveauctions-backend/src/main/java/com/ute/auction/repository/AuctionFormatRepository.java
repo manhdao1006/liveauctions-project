@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.ute.auction.entity.AuctionFormatEntity;
 
 @Repository
-public interface AuctionFormatRepository extends JpaRepository<AuctionFormatEntity, Long> {
+public interface AuctionFormatRepository extends JpaRepository<AuctionFormatEntity, Integer> {
 
 }

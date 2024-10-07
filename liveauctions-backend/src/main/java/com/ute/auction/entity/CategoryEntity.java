@@ -10,21 +10,26 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "category")
+@Table(name = "categories")
 public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "category_id")
+    private Integer categoryId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "category_name")
+    private String categoryName;
 
     @OneToMany(mappedBy = "category")
     private List<SubCategoryEntity> subCategories = new ArrayList<>();
-    
+
 }

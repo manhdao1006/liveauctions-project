@@ -3,12 +3,18 @@ package com.ute.auction.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SellerDTO {
 
-    private Long sellerId;
+    private Integer sellerId;
     private String taxCode;
     private LocalDate registrationDate;
     private String nameOnCard;
@@ -19,7 +25,7 @@ public class SellerDTO {
     private String billingAddress;
     private String delFlag;
     private UserDTO user;
-    private List<SellerTaxDTO> sellerTaxes;
+    private List<TaxDTO> taxes;
     private List<RegistrationProductDTO> registrationProducts;
     private List<ProductDTO> products;
 
