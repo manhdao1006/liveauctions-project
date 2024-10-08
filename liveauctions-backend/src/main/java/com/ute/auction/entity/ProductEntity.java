@@ -63,7 +63,7 @@ public class ProductEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id")
-    private WareHouseEntity wareHouse;
+    private WareHouseEntity warehouse;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appraiser_id")
@@ -75,7 +75,7 @@ public class ProductEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuctionProductEntity> auctionProducts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product")
     private List<AuctionHistoryEntity> auctionHistories = new ArrayList<>();
 
 }

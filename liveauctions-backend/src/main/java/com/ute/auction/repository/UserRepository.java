@@ -11,25 +11,18 @@ import com.ute.auction.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
-        @Query(value = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.del_flag, u.city_id, u.role_id, "
+        @Query(value = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.del_flag, u.city_id, "
                         +
                         "c.state_id " +
-                        "FROM [user] u " +
-                        "JOIN city c ON u.city_id = c.id " +
-                        "JOIN state st ON c.state_id = st.id " +
-                        "JOIN seller se ON u.id = se.seller_id " +
-                        "WHERE u.id like ?1", nativeQuery = true)
+                        "FROM users u " +
+                        "JOIN cities c ON u.city_id = c.city_id " +
+                        "JOIN states st ON c.state_id = st.state_id " +
+                        "JOIN sellers se ON u.user_id = se.seller_id " +
+                        "WHERE u.user_id like ?1", nativeQuery = true)
         UserEntity findByUserId(int userId);
 
-        @Query(value = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.del_flag, u.city_id, u.role_id, "
-                        +
-                        "c.state_id " +
-                        "FROM [user] u " +
-                        "JOIN city c ON u.city_id = c.id " +
-                        "JOIN state st ON c.state_id = st.id " +
-                        "JOIN seller se ON u.id = se.seller_id " +
-                        "WHERE u.email like ?1", nativeQuery = true)
-        UserEntity findUserByEmail(String email);
+        // @Query("SELECT u FROM UserEntity u JOIN u.seller s WHERE u.email = ?1")
+        // Optional<UserEntity> findByEmailOfSeller(String email);
 
         Optional<UserEntity> findByEmail(String email);
 

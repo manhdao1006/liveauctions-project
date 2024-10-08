@@ -12,7 +12,7 @@ public interface IUserService {
 
     UserDTO getUserByEmail(String email);
 
-    UserDTO updateProfile(int id, UserDTO updatedUser, MultipartFile avatar) throws IOException;
+    UserDTO updateProfile(int id, UserDTO userDTO, MultipartFile avatar) throws IOException;
 
     void forgotPassword(String email, String password);
 

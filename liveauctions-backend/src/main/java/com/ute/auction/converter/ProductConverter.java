@@ -58,7 +58,7 @@ public class ProductConverter {
         productDTO.setSeller(toSellerDTO(entity.getSeller()));
         productDTO.setSubCategory(toSubCategoryDTO(entity.getSubCategory()));
         productDTO.setAuctionFormat(toAuctionFormatDTO(entity.getAuctionFormat()));
-        productDTO.setWareHouse(toWareHouseDTO(entity.getWareHouse()));
+        productDTO.setWarehouse(toWarehouseDTO(entity.getWarehouse()));
         productDTO.setAppraiser(toAppraiserDTO(entity.getAppraiser()));
         productDTO.setImages(toImagesDTO(entity.getImages()));
 
@@ -82,7 +82,7 @@ public class ProductConverter {
         productEntity.setSeller(toSellerEntity(dto.getSeller()));
         productEntity.setSubCategory(toSubCategoryEntity(dto.getSubCategory()));
         productEntity.setAuctionFormat(toAuctionFormatEntity(dto.getAuctionFormat()));
-        productEntity.setWareHouse(toWareHouseEntity(dto.getWareHouse()));
+        productEntity.setWarehouse(toWarehouseEntity(dto.getWarehouse()));
         productEntity.setAppraiser(toAppraiserEntity(dto.getAppraiser()));
         productEntity.setImages(toImagesEntity(dto.getImages()));
 
@@ -110,7 +110,7 @@ public class ProductConverter {
         return appraiserConverter.toDTO(appraiserEntity);
     }
 
-    private WareHouseDTO toWareHouseDTO(WareHouseEntity wareHouseEntity) {
+    private WareHouseDTO toWarehouseDTO(WareHouseEntity wareHouseEntity) {
         if (wareHouseEntity == null) {
             return null;
         }
@@ -145,7 +145,7 @@ public class ProductConverter {
         return appraiserConverter.toEntity(appraiserDTO);
     }
 
-    private WareHouseEntity toWareHouseEntity(WareHouseDTO wareHouseDTO) {
+    private WareHouseEntity toWarehouseEntity(WareHouseDTO wareHouseDTO) {
         if (wareHouseDTO == null) {
             return null;
         }

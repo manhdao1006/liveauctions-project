@@ -13,14 +13,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ute.auction.converter.UserConverter;
 import com.ute.auction.dto.UserDTO;
+import com.ute.auction.entity.BuyerEntity;
 import com.ute.auction.entity.CityEntity;
 import com.ute.auction.entity.RoleEntity;
+import com.ute.auction.entity.SellerEntity;
+import com.ute.auction.entity.StaffEntity;
 import com.ute.auction.entity.UserEntity;
 import com.ute.auction.exception.ResourceExistedException;
 import com.ute.auction.exception.ResourceNotFormatException;
 import com.ute.auction.exception.ResourceNotFoundException;
+import com.ute.auction.repository.BuyerRepository;
 import com.ute.auction.repository.CityRepository;
 import com.ute.auction.repository.RoleRepository;
+import com.ute.auction.repository.SellerRepository;
+import com.ute.auction.repository.StaffRepository;
 import com.ute.auction.repository.UserRepository;
 import com.ute.auction.service.IUserService;
 
@@ -34,6 +40,9 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
     private final RoleRepository roleRepository;
+    private final BuyerRepository buyerRepository;
+    private final SellerRepository sellerRepository;
+    private final StaffRepository staffRepository;
     private final UserConverter userConverter;
     private final PasswordEncoder passwordEncoder;
 
@@ -66,10 +75,9 @@ public class UserService implements IUserService {
      */
     @Override
     public UserDTO getUserByEmail(String email) {
-        UserEntity userEntity = userRepository.findUserByEmail(email);
-        if (userEntity == null) {
-            throw new ResourceNotFoundException("User not found with email: " + email);
-        }
+        UserEntity userEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+
         UserDTO userDTO = userConverter.toDTO(userEntity);
         return userDTO;
     }
@@ -83,39 +91,34 @@ public class UserService implements IUserService {
      */
     @Override
     @Transactional
-    public UserDTO updateProfile(int id, UserDTO updatedUser, MultipartFile avatar) throws IOException {
-        UserEntity userEntity = userRepository.findByUserId(id);
-        if (userEntity == null) {
+    public UserDTO updateProfile(int id, UserDTO userDTO, MultipartFile avatar) throws IOException {
+        UserEntity oldUser = userRepository.findByUserId(id);
+        if (oldUser == null) {
             throw new ResourceNotFoundException("User with id " + id + " is not found");
         }
-        userEntity.setFirstName(updatedUser.getFirstName());
-        userEntity.setLastName(updatedUser.getLastName());
-        userEntity.setEmail(updatedUser.getEmail());
-        userEntity.setPassword(updatedUser.getPassword());
-        userEntity.setPhoneNumber(updatedUser.getPhoneNumber());
-        userEntity.setAddress(updatedUser.getAddress());
-        userEntity.setDob(updatedUser.getDob());
-        userEntity.setGender(updatedUser.getGender());
 
-        if (updatedUser.getCity() != null && updatedUser.getCity().getCityId() != null) {
-            CityEntity cityEntity = cityRepository.findById(updatedUser.getCity().getCityId())
+        if (userDTO.getCity() != null && userDTO.getCity().getCityId() != null) {
+            CityEntity cityEntity = cityRepository.findById(userDTO.getCity().getCityId())
                     .orElseThrow(() -> new ResourceNotFoundException(
-                            "City with id " + updatedUser.getCity().getCityId() + " is not found"));
-            userEntity.setCity(cityEntity);
+                            "City with id " + userDTO.getCity().getCityId() + " is not found"));
+            oldUser.setCity(cityEntity);
         }
 
         if (avatar != null && !avatar.isEmpty()) {
-            // delete old avatar
-            Path path = Paths.get(imagePath, updatedUser.getAvatar());
-            Files.deleteIfExists(path);
+            if (userDTO.getAvatar() != null && !userDTO.getAvatar().isEmpty()) {
+                // delete old avatar
+                System.out.println(userDTO.getAvatar());
+                Path path = Paths.get(imagePath, userDTO.getAvatar());
+                Files.deleteIfExists(path);
+            }
 
             validateImage(avatar);
             String fileName = saveImageToFolder(avatar);
-            updatedUser.setAvatar(fileName);
+            oldUser.setAvatar(fileName);
         }
 
-        UserEntity userUpdated = userRepository.save(userEntity);
-        return userConverter.toDTO(userUpdated);
+        UserEntity updatedUser = userConverter.toEntity(userDTO, oldUser);
+        return userConverter.toDTO(userRepository.save(updatedUser));
     }
 
     /*
@@ -126,11 +129,10 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public void forgotPassword(String email, String password) {
-        UserEntity userEntity = userRepository.findUserByEmail(email);
-        if (userEntity == null) {
-            throw new ResourceNotFoundException("User not found with email: " + email);
-        }
-        userEntity.setPassword(password);
+        UserEntity userEntity = (userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email)));
+
+        userEntity.setPassword(passwordEncoder.encode(password));
         userRepository.save(userEntity);
     }
 
@@ -153,10 +155,16 @@ public class UserService implements IUserService {
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         RoleEntity roles = roleRepository.findByRoleName("ROLE_BUYER")
-                .orElseThrow(() -> new RuntimeException("Role not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
         userEntity.setRoles(Collections.singletonList(roles));
 
-        return userConverter.toDTO(userRepository.save(userEntity));
+        UserEntity savedUserEntity = userRepository.save(userEntity);
+
+        BuyerEntity buyerEntity = new BuyerEntity();
+        buyerEntity.setUser(savedUserEntity);
+        buyerRepository.save(buyerEntity);
+
+        return userConverter.toDTO(savedUserEntity);
     }
 
     /*
@@ -177,10 +185,16 @@ public class UserService implements IUserService {
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         RoleEntity roles = roleRepository.findByRoleName("ROLE_SELLER")
-                .orElseThrow(() -> new RuntimeException("Role not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
         userEntity.setRoles(Collections.singletonList(roles));
 
-        return userConverter.toDTO(userRepository.save(userEntity));
+        UserEntity savedUserEntity = userRepository.save(userEntity);
+
+        SellerEntity sellerEntity = new SellerEntity();
+        sellerEntity.setUser(savedUserEntity);
+        sellerRepository.save(sellerEntity);
+
+        return userConverter.toDTO(savedUserEntity);
     }
 
     /*
@@ -201,10 +215,16 @@ public class UserService implements IUserService {
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         RoleEntity roles = roleRepository.findByRoleName("ROLE_STAFF")
-                .orElseThrow(() -> new RuntimeException("Role not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
         userEntity.setRoles(Collections.singletonList(roles));
 
-        return userConverter.toDTO(userRepository.save(userEntity));
+        UserEntity savedUserEntity = userRepository.save(userEntity);
+
+        StaffEntity staffEntity = new StaffEntity();
+        staffEntity.setUser(savedUserEntity);
+        staffRepository.save(staffEntity);
+
+        return userConverter.toDTO(savedUserEntity);
     }
 
     /*
@@ -225,10 +245,16 @@ public class UserService implements IUserService {
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         RoleEntity roles = roleRepository.findByRoleName("ROLE_ADMIN")
-                .orElseThrow(() -> new RuntimeException("Role not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
         userEntity.setRoles(Collections.singletonList(roles));
 
-        return userConverter.toDTO(userRepository.save(userEntity));
+        UserEntity savedUserEntity = userRepository.save(userEntity);
+
+        StaffEntity staffEntity = new StaffEntity();
+        staffEntity.setUser(savedUserEntity);
+        staffRepository.save(staffEntity);
+
+        return userConverter.toDTO(savedUserEntity);
     }
 
     // save image to folder

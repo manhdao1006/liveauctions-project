@@ -64,10 +64,10 @@ public class AuctionEntity {
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuctionProductEntity> auctionProducts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "auction")
     private List<DepositEntity> deposits = new ArrayList<>();
 
-    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "auction")
     private List<AuctionHistoryEntity> auctionHistories = new ArrayList<>();
 
 }

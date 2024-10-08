@@ -3,7 +3,6 @@ package com.ute.auction.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +29,7 @@ public class StateEntity {
     @Column(name = "state_name")
     private String stateName;
 
-    @OneToMany(mappedBy = "state", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "state")
     private List<CityEntity> cities = new ArrayList<>();
 
 }

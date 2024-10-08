@@ -50,7 +50,6 @@ public class UserController {
             @RequestParam(value = "firstName", required = false) String firstName,
             @RequestParam(value = "lastName", required = false) String lastName,
             @Valid @RequestParam(value = "email", required = false) String email,
-            @RequestParam(value = "password", required = false) String password,
             @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
             @RequestParam(value = "address", required = false) String address,
             @RequestParam(value = "dob", required = false) LocalDate dob,
@@ -62,7 +61,6 @@ public class UserController {
         userDTO.setFirstName(firstName);
         userDTO.setLastName(lastName);
         userDTO.setEmail(email);
-        userDTO.setPassword(password);
         userDTO.setPhoneNumber(phoneNumber);
         userDTO.setAddress(address);
         userDTO.setDob(dob);
@@ -80,13 +78,6 @@ public class UserController {
         } catch (DataIntegrityViolationException | ConstraintViolationException ex) {
             throw new ResourceExistedException("Email already exists!");
         }
-    }
-
-    // Build API forgot password
-    @PutMapping("forgot-password/{email}")
-    public ResponseEntity<String> forgotPassword(@PathVariable("email") String email, @RequestParam String password) {
-        userService.forgotPassword(email, password);
-        return ResponseEntity.ok("Password changed successfully!");
     }
 
 }

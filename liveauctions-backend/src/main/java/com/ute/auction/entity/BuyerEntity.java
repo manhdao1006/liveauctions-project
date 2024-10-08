@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -57,10 +56,10 @@ public class BuyerEntity {
     @JoinColumn(name = "buyer_id", referencedColumnName = "user_id")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "buyer")
     private List<DepositEntity> deposits = new ArrayList<>();
 
-    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "buyer")
     private List<AuctionHistoryEntity> auctionHistories = new ArrayList<>();
 
 }

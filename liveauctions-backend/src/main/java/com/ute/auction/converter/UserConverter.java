@@ -65,10 +65,9 @@ public class UserConverter {
         userEntity.setFirstName(dto.getFirstName());
         userEntity.setLastName(dto.getLastName());
         userEntity.setEmail(dto.getEmail());
-        userEntity.setPassword(dto.getPassword());
         userEntity.setPhoneNumber(dto.getPhoneNumber());
         userEntity.setAddress(dto.getAddress());
-        userEntity.setStatus(dto.getStatus());
+        userEntity.setStatus("Active");
         userEntity.setDelFlag("1");
         userEntity.setAvatar(dto.getAvatar() != null ? dto.getAvatar() : null);
         userEntity.setDob(dto.getDob());
@@ -83,6 +82,30 @@ public class UserConverter {
         userEntity.setCity(dto.getCity() != null ? toCityEntity(dto.getCity()) : null);
 
         return userEntity;
+    }
+
+    public UserEntity toEntity(UserDTO dto, UserEntity updatedUser) {
+        if (dto == null) {
+            return null;
+        }
+
+        updatedUser.setFirstName(dto.getFirstName() != null ? dto.getFirstName() : updatedUser.getFirstName());
+        updatedUser.setLastName(dto.getLastName() != null ? dto.getLastName() : updatedUser.getLastName());
+        updatedUser.setEmail(dto.getEmail() != null ? dto.getEmail() : updatedUser.getEmail());
+        updatedUser.setPhoneNumber(dto.getPhoneNumber() != null ? dto.getPhoneNumber() : updatedUser.getPhoneNumber());
+        updatedUser.setAddress(dto.getAddress() != null ? dto.getAddress() : updatedUser.getAddress());
+        updatedUser.setDob(dto.getDob() != null ? dto.getDob() : updatedUser.getDob());
+        if (dto.getGender() == null) {
+            updatedUser.setGender(updatedUser.getGender());
+        } else if (dto.getGender().toUpperCase().equals("Male".toUpperCase())) {
+            updatedUser.setGender("M");
+        } else if (dto.getGender().toUpperCase().equals("Female".toUpperCase())) {
+            updatedUser.setGender("F");
+        } else if (dto.getGender().toUpperCase().equals("Other".toUpperCase())) {
+            updatedUser.setGender("L");
+        }
+
+        return updatedUser;
     }
 
     private CityEntity toCityEntity(CityDTO cityDTO) {

@@ -25,7 +25,7 @@ public class ProductDTO {
     private SellerDTO seller;
     private SubCategoryDTO subCategory;
     private AuctionFormatDTO auctionFormat;
-    private WareHouseDTO wareHouse;
+    private WareHouseDTO warehouse;
     private AppraiserDTO appraiser;
     private List<ImageDTO> images;
     private List<AuctionProductDTO> auctionProducts;

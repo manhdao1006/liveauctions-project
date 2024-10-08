@@ -3,7 +3,6 @@ package com.ute.auction.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -38,7 +37,7 @@ public class StaffEntity {
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "staff")
     private List<AuctionEntity> auctions = new ArrayList<>();
 
 }

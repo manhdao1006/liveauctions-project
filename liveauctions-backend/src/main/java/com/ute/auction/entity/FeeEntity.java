@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +36,7 @@ public class FeeEntity {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @OneToMany(mappedBy = "fee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "fee")
     private List<AuctionHistoryEntity> auctionHistories = new ArrayList<>();
 
 }

@@ -6,9 +6,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ute.auction.dto.AuthResponseDTO;
@@ -26,6 +29,13 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final IUserService userService;
     private final JWTGenerator jwtGenerator;
+
+    // Build API forgot password
+    @PutMapping("forgot-password/{email}")
+    public ResponseEntity<String> forgotPassword(@PathVariable("email") String email, @RequestParam String password) {
+        userService.forgotPassword(email, password);
+        return ResponseEntity.ok("Password changed successfully!");
+    }
 
     // Build API register for BUYER
     @PostMapping("/register")
@@ -58,11 +68,12 @@ public class AuthController {
     // Build API login
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody UserDTO userDTO) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
 
         return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
     }
-    
+
 }

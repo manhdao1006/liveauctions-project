@@ -1,4 +1,4 @@
-package com.ute.auction.controller.admin;
+package com.ute.auction.controller.api.v1.admin;
 
 import java.io.IOException;
 import java.time.LocalDate;
