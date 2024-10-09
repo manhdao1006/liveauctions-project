@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ute.auction.constant.RoleAPI;
+import com.ute.auction.constant.ApiName;
+import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.AppraiserDTO;
 import com.ute.auction.exception.ResourceExistedException;
 import com.ute.auction.service.IAppraiserService;
@@ -26,8 +27,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController
-@RequestMapping(RoleAPI.API_ADMIN + "/appraiser")
+@RestController(value = "appraiser" + ApiName.CRUD_ADMIN)
+@RequestMapping(ApiUrl.API_ADMIN + "/appraiser")
 public class AppraiserController {
 
     private final IAppraiserService appraiserService;

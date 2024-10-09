@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ute.auction.constant.RoleAPI;
+import com.ute.auction.constant.ApiName;
+import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.CityDTO;
 import com.ute.auction.dto.UserDTO;
 import com.ute.auction.exception.ResourceExistedException;
@@ -23,8 +24,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController
-@RequestMapping(RoleAPI.API_SELLER)
+@RestController(value = "user" + ApiName.CRUD_WEB)
+@RequestMapping(ApiUrl.API_SELLER)
 public class UserController {
 
     private final IUserService userService;

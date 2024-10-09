@@ -9,15 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ute.auction.constant.RoleAPI;
+import com.ute.auction.constant.ApiName;
+import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.AuctionHistoryDTO;
 import com.ute.auction.service.IAuctionHistoryService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController
-@RequestMapping(RoleAPI.API_SELLER)
+@RestController(value = "auctionHistory" + ApiName.SEARCH_WEB)
+@RequestMapping(ApiUrl.API_SELLER)
 public class AuctionHistoryController {
 
     private final IAuctionHistoryService auctionHistoryService;

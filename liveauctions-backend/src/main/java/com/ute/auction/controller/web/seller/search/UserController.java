@@ -6,15 +6,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ute.auction.constant.RoleAPI;
+import com.ute.auction.constant.ApiName;
+import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.UserDTO;
 import com.ute.auction.service.IUserService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController
-@RequestMapping(RoleAPI.API_SELLER)
+@RestController(value = "user" + ApiName.SEARCH_WEB)
+@RequestMapping(ApiUrl.API_SELLER)
 public class UserController {
 
     private final IUserService userService;

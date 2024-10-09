@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -278,6 +279,13 @@ public class UserService implements IUserService {
         if (!contentType.startsWith("image/")) {
             throw new ResourceNotFormatException("Uploaded file is not an image");
         }
+    }
+
+    @Override
+    public List<UserDTO> getAllUsersByRole(int roleId) {
+        List<UserEntity> entities = userRepository.findUsersByRole(roleId);
+
+        return entities.stream().map(userConverter::toDTO).toList();
     }
 
 }

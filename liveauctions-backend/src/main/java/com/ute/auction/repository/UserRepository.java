@@ -1,5 +1,6 @@
 package com.ute.auction.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,8 +22,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
                         "WHERE u.user_id like ?1", nativeQuery = true)
         UserEntity findByUserId(int userId);
 
-        // @Query("SELECT u FROM UserEntity u JOIN u.seller s WHERE u.email = ?1")
-        // Optional<UserEntity> findByEmailOfSeller(String email);
+        @Query("SELECT u FROM UserEntity u JOIN u.roles r WHERE r.roleId = ?1")
+        List<UserEntity> findUsersByRole(int roleId);
 
         Optional<UserEntity> findByEmail(String email);
 

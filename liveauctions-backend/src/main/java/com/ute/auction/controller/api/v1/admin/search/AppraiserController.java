@@ -9,15 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ute.auction.constant.RoleAPI;
+import com.ute.auction.constant.ApiName;
+import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.AppraiserDTO;
 import com.ute.auction.service.IAppraiserService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController
-@RequestMapping(RoleAPI.API_ADMIN + "/appraiser")
+@RestController(value = "appraiser" + ApiName.SEARCH_ADMIN)
+@RequestMapping(ApiUrl.API_ADMIN + "/appraiser")
 public class AppraiserController {
 
     private final IAppraiserService appraiserService;

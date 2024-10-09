@@ -1,6 +1,7 @@
 package com.ute.auction.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,5 +24,7 @@ public interface IUserService {
     UserDTO registerStaff(UserDTO userDTO);
 
     UserDTO registerAdmin(UserDTO userDTO);
+
+    List<UserDTO> getAllUsersByRole(int roleId);
 
 }

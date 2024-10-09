@@ -9,15 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ute.auction.constant.RoleAPI;
+import com.ute.auction.constant.ApiName;
+import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.ProductDTO;
 import com.ute.auction.service.IProductService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController
-@RequestMapping(RoleAPI.API_SELLER)
+@RestController(value = "product" + ApiName.SEARCH_WEB)
+@RequestMapping(ApiUrl.API_SELLER)
 public class ProductController {
 
     private final IProductService productService;

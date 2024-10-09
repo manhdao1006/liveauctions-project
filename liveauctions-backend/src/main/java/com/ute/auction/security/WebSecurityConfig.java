@@ -31,8 +31,8 @@ public class WebSecurityConfig {
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/admin/appraiser/**").hasRole("ADMIN")
-                        .requestMatchers("/api/staff/**").hasAnyRole("STAFF", "ADMIN")
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/staff/**").hasAnyRole("STAFF", "ADMIN")
                         .requestMatchers("/seller/**").hasAnyRole("SELLER", "ADMIN")
                         .requestMatchers("/buyer/**").hasAnyRole("BUYER", "ADMIN")
                         .anyRequest().authenticated());
