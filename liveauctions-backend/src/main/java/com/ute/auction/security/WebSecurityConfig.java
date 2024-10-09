@@ -32,8 +32,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/appraiser/**").hasRole("ADMIN")
-                        .requestMatchers("/api/seller/**").hasAnyRole("SELLER", "ADMIN")
                         .requestMatchers("/api/staff/**").hasAnyRole("STAFF", "ADMIN")
+                        .requestMatchers("/seller/**").hasAnyRole("SELLER", "ADMIN")
+                        .requestMatchers("/buyer/**").hasAnyRole("BUYER", "ADMIN")
                         .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
