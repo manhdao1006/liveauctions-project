@@ -70,6 +70,7 @@ public class AuthController {
     public ResponseEntity<AuthResponseDTO> login(@RequestBody UserDTO userDTO) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
+        // sau khi đăng nhập thành công thì sẽ lưu vào để đánh dấu là đã đăng nhập
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
 

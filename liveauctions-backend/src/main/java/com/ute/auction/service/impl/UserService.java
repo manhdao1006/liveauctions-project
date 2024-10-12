@@ -51,39 +51,6 @@ public class UserService implements IUserService {
     private String imagePath;
 
     /*
-     * get seller by id
-     * 
-     * @param id
-     * 
-     * @return seller
-     */
-    @Override
-    public UserDTO getUserById(int id) {
-        UserEntity userEntity = userRepository.findByUserId(id);
-        if (userEntity == null) {
-            throw new ResourceNotFoundException("User not found with id: " + id);
-        }
-        UserDTO userDTO = userConverter.toDTO(userEntity);
-        return userDTO;
-    }
-
-    /*
-     * get seller by email
-     * 
-     * @param email
-     * 
-     * @return seller
-     */
-    @Override
-    public UserDTO getUserByEmail(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
-
-        UserDTO userDTO = userConverter.toDTO(userEntity);
-        return userDTO;
-    }
-
-    /*
      * edit profile of seller by id
      * 
      * @param id, updatedUser

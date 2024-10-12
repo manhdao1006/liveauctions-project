@@ -12,14 +12,13 @@ import com.ute.auction.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
-        @Query(value = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, u.phone_number, u.address, u.status, u.avatar, u.dob, u.gender, u.del_flag, u.city_id, "
-                        +
-                        "c.state_id " +
-                        "FROM users u " +
-                        "JOIN cities c ON u.city_id = c.city_id " +
-                        "JOIN states st ON c.state_id = st.state_id " +
-                        "JOIN sellers se ON u.user_id = se.seller_id " +
-                        "WHERE u.user_id like ?1", nativeQuery = true)
+        @Query("SELECT u FROM UserEntity u " +
+                        "JOIN u.city c " +
+                        "JOIN c.state st " +
+                        "LEFT JOIN u.staff staff " +
+                        "LEFT JOIN u.seller seller " +
+                        "LEFT JOIN u.buyer buyer " +
+                        "WHERE u.userId = ?1")
         UserEntity findByUserId(int userId);
 
         @Query("SELECT u FROM UserEntity u JOIN u.roles r WHERE r.roleId = ?1")
