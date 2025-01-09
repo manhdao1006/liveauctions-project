@@ -1,7 +1,5 @@
 package com.ute.auction.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StateDTO {
+public class SanPhamDauGiaDTO {
 
-    private Integer stateId;
-    private String stateName;
-    private List<CityDTO> cities;
+    private PhienDauGiaDTO phienDauGia;
+    private SanPhamDTO sanPham;
+    private Long soLuongThamGia;
+    private String trangThai;
 
 }

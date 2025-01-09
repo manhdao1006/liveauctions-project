@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CityDTO {
+public class PhuongXaDTO {
 
-    private Integer cityId;
-    private String cityName;
-    private StateDTO state;
-    private List<WareHouseDTO> wareHouses;
-    private List<UserDTO> users;
+    private Long maPhuongXa;
+    private String tenPhuongXa;
+    private QuanHuyenDTO quanHuyen;
+    private List<NhaKhoDTO> nhaKhos;
+    private List<NguoiDungDTO> nguoiDungs;
 
 }

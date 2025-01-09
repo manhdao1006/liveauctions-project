@@ -1,6 +1,6 @@
 package com.ute.auction.dto;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDTO {
+public class PhieuDatCocDTO {
 
-    private Integer categoryId;
-    private String categoryName;
-    private List<SubCategoryDTO> subCategories;
+    private PhienDauGiaDTO phienDauGia;
+    private NguoiMuaDTO nguoiMua;
+    private BigDecimal phanTramDatCoc;
 
 }

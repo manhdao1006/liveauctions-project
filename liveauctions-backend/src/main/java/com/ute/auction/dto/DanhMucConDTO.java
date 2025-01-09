@@ -1,6 +1,5 @@
 package com.ute.auction.dto;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -12,12 +11,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaxDTO {
+public class DanhMucConDTO {
 
-    private Integer taxId;
-    private String taxName;
-    private BigDecimal cost;
-    private String description;
-    private List<SellerDTO> sellers;
+    private Long maDanhMucCon;
+    private String tenDanhMucCon;
+    private DanhMucDTO danhMuc;
+    private List<SanPhamDangKyDTO> sanPhamDangKys;
+    private List<SanPhamDTO> sanPhams;
 
 }

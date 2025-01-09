@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDTO {
+public class QuanHuyenDTO {
 
-    private Integer roleId;
-    private String roleName;
-    private List<UserDTO> users;
+    private Long maQuanHuyen;
+    private String tenQuanHuyen;
+    private List<PhuongXaDTO> phuongXas;
 
 }

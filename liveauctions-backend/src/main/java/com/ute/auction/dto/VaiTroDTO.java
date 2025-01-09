@@ -1,5 +1,7 @@
 package com.ute.auction.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImageDTO {
+public class VaiTroDTO {
 
-    private Integer imageId;
-    private String imageName;
-    private ProductDTO product;
+    private Long maVaiTro;
+    private String tenVaiTro;
+    private List<NguoiDungDTO> nguoiDungs;
 
 }

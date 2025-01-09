@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuctionProductDTO {
+public class AnhSanPhamDTO {
 
-    private AuctionDTO auction;
-    private ProductDTO product;
-    private Integer slot;
-    private String status;
+    private Long maAnhSanPham;
+    private String tenAnh;
+    private SanPhamDTO sanPham;
 
 }

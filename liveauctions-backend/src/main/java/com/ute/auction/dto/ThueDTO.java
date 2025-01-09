@@ -1,6 +1,7 @@
 package com.ute.auction.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +12,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepositDTO {
+public class ThueDTO {
 
-    private AuctionDTO auction;
-    private BuyerDTO buyer;
-    private BigDecimal depositPercentage;
+    private Long maThue;
+    private String tenThue;
+    private BigDecimal giaThue;
+    private String moTa;
+    private List<NguoiBanDTO> nguoiBans;
 
 }

@@ -1,5 +1,6 @@
 package com.ute.auction.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -11,12 +12,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StaffDTO {
+public class ChiPhiDTO {
 
-    private Integer staffId;
-    private String position;
-    private String delFlag;
-    private UserDTO user;
-    private List<AuctionDTO> auctions;
+    private Long maChiPhi;
+    private String tenChiPhi;
+    private BigDecimal giaChiPhi;
+    private String moTa;
+    private List<LichSuDauGiaDTO> lichSuDauGias;
 
 }
