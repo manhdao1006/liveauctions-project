@@ -9,7 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,24 +19,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "taxes")
-public class TaxEntity {
+@Table(name = "chi_phi")
+public class ChiPhiEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tax_id")
-    private Integer taxId;
+    @Column(name = "maChiPhi")
+    private Long maChiPhi;
 
-    @Column(name = "tax_name")
-    private String taxName;
+    @Column(name = "tenChiPhi")
+    private String tenChiPhi;
 
-    @Column(name = "cost")
-    private BigDecimal cost;
+    @Column(name = "giaChiPhi")
+    private BigDecimal giaChiPhi;
 
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
+    @Column(name = "moTa", columnDefinition = "TEXT")
+    private String moTa;
 
-    @ManyToMany(mappedBy = "taxes")
-    private List<SellerEntity> sellers = new ArrayList<>();
+    @OneToMany(mappedBy = "chiPhi")
+    private List<LichSuDauGiaEntity> lichSuDauGias = new ArrayList<>();
 
 }

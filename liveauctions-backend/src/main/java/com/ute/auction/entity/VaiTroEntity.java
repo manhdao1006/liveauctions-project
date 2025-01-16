@@ -1,6 +1,5 @@
 package com.ute.auction.entity;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,24 +18,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "fees")
-public class FeeEntity {
+@Table(name = "vai_tro")
+public class VaiTroEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "fee_id")
-    private Integer feeId;
+    @Column(name = "maVaiTro")
+    private Long maVaiTro;
 
-    @Column(name = "fee_name")
-    private String feeName;
+    @Column(name = "tenVaiTro")
+    private String tenVaiTro;
 
-    @Column(name = "cost")
-    private BigDecimal cost;
-
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
-
-    @OneToMany(mappedBy = "fee")
-    private List<AuctionHistoryEntity> auctionHistories = new ArrayList<>();
+    @ManyToMany(mappedBy = "vaiTros")
+    private List<NguoiDungEntity> nguoiDungs = new ArrayList<>();
 
 }

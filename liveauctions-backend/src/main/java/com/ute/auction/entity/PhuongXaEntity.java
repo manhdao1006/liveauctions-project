@@ -21,25 +21,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "sub_categories")
-public class SubCategoryEntity {
+@Table(name = "phuong_xa")
+public class PhuongXaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sub_category_id")
-    private Integer subCategoryId;
+    @Column(name = "maPhuongXa")
+    private Long maPhuongXa;
 
-    @Column(name = "sub_category_name")
-    private String subCategoryName;
+    @Column(name = "tenPhuongXa")
+    private String tenPhuongXa;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private CategoryEntity category;
+    @JoinColumn(name = "maQuanHuyen")
+    private QuanHuyenEntity quanHuyen;
 
-    @OneToMany(mappedBy = "subCategory")
-    private List<RegistrationProductEntity> registrationProducts = new ArrayList<>();
+    @OneToMany(mappedBy = "phuongXa")
+    private List<NhaKhoEntity> nhaKhos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "subCategory")
-    private List<ProductEntity> products = new ArrayList<>();
+    @OneToMany(mappedBy = "phuongXa")
+    private List<NguoiDungEntity> nguoiDungs = new ArrayList<>();
 
 }

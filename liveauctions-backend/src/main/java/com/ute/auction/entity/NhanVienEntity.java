@@ -19,25 +19,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "staffs")
-public class StaffEntity {
+@Table(name = "nhan_vien")
+public class NhanVienEntity {
 
     @Id
-    @Column(name = "staff_id")
-    private Integer staffId;
+    @Column(name = "maNhanVien")
+    private Long maNhanVien;
 
-    @Column(name = "position")
-    private String position;
+    @Column(name = "viTri")
+    private String viTri;
 
-    @Column(name = "del_flag", nullable = false)
-    private String delFlag = "1";
+    @Column(name = "trangThaiXoa", nullable = false)
+    private String trangThaiXoa = "1";
 
     @MapsId
     @OneToOne
-    @JoinColumn(name = "staff_id", referencedColumnName = "id")
-    private UserEntity user;
+    @JoinColumn(name = "maNhanVien", referencedColumnName = "id")
+    private NguoiDungEntity nguoiDung;
 
-    @OneToMany(mappedBy = "staff")
-    private List<AuctionEntity> auctions = new ArrayList<>();
+    @OneToMany(mappedBy = "nhanVien")
+    private List<PhienDauGiaEntity> phienDauGias = new ArrayList<>();
 
 }

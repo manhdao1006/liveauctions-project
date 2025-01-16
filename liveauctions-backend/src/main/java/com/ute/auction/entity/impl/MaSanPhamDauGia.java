@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class AuctionProductId implements Serializable {
+public class MaSanPhamDauGia implements Serializable {
 
-    private Integer auctionId;
-    private String productId;
+    private Long maPhienDauGia;
+    private String maSanPham;
 
 }

@@ -18,8 +18,7 @@ public class NhaKhoDTO {
     private String hoTenQuanLy;
     private String diaChi;
     private String trangThaiHoatDong;
-    private String soLuongHienTai;
-    private String soLuongToiDa;
+    private String trangThaiConTrong;
     private String ngayHoatDong;
     private String trangThaiXoa;
     private PhuongXaDTO phuongXa;

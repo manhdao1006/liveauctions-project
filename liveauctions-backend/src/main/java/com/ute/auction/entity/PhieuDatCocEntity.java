@@ -2,7 +2,7 @@ package com.ute.auction.entity;
 
 import java.math.BigDecimal;
 
-import com.ute.auction.entity.impl.DepositId;
+import com.ute.auction.entity.impl.MaPhieuDatCoc;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -19,23 +19,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "deposits")
-public class DepositEntity {
+@Table(name = "phieu_dat_coc")
+public class PhieuDatCocEntity {
 
     @EmbeddedId
-    private DepositId id;
+    private MaPhieuDatCoc maPhieuDatCoc;
 
     @ManyToOne
-    @MapsId("auctionId")
-    @JoinColumn(name = "auction_id")
-    private AuctionEntity auction;
+    @MapsId("maPhienDauGia")
+    @JoinColumn(name = "maPhienDauGia")
+    private PhienDauGiaEntity phienDauGia;
 
     @ManyToOne
-    @MapsId("buyerId")
-    @JoinColumn(name = "buyer_id")
-    private BuyerEntity buyer;
+    @MapsId("maNguoiMua")
+    @JoinColumn(name = "maNguoiMua")
+    private NguoiMuaEntity nguoiMua;
 
-    @Column(name = "deposit_percentage")
-    private BigDecimal depositPercentage;
+    @Column(name = "phanTramDatCoc")
+    private BigDecimal phanTramDatCoc;
 
 }

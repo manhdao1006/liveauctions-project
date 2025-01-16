@@ -21,25 +21,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "cities")
-public class CityEntity {
+@Table(name = "danh_muc_con")
+public class DanhMucConEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "city_id")
-    private Integer cityId;
+    @Column(name = "maDanhMucCon")
+    private Long maDanhMucCon;
 
-    @Column(name = "city_name")
-    private String cityName;
+    @Column(name = "tenDanhMucCon")
+    private String tenDanhMucCon;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "state_id")
-    private StateEntity state;
+    @JoinColumn(name = "maDanhMuc")
+    private DanhMucEntity danhMuc;
 
-    @OneToMany(mappedBy = "city")
-    private List<WareHouseEntity> wareHouses = new ArrayList<>();
+    @OneToMany(mappedBy = "danhMucCon")
+    private List<SanPhamDangKyEntity> sanPhamDangKys = new ArrayList<>();
 
-    @OneToMany(mappedBy = "city")
-    private List<UserEntity> users = new ArrayList<>();
+    @OneToMany(mappedBy = "danhMucCon")
+    private List<SanPhamEntity> sanPhams = new ArrayList<>();
 
 }

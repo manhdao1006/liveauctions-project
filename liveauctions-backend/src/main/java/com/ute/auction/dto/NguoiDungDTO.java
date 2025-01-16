@@ -25,7 +25,7 @@ public class NguoiDungDTO {
     private LocalDate ngaySinh;
     private String gioiTinh;
     private String trangThaiXoa;
-    private List<VaiTroDTO> vaitros;
+    private List<VaiTroDTO> vaiTros;
     private PhuongXaDTO phuongXa;
     private NguoiMuaDTO nguoiMua;
     private NguoiBanDTO nguoiBan;

@@ -18,18 +18,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "categories")
-public class CategoryEntity {
+@Table(name = "quan_huyen")
+public class QuanHuyenEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    private Integer categoryId;
+    @Column(name = "maQuanHuyen")
+    private Long maQuanHuyen;
 
-    @Column(name = "category_name")
-    private String categoryName;
+    @Column(name = "tenQuanHuyen")
+    private String tenQuanHuyen;
 
-    @OneToMany(mappedBy = "category")
-    private List<SubCategoryEntity> subCategories = new ArrayList<>();
+    @OneToMany(mappedBy = "quanHuyen")
+    private List<PhuongXaEntity> phuongXas = new ArrayList<>();
 
 }
