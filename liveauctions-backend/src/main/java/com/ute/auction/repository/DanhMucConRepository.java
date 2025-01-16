@@ -3,9 +3,9 @@ package com.ute.auction.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ute.auction.entity.SubCategoryEntity;
+import com.ute.auction.entity.DanhMucConEntity;
 
 @Repository
-public interface SubCategoryRepository extends JpaRepository<SubCategoryEntity, Integer> {
+public interface DanhMucConRepository extends JpaRepository<DanhMucConEntity, Long> {
 
 }

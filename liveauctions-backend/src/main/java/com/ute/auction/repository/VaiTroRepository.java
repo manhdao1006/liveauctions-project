@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ute.auction.entity.RoleEntity;
+import com.ute.auction.entity.VaiTroEntity;
 
 @Repository
-public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
+public interface VaiTroRepository extends JpaRepository<VaiTroEntity, Long> {
 
-    Optional<RoleEntity> findByRoleName(String name);
+    Optional<VaiTroEntity> findByTenVaiTro(String name);
 
 }
