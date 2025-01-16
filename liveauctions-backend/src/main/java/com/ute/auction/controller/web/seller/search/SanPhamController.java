@@ -11,42 +11,42 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
-import com.ute.auction.dto.ProductDTO;
-import com.ute.auction.service.IProductService;
+import com.ute.auction.dto.SanPhamDTO;
+import com.ute.auction.service.ISanPhamService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController(value = "product" + ApiName.SEARCH_WEB)
 @RequestMapping(ApiUrl.API_SELLER)
-public class ProductController {
+public class SanPhamController {
 
-    private final IProductService productService;
+    private final ISanPhamService productService;
 
     // Build API sorted asc starting price
     @GetMapping("/products/{id}/sorted-price-asc")
-    public ResponseEntity<List<ProductDTO>> sortedAscByStartingPrice(@PathVariable("id") int sellerId,
+    public ResponseEntity<List<SanPhamDTO>> sortedAscByStartingPrice(@PathVariable("id") int sellerId,
             @RequestParam("page") int page,
             @RequestParam(defaultValue = "10") int size) {
-        List<ProductDTO> models = productService.sortedAscByStartingPrice(sellerId, page, size);
+        List<SanPhamDTO> models = productService.sortedAscByStartingPrice(sellerId, page, size);
         return ResponseEntity.ok(models);
     }
 
     // Build API sorted desc starting price
     @GetMapping("/products/{id}/sorted-price-desc")
-    public ResponseEntity<List<ProductDTO>> sortedDescByStartingPrice(@PathVariable("id") int sellerId,
+    public ResponseEntity<List<SanPhamDTO>> sortedDescByStartingPrice(@PathVariable("id") int sellerId,
             @RequestParam("page") int page,
             @RequestParam(defaultValue = "10") int size) {
-        List<ProductDTO> models = productService.sortedDescByStartingPrice(sellerId, page, size);
+        List<SanPhamDTO> models = productService.sortedDescByStartingPrice(sellerId, page, size);
         return ResponseEntity.ok(models);
     }
 
     // Build API get products by seller id
     @GetMapping("/products/{id}")
-    public ResponseEntity<List<ProductDTO>> getProductsBySellerId(@PathVariable("id") int sellerId,
+    public ResponseEntity<List<SanPhamDTO>> getProductsBySellerId(@PathVariable("id") int sellerId,
             @RequestParam("page") int page,
             @RequestParam(defaultValue = "10") int size) {
-        List<ProductDTO> products = productService.getProductsBySellerId(sellerId, page, size);
+        List<SanPhamDTO> products = productService.getProductsBySellerId(sellerId, page, size);
         return ResponseEntity.ok(products);
     }
 

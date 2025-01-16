@@ -18,9 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
-import com.ute.auction.dto.AppraiserDTO;
+import com.ute.auction.dto.NhaThamDinhDTO;
 import com.ute.auction.exception.ResourceExistedException;
-import com.ute.auction.service.IAppraiserService;
+import com.ute.auction.service.INhaThamDinhService;
 
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
@@ -29,9 +29,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController(value = "appraiser" + ApiName.CRUD_ADMIN)
 @RequestMapping(ApiUrl.API_ADMIN + "/appraiser")
-public class AppraiserController {
+public class NhaThamDinhController {
 
-    private final IAppraiserService appraiserService;
+    private final INhaThamDinhService appraiserService;
 
     // Build API add an appraiser
     @SuppressWarnings("null")
@@ -46,16 +46,16 @@ public class AppraiserController {
             @RequestParam(value = "avatar", required = false) MultipartFile avatar,
             @RequestParam(value = "dob", required = false) LocalDate dob,
             @RequestParam(value = "description", required = false) String description) throws IOException {
-        AppraiserDTO newAppraiser = new AppraiserDTO();
-        newAppraiser.setAppraiserName(name);
+        NhaThamDinhDTO newAppraiser = new NhaThamDinhDTO();
+        newAppraiser.setHoVaTen(name);
         newAppraiser.setEmail(email);
-        newAppraiser.setGender(gender);
-        newAppraiser.setPhoneNumber(phoneNumber);
-        newAppraiser.setAddress(address);
-        newAppraiser.setType(type);
-        newAppraiser.setStatus(status);
-        newAppraiser.setDob(dob);
-        newAppraiser.setDescription(description);
+        newAppraiser.setGioiTinh(gender);
+        newAppraiser.setSoDienThoai(phoneNumber);
+        newAppraiser.setDiaChi(address);
+        newAppraiser.setLoai(type);
+        newAppraiser.setTrangThaiHoatDong(status);
+        newAppraiser.setNgaySinh(dob);
+        newAppraiser.setMoTa(description);
 
         if (avatar != null && !avatar.isEmpty()) {
             if (!avatar.getContentType().startsWith("image/")) {
@@ -66,7 +66,7 @@ public class AppraiserController {
             newAppraiser.setAvatar(null);
         }
 
-        AppraiserDTO savedAppraiser = appraiserService.addAppraiser(newAppraiser);
+        NhaThamDinhDTO savedAppraiser = appraiserService.addAppraiser(newAppraiser);
 
         return new ResponseEntity<>(savedAppraiser, HttpStatus.OK);
     }
@@ -85,16 +85,16 @@ public class AppraiserController {
             @RequestParam(value = "avatar", required = false) MultipartFile avatar,
             @RequestParam(value = "dob", required = false) LocalDate dob,
             @RequestParam(value = "description", required = false) String description) throws IOException {
-        AppraiserDTO appraiserDTO = new AppraiserDTO();
-        appraiserDTO.setAppraiserName(name);
+        NhaThamDinhDTO appraiserDTO = new NhaThamDinhDTO();
+        appraiserDTO.setHoVaTen(name);
         appraiserDTO.setEmail(email);
-        appraiserDTO.setGender(gender);
-        appraiserDTO.setPhoneNumber(phoneNumber);
-        appraiserDTO.setAddress(address);
-        appraiserDTO.setType(type);
-        appraiserDTO.setStatus(status);
-        appraiserDTO.setDob(dob);
-        appraiserDTO.setDescription(description);
+        appraiserDTO.setGioiTinh(gender);
+        appraiserDTO.setSoDienThoai(phoneNumber);
+        appraiserDTO.setDiaChi(address);
+        appraiserDTO.setLoai(type);
+        appraiserDTO.setTrangThaiHoatDong(status);
+        appraiserDTO.setNgaySinh(dob);
+        appraiserDTO.setMoTa(description);
 
         if (avatar != null && !avatar.isEmpty()) {
             if (!avatar.getContentType().startsWith("image/")) {
@@ -106,7 +106,7 @@ public class AppraiserController {
         }
 
         try {
-            AppraiserDTO updatedAppraiser = appraiserService.updateAppraiser(id, appraiserDTO);
+            NhaThamDinhDTO updatedAppraiser = appraiserService.updateAppraiser(id, appraiserDTO);
             return new ResponseEntity<>(updatedAppraiser, HttpStatus.OK);
         } catch (DataIntegrityViolationException | ConstraintViolationException ex) {
             throw new ResourceExistedException("Email already exists!");

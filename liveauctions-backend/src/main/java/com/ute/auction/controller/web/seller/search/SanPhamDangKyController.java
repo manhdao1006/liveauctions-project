@@ -11,34 +11,34 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
-import com.ute.auction.dto.RegistrationProductDTO;
-import com.ute.auction.service.IRegistrationProductService;
+import com.ute.auction.dto.SanPhamDangKyDTO;
+import com.ute.auction.service.ISanPhamDangKyService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController(value = "registrationProduct" + ApiName.SEARCH_WEB)
 @RequestMapping(ApiUrl.API_SELLER)
-public class RegistrationProductController {
+public class SanPhamDangKyController {
 
-        private final IRegistrationProductService registrationProductService;
+        private final ISanPhamDangKyService registrationProductService;
 
         // Build API sorted asc starting price
         @GetMapping("/registration-products/{id}/sorted-price-asc")
-        public ResponseEntity<List<RegistrationProductDTO>> sortedAscByStartingPrice(@PathVariable("id") int sellerId,
+        public ResponseEntity<List<SanPhamDangKyDTO>> sortedAscByStartingPrice(@PathVariable("id") int sellerId,
                         @RequestParam("page") int page,
                         @RequestParam(defaultValue = "10") int size) {
-                List<RegistrationProductDTO> models = registrationProductService.sortedAscByStartingPrice(sellerId,
+                List<SanPhamDangKyDTO> models = registrationProductService.sortedAscByStartingPrice(sellerId,
                                 page, size);
                 return ResponseEntity.ok(models);
         }
 
         // Build API sorted desc starting price
         @GetMapping("/registration-products/{id}/sorted-price-desc")
-        public ResponseEntity<List<RegistrationProductDTO>> sortedDescByStartingPrice(@PathVariable("id") int sellerId,
+        public ResponseEntity<List<SanPhamDangKyDTO>> sortedDescByStartingPrice(@PathVariable("id") int sellerId,
                         @RequestParam("page") int page,
                         @RequestParam(defaultValue = "10") int size) {
-                List<RegistrationProductDTO> models = registrationProductService.sortedDescByStartingPrice(sellerId,
+                List<SanPhamDangKyDTO> models = registrationProductService.sortedDescByStartingPrice(sellerId,
                                 page,
                                 size);
                 return ResponseEntity.ok(models);
@@ -46,11 +46,11 @@ public class RegistrationProductController {
 
         // Build API sorted asc registration date
         @GetMapping("/registration-products/{id}/sorted-date-asc")
-        public ResponseEntity<List<RegistrationProductDTO>> sortedAscByRegistrationDate(
+        public ResponseEntity<List<SanPhamDangKyDTO>> sortedAscByRegistrationDate(
                         @PathVariable("id") int sellerId,
                         @RequestParam("page") int page,
                         @RequestParam(defaultValue = "10") int size) {
-                List<RegistrationProductDTO> models = registrationProductService.sortedAscByRegistrationDate(sellerId,
+                List<SanPhamDangKyDTO> models = registrationProductService.sortedAscByRegistrationDate(sellerId,
                                 page,
                                 size);
                 return ResponseEntity.ok(models);
@@ -58,11 +58,11 @@ public class RegistrationProductController {
 
         // Build API sorted desc registration date
         @GetMapping("/registration-products/{id}/sorted-date-desc")
-        public ResponseEntity<List<RegistrationProductDTO>> sortedDescByRegistrationDate(
+        public ResponseEntity<List<SanPhamDangKyDTO>> sortedDescByRegistrationDate(
                         @PathVariable("id") int sellerId,
                         @RequestParam("page") int page,
                         @RequestParam(defaultValue = "10") int size) {
-                List<RegistrationProductDTO> models = registrationProductService.sortedDescByRegistrationDate(sellerId,
+                List<SanPhamDangKyDTO> models = registrationProductService.sortedDescByRegistrationDate(sellerId,
                                 page,
                                 size);
                 return ResponseEntity.ok(models);
@@ -70,11 +70,11 @@ public class RegistrationProductController {
 
         // Build API get registration products by seller id
         @GetMapping("/registration-products/{id}")
-        public ResponseEntity<List<RegistrationProductDTO>> getRegistrationProductsBySellerId(
+        public ResponseEntity<List<SanPhamDangKyDTO>> getRegistrationProductsBySellerId(
                         @PathVariable("id") int sellerId,
                         @RequestParam("page") int page,
                         @RequestParam(defaultValue = "10") int size) {
-                List<RegistrationProductDTO> registrationProducts = registrationProductService
+                List<SanPhamDangKyDTO> registrationProducts = registrationProductService
                                 .getRegistrationProductsBySellerId(sellerId, page, size);
                 return ResponseEntity.ok(registrationProducts);
         }

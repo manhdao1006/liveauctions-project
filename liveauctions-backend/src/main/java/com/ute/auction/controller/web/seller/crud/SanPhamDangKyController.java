@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
-import com.ute.auction.dto.RegistrationProductDTO;
-import com.ute.auction.service.IRegistrationProductService;
+import com.ute.auction.dto.SanPhamDangKyDTO;
+import com.ute.auction.service.ISanPhamDangKyService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController(value = "registrationProduct" + ApiName.CRUD_WEB)
 @RequestMapping(ApiUrl.API_SELLER)
-public class RegistrationProductController {
+public class SanPhamDangKyController {
 
-        private final IRegistrationProductService registrationProductService;
+        private final ISanPhamDangKyService registrationProductService;
 
         // Build API register product
         @PostMapping("/register-product")
-        public ResponseEntity<RegistrationProductDTO> registerProduct(
-                        @RequestBody RegistrationProductDTO registrationProductDTO) {
-                RegistrationProductDTO savedRegistrationProduct = registrationProductService
+        public ResponseEntity<SanPhamDangKyDTO> registerProduct(
+                        @RequestBody SanPhamDangKyDTO registrationProductDTO) {
+                SanPhamDangKyDTO savedRegistrationProduct = registrationProductService
                                 .registerProduct(registrationProductDTO);
                 return new ResponseEntity<>(savedRegistrationProduct, HttpStatus.OK);
         }

@@ -8,29 +8,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
-import com.ute.auction.dto.BuyerDTO;
-import com.ute.auction.service.IBuyerService;
+import com.ute.auction.dto.NguoiMuaDTO;
+import com.ute.auction.service.INguoiMuaService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController(value = "buyer" + ApiName.SEARCH_ADMIN)
 @RequestMapping(ApiUrl.API_ADMIN + "/users")
-public class BuyerController {
+public class NguoiMuaController {
 
-    private final IBuyerService buyerService;
+    private final INguoiMuaService buyerService;
 
     // Build API get buyer by id
     @GetMapping("/buyer/id={buyerId}")
-    public ResponseEntity<BuyerDTO> getBuyerById(@PathVariable("buyerId") int id) {
-        BuyerDTO buyerDTO = buyerService.getBuyerById(id);
+    public ResponseEntity<NguoiMuaDTO> getBuyerById(@PathVariable("buyerId") long id) {
+        NguoiMuaDTO buyerDTO = buyerService.getNguoiMuaByMaNguoiMua(id);
         return ResponseEntity.ok(buyerDTO);
     }
 
     // Build API get buyer by email
     @GetMapping("/buyer/email={email}")
-    public ResponseEntity<BuyerDTO> getBuyerByEmail(@PathVariable("email") String email) {
-        BuyerDTO buyerDTO = buyerService.getBuyerByEmail(email);
+    public ResponseEntity<NguoiMuaDTO> getBuyerByEmail(@PathVariable("email") String email) {
+        NguoiMuaDTO buyerDTO = buyerService.getNguoiMuaByEmail(email);
         return ResponseEntity.ok(buyerDTO);
     }
 

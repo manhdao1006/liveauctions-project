@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ute.auction.dto.AuthResponseDTO;
-import com.ute.auction.dto.UserDTO;
+import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.security.JWTGenerator;
-import com.ute.auction.service.IUserService;
+import com.ute.auction.service.INguoiDungService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final IUserService userService;
+    private final INguoiDungService userService;
     private final JWTGenerator jwtGenerator;
 
     // Build API forgot password
@@ -39,37 +39,37 @@ public class AuthController {
 
     // Build API register for BUYER
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<String> register(@RequestBody NguoiDungDTO userDTO) {
         userService.register(userDTO);
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 
     // Build API register for SELLER
     @PostMapping("/register-seller")
-    public ResponseEntity<String> registerSeller(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<String> registerSeller(@RequestBody NguoiDungDTO userDTO) {
         userService.registerSeller(userDTO);
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 
     // Build API register for STAFF
     @PostMapping("/register-staff")
-    public ResponseEntity<String> registerStaff(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<String> registerStaff(@RequestBody NguoiDungDTO userDTO) {
         userService.registerStaff(userDTO);
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 
     // Build API register for ADMIN
     @PostMapping("/register-admin")
-    public ResponseEntity<String> registerAdmin(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<String> registerAdmin(@RequestBody NguoiDungDTO userDTO) {
         userService.registerAdmin(userDTO);
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 
     // Build API login
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody NguoiDungDTO userDTO) {
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getMatKhau()));
         // sau khi đăng nhập thành công thì sẽ lưu vào để đánh dấu là đã đăng nhập
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);

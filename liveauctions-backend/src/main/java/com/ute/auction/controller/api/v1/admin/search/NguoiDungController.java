@@ -10,21 +10,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
-import com.ute.auction.dto.UserDTO;
-import com.ute.auction.service.IUserService;
+import com.ute.auction.dto.NguoiDungDTO;
+import com.ute.auction.service.INguoiDungService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController(value = "user" + ApiName.SEARCH_ADMIN)
 @RequestMapping(ApiUrl.API_ADMIN + "/users")
-public class UserController {
+public class NguoiDungController {
 
-    private final IUserService userService;
+    private final INguoiDungService userService;
 
     @GetMapping("/role/{roleId}")
-    public ResponseEntity<List<UserDTO>> getAllUsersByRole(@PathVariable("roleId") int roleId) {
-        List<UserDTO> models = userService.getAllUsersByRole(roleId);
+    public ResponseEntity<List<NguoiDungDTO>> getAllUsersByRole(@PathVariable("roleId") int roleId) {
+        List<NguoiDungDTO> models = userService.getAllUsersByRole(roleId);
         return ResponseEntity.ok(models);
     }
 
