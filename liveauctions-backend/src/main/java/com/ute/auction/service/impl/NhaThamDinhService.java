@@ -10,13 +10,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.ute.auction.converter.AppraiserConverter;
-import com.ute.auction.dto.AppraiserDTO;
-import com.ute.auction.entity.AppraiserEntity;
+import com.ute.auction.converter.NhaThamDinhConverter;
+import com.ute.auction.dto.NhaThamDinhDTO;
+import com.ute.auction.entity.NhaThamDinhEntity;
 import com.ute.auction.exception.ResourceExistedException;
 import com.ute.auction.exception.ResourceNotFoundException;
-import com.ute.auction.repository.AppraiserRepository;
-import com.ute.auction.service.IAppraiserService;
+import com.ute.auction.repository.NhaThamDinhRepository;
+import com.ute.auction.service.INhaThamDinhService;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -24,10 +24,10 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AppraiserService implements IAppraiserService {
+public class NhaThamDinhService implements INhaThamDinhService {
 
-    private final AppraiserRepository appraiserRepository;
-    private final AppraiserConverter appraiserConverter;
+    private final NhaThamDinhRepository appraiserRepository;
+    private final NhaThamDinhConverter appraiserConverter;
 
     /*
      * get all appraisers
@@ -37,17 +37,17 @@ public class AppraiserService implements IAppraiserService {
      * @return appraisers
      */
     @Override
-    public List<AppraiserDTO> getAll(int page, int size) {
+    public List<NhaThamDinhDTO> getAll(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<AppraiserEntity> entities = appraiserRepository.findAll(pageable);
+        Page<NhaThamDinhEntity> entities = appraiserRepository.findAll(pageable);
         if (entities.isEmpty()) {
             if (page > entities.getTotalPages() || page <= 0) {
                 throw new ResourceNotFoundException("No appraisers with page: " + page);
             }
         }
-        List<AppraiserDTO> models = new ArrayList<>();
-        for (AppraiserEntity item : entities) {
-            AppraiserDTO appraiserDTO = appraiserConverter.toDTO(item);
+        List<NhaThamDinhDTO> models = new ArrayList<>();
+        for (NhaThamDinhEntity item : entities) {
+            NhaThamDinhDTO appraiserDTO = appraiserConverter.toDTO(item);
             models.add(appraiserDTO);
         }
 
@@ -62,10 +62,10 @@ public class AppraiserService implements IAppraiserService {
      * @return appraiser
      */
     @Override
-    public AppraiserDTO getAppraiserById(int id) {
-        AppraiserEntity appraiserEntity = appraiserRepository.findById(id)
+    public NhaThamDinhDTO getAppraiserById(long id) {
+        NhaThamDinhEntity appraiserEntity = appraiserRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " not found"));
-        AppraiserDTO appraiserDTO = appraiserConverter.toDTO(appraiserEntity);
+        NhaThamDinhDTO appraiserDTO = appraiserConverter.toDTO(appraiserEntity);
         return appraiserDTO;
     }
 
@@ -77,10 +77,10 @@ public class AppraiserService implements IAppraiserService {
      * @return appraiser
      */
     @Override
-    public AppraiserDTO getAppraiserByEmail(String email) {
-        AppraiserEntity appraiserEntity = appraiserRepository.findOneByEmail(email)
+    public NhaThamDinhDTO getAppraiserByEmail(String email) {
+        NhaThamDinhEntity appraiserEntity = appraiserRepository.findOneByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + email + " not found"));
-        AppraiserDTO appraiserDTO = appraiserConverter.toDTO(appraiserEntity);
+        NhaThamDinhDTO appraiserDTO = appraiserConverter.toDTO(appraiserEntity);
         return appraiserDTO;
     }
 
@@ -93,9 +93,9 @@ public class AppraiserService implements IAppraiserService {
      */
     @Override
     @Transactional
-    public AppraiserDTO addAppraiser(AppraiserDTO appraiser) {
+    public NhaThamDinhDTO addAppraiser(NhaThamDinhDTO appraiser) {
         try {
-            AppraiserEntity appraiserEntity = appraiserConverter.toEntity(appraiser);
+            NhaThamDinhEntity appraiserEntity = appraiserConverter.toEntity(appraiser);
             appraiserEntity = appraiserRepository.save(appraiserEntity);
             return appraiserConverter.toDTO(appraiserEntity);
         } catch (DataIntegrityViolationException ex) {
@@ -112,22 +112,22 @@ public class AppraiserService implements IAppraiserService {
      */
     @Override
     @Transactional
-    public AppraiserDTO updateAppraiser(int id, AppraiserDTO updatedAppraiser) {
-        AppraiserEntity appraiserEntity = appraiserRepository.findById(id)
+    public NhaThamDinhDTO updateAppraiser(long id, NhaThamDinhDTO updatedAppraiser) {
+        NhaThamDinhEntity appraiserEntity = appraiserRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
-        appraiserEntity.setAppraiserName(updatedAppraiser.getAppraiserName());
+        appraiserEntity.setHoVaTen(updatedAppraiser.getHoVaTen());
         appraiserEntity.setEmail(updatedAppraiser.getEmail());
-        appraiserEntity.setGender(updatedAppraiser.getGender());
-        appraiserEntity.setPhoneNumber(updatedAppraiser.getPhoneNumber());
-        appraiserEntity.setAddress(updatedAppraiser.getAddress());
-        appraiserEntity.setType(updatedAppraiser.getType());
-        appraiserEntity.setStatus(updatedAppraiser.getStatus());
+        appraiserEntity.setGioiTinh(updatedAppraiser.getGioiTinh());
+        appraiserEntity.setSoDienThoai(updatedAppraiser.getSoDienThoai());
+        appraiserEntity.setDiaChi(updatedAppraiser.getDiaChi());
+        appraiserEntity.setLoai(updatedAppraiser.getLoai());
+        appraiserEntity.setTrangThaiHoatDong(updatedAppraiser.getTrangThaiHoatDong());
         appraiserEntity.setAvatar(updatedAppraiser.getAvatar());
-        appraiserEntity.setDob(updatedAppraiser.getDob());
-        appraiserEntity.setDescription(updatedAppraiser.getDescription());
+        appraiserEntity.setNgaySinh(updatedAppraiser.getNgaySinh());
+        appraiserEntity.setMoTa(updatedAppraiser.getMoTa());
 
         try {
-            AppraiserEntity appraiserUpdated = appraiserRepository.save(appraiserEntity);
+            NhaThamDinhEntity appraiserUpdated = appraiserRepository.save(appraiserEntity);
             return appraiserConverter.toDTO(appraiserUpdated);
         } catch (DataIntegrityViolationException | ConstraintViolationException ex) {
             throw new ResourceExistedException("Email already exists!");
@@ -140,8 +140,8 @@ public class AppraiserService implements IAppraiserService {
      * @param id
      */
     @Override
-    public void deleteAppraiser(int id) {
-        AppraiserEntity appraiserEntity = appraiserRepository.findById(id)
+    public void deleteAppraiser(long id) {
+        NhaThamDinhEntity appraiserEntity = appraiserRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
         if (appraiserEntity != null) {
             appraiserRepository.deleteById(id);
@@ -155,10 +155,10 @@ public class AppraiserService implements IAppraiserService {
      */
     @Override
     @Transactional
-    public void banAppraiser(int id) {
-        AppraiserEntity appraiserEntity = appraiserRepository.findById(id)
+    public void banAppraiser(long id) {
+        NhaThamDinhEntity appraiserEntity = appraiserRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
-        appraiserEntity.setStatus("Inactive");
+        appraiserEntity.setTrangThaiHoatDong("Inactive");
         appraiserRepository.save(appraiserEntity);
     }
 
@@ -170,14 +170,15 @@ public class AppraiserService implements IAppraiserService {
      * @return appraiser
      */
     @Override
-    public List<AppraiserDTO> searchAppraiser(String keyword, int page, int size) {
-        List<AppraiserEntity> appraiserExists = appraiserRepository.existsAppraiser(keyword);
+    public List<NhaThamDinhDTO> searchAppraiser(String keyword, int page, int size) {
+        List<NhaThamDinhEntity> appraiserExists = appraiserRepository.existsAppraiser(keyword);
         if (appraiserExists.isEmpty()) {
-            throw new ResourceNotFoundException("No appraisers with keyword: " + keyword);
+            throw new ResourceNotFoundException("No appraisers with keyword: " +
+                    keyword);
         }
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<AppraiserEntity> entities = appraiserRepository.searchAppraiser(keyword, pageable);
+        Page<NhaThamDinhEntity> entities = appraiserRepository.searchAppraiser(keyword, pageable);
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No appraisers with page: " + page);
         }
@@ -195,9 +196,9 @@ public class AppraiserService implements IAppraiserService {
      * @return appraisers
      */
     @Override
-    public List<AppraiserDTO> sortedAscByName(int page, int size) {
+    public List<NhaThamDinhDTO> sortedAscByName(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<AppraiserEntity> entities = appraiserRepository.sortedAscByName(pageable);
+        Page<NhaThamDinhEntity> entities = appraiserRepository.sortedAscByName(pageable);
         if (entities.isEmpty()) {
             if (page > entities.getTotalPages() || page <= 0) {
                 throw new ResourceNotFoundException("No appraisers with page: " + page);
@@ -217,9 +218,9 @@ public class AppraiserService implements IAppraiserService {
      * @return appraisers
      */
     @Override
-    public List<AppraiserDTO> sortedDescByName(int page, int size) {
+    public List<NhaThamDinhDTO> sortedDescByName(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<AppraiserEntity> entities = appraiserRepository.sortedDescByName(pageable);
+        Page<NhaThamDinhEntity> entities = appraiserRepository.sortedDescByName(pageable);
         if (entities.isEmpty()) {
             if (page > entities.getTotalPages() || page <= 0) {
                 throw new ResourceNotFoundException("No appraisers with page: " + page);
@@ -239,9 +240,9 @@ public class AppraiserService implements IAppraiserService {
      * @return appraisers
      */
     @Override
-    public List<AppraiserDTO> sortedAscByDoB(int page, int size) {
+    public List<NhaThamDinhDTO> sortedAscByDoB(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<AppraiserEntity> entities = appraiserRepository.sortedAscByDoB(pageable);
+        Page<NhaThamDinhEntity> entities = appraiserRepository.sortedAscByDoB(pageable);
         if (entities.isEmpty()) {
             if (page > entities.getTotalPages() || page <= 0) {
                 throw new ResourceNotFoundException("No appraisers with page: " + page);
@@ -261,9 +262,9 @@ public class AppraiserService implements IAppraiserService {
      * @return appraisers
      */
     @Override
-    public List<AppraiserDTO> sortedDescByDoB(int page, int size) {
+    public List<NhaThamDinhDTO> sortedDescByDoB(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<AppraiserEntity> entities = appraiserRepository.sortedDescByDoB(pageable);
+        Page<NhaThamDinhEntity> entities = appraiserRepository.sortedDescByDoB(pageable);
         if (entities.isEmpty()) {
             if (page > entities.getTotalPages() || page <= 0) {
                 throw new ResourceNotFoundException("No appraisers with page: " + page);

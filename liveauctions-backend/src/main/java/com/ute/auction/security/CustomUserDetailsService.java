@@ -11,10 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import com.ute.auction.entity.RoleEntity;
-import com.ute.auction.entity.UserEntity;
+import com.ute.auction.entity.VaiTroEntity;
+import com.ute.auction.entity.NguoiDungEntity;
 import com.ute.auction.exception.ResourceNotFoundException;
-import com.ute.auction.repository.UserRepository;
+import com.ute.auction.repository.NguoiDungRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,17 +22,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final NguoiDungRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        UserEntity user = userRepository.findByEmail(username)
+        NguoiDungEntity user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Email not found"));
-        return new User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        return new User(user.getEmail(), user.getMatKhau(), mapRolesToAuthorities(user.getVaiTros()));
     }
 
-    private Collection<GrantedAuthority> mapRolesToAuthorities(List<RoleEntity> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
+    private Collection<GrantedAuthority> mapRolesToAuthorities(List<VaiTroEntity> roles) {
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getTenVaiTro())).collect(Collectors.toList());
     }
 
 }

@@ -8,23 +8,23 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.ute.auction.converter.ProductConverter;
-import com.ute.auction.dto.ProductDTO;
-import com.ute.auction.entity.ProductEntity;
+import com.ute.auction.converter.SanPhamConverter;
+import com.ute.auction.dto.SanPhamDTO;
+import com.ute.auction.entity.SanPhamEntity;
 import com.ute.auction.exception.ResourceNotFoundException;
-import com.ute.auction.repository.ProductRepository;
-import com.ute.auction.repository.SellerRepository;
-import com.ute.auction.service.IProductService;
+import com.ute.auction.repository.NguoiBanRepository;
+import com.ute.auction.repository.SanPhamRepository;
+import com.ute.auction.service.ISanPhamService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService implements IProductService {
+public class SanPhamService implements ISanPhamService {
 
-    private final ProductRepository productRepository;
-    private final SellerRepository sellerRepository;
-    private final ProductConverter productConverter;
+    private final SanPhamRepository productRepository;
+    private final NguoiBanRepository sellerRepository;
+    private final SanPhamConverter productConverter;
 
     /*
      * get all products by seller id
@@ -34,11 +34,11 @@ public class ProductService implements IProductService {
      * @return products
      */
     @Override
-    public List<ProductDTO> getProductsBySellerId(int sellerId, int page, int size) {
+    public List<SanPhamDTO> getProductsBySellerId(long sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<ProductEntity> entities = productRepository.findProductsBySellerId(sellerId, pageable);
+        Page<SanPhamEntity> entities = productRepository.findProductsBySellerId(sellerId, pageable);
 
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No products with page: " + page);
@@ -48,11 +48,11 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> sortedAscByStartingPrice(int sellerId, int page, int size) {
+    public List<SanPhamDTO> sortedAscByStartingPrice(long sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<ProductEntity> entities = productRepository.sortedAscByStartingPrice(sellerId, pageable);
+        Page<SanPhamEntity> entities = productRepository.sortedAscByStartingPrice(sellerId, pageable);
 
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No products with page: " + page);
@@ -62,11 +62,11 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> sortedDescByStartingPrice(int sellerId, int page, int size) {
+    public List<SanPhamDTO> sortedDescByStartingPrice(long sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<ProductEntity> entities = productRepository.sortedAscByStartingPrice(sellerId, pageable);
+        Page<SanPhamEntity> entities = productRepository.sortedAscByStartingPrice(sellerId, pageable);
 
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No products with page: " + page);
@@ -75,8 +75,8 @@ public class ProductService implements IProductService {
         return entities.stream().map(productConverter::toDTO).collect(Collectors.toList());
     }
 
-    private void checkExistedSeller(int sellerId) {
-        boolean sellerExists = sellerRepository.existsBySellerId(sellerId);
+    private void checkExistedSeller(long sellerId) {
+        boolean sellerExists = sellerRepository.existsByMaNguoiBan(sellerId);
         if (!sellerExists) {
             throw new ResourceNotFoundException("No seller with id: " + sellerId);
         }

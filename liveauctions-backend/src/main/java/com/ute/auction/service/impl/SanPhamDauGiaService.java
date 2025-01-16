@@ -9,34 +9,34 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.ute.auction.converter.RegistrationProductConverter;
-import com.ute.auction.dto.RegistrationProductDTO;
-import com.ute.auction.entity.AuctionFormatEntity;
-import com.ute.auction.entity.RegistrationProductEntity;
-import com.ute.auction.entity.SellerEntity;
-import com.ute.auction.entity.SubCategoryEntity;
+import com.ute.auction.converter.SanPhamDangKyConverter;
+import com.ute.auction.dto.SanPhamDangKyDTO;
+import com.ute.auction.entity.DanhMucConEntity;
+import com.ute.auction.entity.LoaiDauGiaEntity;
+import com.ute.auction.entity.NguoiBanEntity;
+import com.ute.auction.entity.SanPhamDangKyEntity;
 import com.ute.auction.exception.ResourceNotFoundException;
-import com.ute.auction.repository.AuctionFormatRepository;
-import com.ute.auction.repository.RegistrationProductRepository;
-import com.ute.auction.repository.SellerRepository;
-import com.ute.auction.repository.SubCategoryRepository;
-import com.ute.auction.service.IRegistrationProductService;
+import com.ute.auction.repository.DanhMucConRepository;
+import com.ute.auction.repository.LoaiDauGiaRepository;
+import com.ute.auction.repository.NguoiBanRepository;
+import com.ute.auction.repository.SanPhamDangKyRepository;
+import com.ute.auction.service.ISanPhamDangKyService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class RegistrationProductService implements IRegistrationProductService {
+public class SanPhamDauGiaService implements ISanPhamDangKyService {
 
-    private final RegistrationProductRepository registrationProductRepository;
-    private final SellerRepository sellerRepository;
-    private final SubCategoryRepository subCategoryRepository;
-    private final AuctionFormatRepository auctionFormatRepository;
-    private final RegistrationProductConverter registrationProductConverter;
+    private final SanPhamDangKyRepository registrationProductRepository;
+    private final NguoiBanRepository sellerRepository;
+    private final DanhMucConRepository subCategoryRepository;
+    private final LoaiDauGiaRepository auctionFormatRepository;
+    private final SanPhamDangKyConverter registrationProductConverter;
 
-    private void checkExistedSeller(int sellerId) {
-        boolean sellerExists = sellerRepository.existsBySellerId(sellerId);
+    private void checkExistedSeller(long sellerId) {
+        boolean sellerExists = sellerRepository.existsByMaNguoiBan(sellerId);
         if (!sellerExists) {
             throw new ResourceNotFoundException("No seller with id: " + sellerId);
         }
@@ -50,11 +50,11 @@ public class RegistrationProductService implements IRegistrationProductService {
      * @return registration products
      */
     @Override
-    public List<RegistrationProductDTO> getRegistrationProductsBySellerId(int sellerId, int page, int size) {
+    public List<SanPhamDangKyDTO> getRegistrationProductsBySellerId(long sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<RegistrationProductEntity> entities = registrationProductRepository
+        Page<SanPhamDangKyEntity> entities = registrationProductRepository
                 .findRegistrationProductsBySellerId(sellerId, pageable);
 
         if (page > entities.getTotalPages() || page <= 0) {
@@ -73,18 +73,18 @@ public class RegistrationProductService implements IRegistrationProductService {
      */
     @Override
     @Transactional
-    public RegistrationProductDTO registerProduct(RegistrationProductDTO regisProduct) {
+    public SanPhamDangKyDTO registerProduct(SanPhamDangKyDTO regisProduct) {
 
-        SellerEntity seller = sellerRepository.findOneBySellerId(regisProduct.getSeller().getSellerId());
-        Optional<SubCategoryEntity> subCategory = subCategoryRepository
-                .findById(regisProduct.getSubCategory().getSubCategoryId());
-        Optional<AuctionFormatEntity> auctionFormat = auctionFormatRepository
-                .findById(regisProduct.getAuctionFormat().getAuctionFormatId());
+        NguoiBanEntity seller = sellerRepository.findOneByMaNguoiBan(regisProduct.getNguoiBan().getMaNguoiBan());
+        Optional<DanhMucConEntity> subCategory = subCategoryRepository
+                .findById(regisProduct.getDanhMucCon().getMaDanhMucCon());
+        Optional<LoaiDauGiaEntity> auctionFormat = auctionFormatRepository
+                .findById(regisProduct.getLoaiDauGia().getMaLoaiDauGia());
 
-        RegistrationProductEntity registrationProductEntity = registrationProductConverter.toEntity(regisProduct);
-        registrationProductEntity.setSeller(seller);
-        registrationProductEntity.setSubCategory(subCategory.get());
-        registrationProductEntity.setAuctionFormat(auctionFormat.get());
+        SanPhamDangKyEntity registrationProductEntity = registrationProductConverter.toEntity(regisProduct);
+        registrationProductEntity.setNguoiBan(seller);
+        registrationProductEntity.setDanhMucCon(subCategory.get());
+        registrationProductEntity.setLoaiDauGia(auctionFormat.get());
 
         registrationProductEntity = registrationProductRepository.save(registrationProductEntity);
 
@@ -92,11 +92,11 @@ public class RegistrationProductService implements IRegistrationProductService {
     }
 
     @Override
-    public List<RegistrationProductDTO> sortedAscByStartingPrice(int sellerId, int page, int size) {
+    public List<SanPhamDangKyDTO> sortedAscByStartingPrice(long sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedAscByStartingPrice(sellerId,
+        Page<SanPhamDangKyEntity> entities = registrationProductRepository.sortedAscByStartingPrice(sellerId,
                 pageable);
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No registration products with page: " + page);
@@ -106,11 +106,11 @@ public class RegistrationProductService implements IRegistrationProductService {
     }
 
     @Override
-    public List<RegistrationProductDTO> sortedDescByStartingPrice(int sellerId, int page, int size) {
+    public List<SanPhamDangKyDTO> sortedDescByStartingPrice(long sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedDescByStartingPrice(sellerId,
+        Page<SanPhamDangKyEntity> entities = registrationProductRepository.sortedDescByStartingPrice(sellerId,
                 pageable);
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No registration products with page: " + page);
@@ -120,11 +120,11 @@ public class RegistrationProductService implements IRegistrationProductService {
     }
 
     @Override
-    public List<RegistrationProductDTO> sortedAscByRegistrationDate(int sellerId, int page, int size) {
+    public List<SanPhamDangKyDTO> sortedAscByRegistrationDate(long sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedAscByRegistrationDate(sellerId,
+        Page<SanPhamDangKyEntity> entities = registrationProductRepository.sortedAscByRegistrationDate(sellerId,
                 pageable);
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No registration products with page: " + page);
@@ -134,11 +134,11 @@ public class RegistrationProductService implements IRegistrationProductService {
     }
 
     @Override
-    public List<RegistrationProductDTO> sortedDescByRegistrationDate(int sellerId, int page, int size) {
+    public List<SanPhamDangKyDTO> sortedDescByRegistrationDate(long sellerId, int page, int size) {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<RegistrationProductEntity> entities = registrationProductRepository.sortedDescByRegistrationDate(sellerId,
+        Page<SanPhamDangKyEntity> entities = registrationProductRepository.sortedDescByRegistrationDate(sellerId,
                 pageable);
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No registration products with page: " + page);

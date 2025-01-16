@@ -12,39 +12,39 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ute.auction.converter.UserConverter;
-import com.ute.auction.dto.UserDTO;
-import com.ute.auction.entity.BuyerEntity;
-import com.ute.auction.entity.CityEntity;
-import com.ute.auction.entity.RoleEntity;
-import com.ute.auction.entity.SellerEntity;
-import com.ute.auction.entity.StaffEntity;
-import com.ute.auction.entity.UserEntity;
+import com.ute.auction.converter.NguoiDungConverter;
+import com.ute.auction.dto.NguoiDungDTO;
+import com.ute.auction.entity.NguoiBanEntity;
+import com.ute.auction.entity.NguoiDungEntity;
+import com.ute.auction.entity.NguoiMuaEntity;
+import com.ute.auction.entity.NhanVienEntity;
+import com.ute.auction.entity.PhuongXaEntity;
+import com.ute.auction.entity.VaiTroEntity;
 import com.ute.auction.exception.ResourceExistedException;
 import com.ute.auction.exception.ResourceNotFormatException;
 import com.ute.auction.exception.ResourceNotFoundException;
-import com.ute.auction.repository.BuyerRepository;
-import com.ute.auction.repository.CityRepository;
-import com.ute.auction.repository.RoleRepository;
-import com.ute.auction.repository.SellerRepository;
-import com.ute.auction.repository.StaffRepository;
-import com.ute.auction.repository.UserRepository;
-import com.ute.auction.service.IUserService;
+import com.ute.auction.repository.NguoiBanRepository;
+import com.ute.auction.repository.NguoiDungRepository;
+import com.ute.auction.repository.NguoiMuaRepository;
+import com.ute.auction.repository.NhanVienRepository;
+import com.ute.auction.repository.PhuongXaRepository;
+import com.ute.auction.repository.VaiTroRepository;
+import com.ute.auction.service.INguoiDungService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements IUserService {
+public class NguoiDungService implements INguoiDungService {
 
-    private final UserRepository userRepository;
-    private final CityRepository cityRepository;
-    private final RoleRepository roleRepository;
-    private final BuyerRepository buyerRepository;
-    private final SellerRepository sellerRepository;
-    private final StaffRepository staffRepository;
-    private final UserConverter userConverter;
+    private final NguoiDungRepository userRepository;
+    private final PhuongXaRepository cityRepository;
+    private final VaiTroRepository roleRepository;
+    private final NguoiMuaRepository buyerRepository;
+    private final NguoiBanRepository sellerRepository;
+    private final NhanVienRepository staffRepository;
+    private final NguoiDungConverter userConverter;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${user.images.path}")
@@ -59,17 +59,17 @@ public class UserService implements IUserService {
      */
     @Override
     @Transactional
-    public UserDTO updateProfile(int id, UserDTO userDTO, MultipartFile avatar) throws IOException {
-        UserEntity oldUser = userRepository.findByUserId(id);
+    public NguoiDungDTO updateProfile(long id, NguoiDungDTO userDTO, MultipartFile avatar) throws IOException {
+        NguoiDungEntity oldUser = userRepository.findByUserId(id);
         if (oldUser == null) {
             throw new ResourceNotFoundException("User with id " + id + " is not found");
         }
 
-        if (userDTO.getCity() != null && userDTO.getCity().getCityId() != null) {
-            CityEntity cityEntity = cityRepository.findById(userDTO.getCity().getCityId())
+        if (userDTO.getPhuongXa() != null && userDTO.getPhuongXa().getMaPhuongXa() != null) {
+            PhuongXaEntity cityEntity = cityRepository.findById(userDTO.getPhuongXa().getMaPhuongXa())
                     .orElseThrow(() -> new ResourceNotFoundException(
-                            "City with id " + userDTO.getCity().getCityId() + " is not found"));
-            oldUser.setCity(cityEntity);
+                            "City with id " + userDTO.getPhuongXa().getMaPhuongXa() + " is not found"));
+            oldUser.setPhuongXa(cityEntity);
         }
 
         if (avatar != null && !avatar.isEmpty()) {
@@ -85,7 +85,7 @@ public class UserService implements IUserService {
             oldUser.setAvatar(fileName);
         }
 
-        UserEntity updatedUser = userConverter.toEntity(userDTO, oldUser);
+        NguoiDungEntity updatedUser = userConverter.toEntity(userDTO, oldUser);
         return userConverter.toDTO(userRepository.save(updatedUser));
     }
 
@@ -97,10 +97,10 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public void forgotPassword(String email, String password) {
-        UserEntity userEntity = (userRepository.findByEmail(email)
+        NguoiDungEntity userEntity = (userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email)));
 
-        userEntity.setPassword(passwordEncoder.encode(password));
+        userEntity.setMatKhau(passwordEncoder.encode(password));
         userRepository.save(userEntity);
     }
 
@@ -113,23 +113,23 @@ public class UserService implements IUserService {
      */
     @Override
     @Transactional
-    public UserDTO register(UserDTO userDTO) {
+    public NguoiDungDTO register(NguoiDungDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        UserEntity userEntity = userConverter.toEntity(userDTO);
+        NguoiDungEntity userEntity = userConverter.toEntity(userDTO);
         userEntity.setEmail(userDTO.getEmail());
-        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userEntity.setMatKhau(passwordEncoder.encode(userDTO.getMatKhau()));
 
-        RoleEntity roles = roleRepository.findByRoleName("ROLE_BUYER")
+        VaiTroEntity roles = roleRepository.findByTenVaiTro("ROLE_BUYER")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
-        userEntity.setRoles(Collections.singletonList(roles));
+        userEntity.setVaiTros(Collections.singletonList(roles));
 
-        UserEntity savedUserEntity = userRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = userRepository.save(userEntity);
 
-        BuyerEntity buyerEntity = new BuyerEntity();
-        buyerEntity.setUser(savedUserEntity);
+        NguoiMuaEntity buyerEntity = new NguoiMuaEntity();
+        buyerEntity.setNguoiDung(savedUserEntity);
         buyerRepository.save(buyerEntity);
 
         return userConverter.toDTO(savedUserEntity);
@@ -143,23 +143,23 @@ public class UserService implements IUserService {
      * @return seller
      */
     @Override
-    public UserDTO registerSeller(UserDTO userDTO) {
+    public NguoiDungDTO registerSeller(NguoiDungDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        UserEntity userEntity = userConverter.toEntity(userDTO);
+        NguoiDungEntity userEntity = userConverter.toEntity(userDTO);
         userEntity.setEmail(userDTO.getEmail());
-        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userEntity.setMatKhau(passwordEncoder.encode(userDTO.getMatKhau()));
 
-        RoleEntity roles = roleRepository.findByRoleName("ROLE_SELLER")
+        VaiTroEntity roles = roleRepository.findByTenVaiTro("ROLE_SELLER")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
-        userEntity.setRoles(Collections.singletonList(roles));
+        userEntity.setVaiTros(Collections.singletonList(roles));
 
-        UserEntity savedUserEntity = userRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = userRepository.save(userEntity);
 
-        SellerEntity sellerEntity = new SellerEntity();
-        sellerEntity.setUser(savedUserEntity);
+        NguoiBanEntity sellerEntity = new NguoiBanEntity();
+        sellerEntity.setNguoiDung(savedUserEntity);
         sellerRepository.save(sellerEntity);
 
         return userConverter.toDTO(savedUserEntity);
@@ -173,23 +173,23 @@ public class UserService implements IUserService {
      * @return staff
      */
     @Override
-    public UserDTO registerStaff(UserDTO userDTO) {
+    public NguoiDungDTO registerStaff(NguoiDungDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        UserEntity userEntity = userConverter.toEntity(userDTO);
+        NguoiDungEntity userEntity = userConverter.toEntity(userDTO);
         userEntity.setEmail(userDTO.getEmail());
-        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userEntity.setMatKhau(passwordEncoder.encode(userDTO.getMatKhau()));
 
-        RoleEntity roles = roleRepository.findByRoleName("ROLE_STAFF")
+        VaiTroEntity roles = roleRepository.findByTenVaiTro("ROLE_STAFF")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
-        userEntity.setRoles(Collections.singletonList(roles));
+        userEntity.setVaiTros(Collections.singletonList(roles));
 
-        UserEntity savedUserEntity = userRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = userRepository.save(userEntity);
 
-        StaffEntity staffEntity = new StaffEntity();
-        staffEntity.setUser(savedUserEntity);
+        NhanVienEntity staffEntity = new NhanVienEntity();
+        staffEntity.setNguoiDung(savedUserEntity);
         staffRepository.save(staffEntity);
 
         return userConverter.toDTO(savedUserEntity);
@@ -203,23 +203,23 @@ public class UserService implements IUserService {
      * @return admin
      */
     @Override
-    public UserDTO registerAdmin(UserDTO userDTO) {
+    public NguoiDungDTO registerAdmin(NguoiDungDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        UserEntity userEntity = userConverter.toEntity(userDTO);
+        NguoiDungEntity userEntity = userConverter.toEntity(userDTO);
         userEntity.setEmail(userDTO.getEmail());
-        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userEntity.setMatKhau(passwordEncoder.encode(userDTO.getMatKhau()));
 
-        RoleEntity roles = roleRepository.findByRoleName("ROLE_ADMIN")
+        VaiTroEntity roles = roleRepository.findByTenVaiTro("ROLE_ADMIN")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
-        userEntity.setRoles(Collections.singletonList(roles));
+        userEntity.setVaiTros(Collections.singletonList(roles));
 
-        UserEntity savedUserEntity = userRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = userRepository.save(userEntity);
 
-        StaffEntity staffEntity = new StaffEntity();
-        staffEntity.setUser(savedUserEntity);
+        NhanVienEntity staffEntity = new NhanVienEntity();
+        staffEntity.setNguoiDung(savedUserEntity);
         staffRepository.save(staffEntity);
 
         return userConverter.toDTO(savedUserEntity);
@@ -249,8 +249,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<UserDTO> getAllUsersByRole(int roleId) {
-        List<UserEntity> entities = userRepository.findUsersByRole(roleId);
+    public List<NguoiDungDTO> getAllUsersByRole(long roleId) {
+        List<NguoiDungEntity> entities = userRepository.findNguoiDungsByVaiTro(roleId);
 
         return entities.stream().map(userConverter::toDTO).toList();
     }
