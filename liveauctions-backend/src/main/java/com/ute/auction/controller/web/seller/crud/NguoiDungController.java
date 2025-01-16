@@ -52,9 +52,7 @@ public class NguoiDungController {
         userDTO.setGioiTinh(gender);
 
         if (cityId != null) {
-            PhuongXaDTO cityDTO = new PhuongXaDTO();
-            cityDTO.setMaPhuongXa(cityId);
-            userDTO.setPhuongXa(cityDTO);
+            userDTO.setMaPhuongXa(cityId);
         }
 
         try {

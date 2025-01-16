@@ -75,16 +75,14 @@ public class SanPhamDauGiaService implements ISanPhamDangKyService {
     @Transactional
     public SanPhamDangKyDTO registerProduct(SanPhamDangKyDTO regisProduct) {
 
-        NguoiBanEntity seller = sellerRepository.findOneByMaNguoiBan(regisProduct.getNguoiBan().getMaNguoiBan());
-        Optional<DanhMucConEntity> subCategory = subCategoryRepository
-                .findById(regisProduct.getDanhMucCon().getMaDanhMucCon());
-        Optional<LoaiDauGiaEntity> auctionFormat = auctionFormatRepository
-                .findById(regisProduct.getLoaiDauGia().getMaLoaiDauGia());
+        NguoiBanEntity seller = sellerRepository.findOneByMaNguoiBan(regisProduct.getMaNguoiBan());
+        DanhMucConEntity subCategory = subCategoryRepository.findOneByMaDanhMucCon(regisProduct.getMaDanhMucCon());
+        LoaiDauGiaEntity auctionFormat = auctionFormatRepository.findOneByMaLoaiDauGia(regisProduct.getMaLoaiDauGia());
 
         SanPhamDangKyEntity registrationProductEntity = registrationProductConverter.toEntity(regisProduct);
         registrationProductEntity.setNguoiBan(seller);
-        registrationProductEntity.setDanhMucCon(subCategory.get());
-        registrationProductEntity.setLoaiDauGia(auctionFormat.get());
+        registrationProductEntity.setDanhMucCon(subCategory);
+        registrationProductEntity.setLoaiDauGia(auctionFormat);
 
         registrationProductEntity = registrationProductRepository.save(registrationProductEntity);
 

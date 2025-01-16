@@ -65,10 +65,10 @@ public class NguoiDungService implements INguoiDungService {
             throw new ResourceNotFoundException("User with id " + id + " is not found");
         }
 
-        if (userDTO.getPhuongXa() != null && userDTO.getPhuongXa().getMaPhuongXa() != null) {
-            PhuongXaEntity cityEntity = cityRepository.findById(userDTO.getPhuongXa().getMaPhuongXa())
+        if (userDTO.getMaPhuongXa() != null) {
+            PhuongXaEntity cityEntity = cityRepository.findOneByMaPhuongXa(userDTO.getMaPhuongXa())
                     .orElseThrow(() -> new ResourceNotFoundException(
-                            "City with id " + userDTO.getPhuongXa().getMaPhuongXa() + " is not found"));
+                            "City with id " + userDTO.getMaPhuongXa() + " is not found"));
             oldUser.setPhuongXa(cityEntity);
         }
 

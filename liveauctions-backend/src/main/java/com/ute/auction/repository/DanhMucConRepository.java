@@ -8,4 +8,6 @@ import com.ute.auction.entity.DanhMucConEntity;
 @Repository
 public interface DanhMucConRepository extends JpaRepository<DanhMucConEntity, Long> {
 
+    DanhMucConEntity findOneByMaDanhMucCon(long maDanhMucCon);
+
 }

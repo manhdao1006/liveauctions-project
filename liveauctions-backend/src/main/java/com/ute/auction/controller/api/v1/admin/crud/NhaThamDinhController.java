@@ -36,16 +36,16 @@ public class NhaThamDinhController {
     // Build API add an appraiser
     @SuppressWarnings("null")
     @PostMapping("/add")
-    public ResponseEntity<?> addAppraiser(@Valid @RequestParam(value = "name", required = false) String name,
+    public ResponseEntity<?> addAppraiser(@Valid @RequestParam(value = "hoVaTen", required = false) String name,
             @Valid @RequestParam(value = "email", required = false) String email,
-            @RequestParam(value = "gender", required = false) String gender,
-            @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
-            @RequestParam(value = "address", required = false) String address,
-            @RequestParam(value = "type", required = false) String type,
-            @RequestParam(value = "status", required = false) String status,
+            @RequestParam(value = "gioiTinh", required = false) String gender,
+            @Valid @RequestParam(value = "soDienThoai", required = false) String phoneNumber,
+            @RequestParam(value = "diaChi", required = false) String address,
+            @RequestParam(value = "loai", required = false) String type,
+            @RequestParam(value = "trangThaiHoatDong", required = false) String status,
             @RequestParam(value = "avatar", required = false) MultipartFile avatar,
-            @RequestParam(value = "dob", required = false) LocalDate dob,
-            @RequestParam(value = "description", required = false) String description) throws IOException {
+            @RequestParam(value = "ngaySinh", required = false) LocalDate dob,
+            @RequestParam(value = "moTa", required = false) String description) throws IOException {
         NhaThamDinhDTO newAppraiser = new NhaThamDinhDTO();
         newAppraiser.setHoVaTen(name);
         newAppraiser.setEmail(email);

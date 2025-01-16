@@ -8,4 +8,6 @@ import com.ute.auction.entity.LoaiDauGiaEntity;
 @Repository
 public interface LoaiDauGiaRepository extends JpaRepository<LoaiDauGiaEntity, Long> {
 
+    LoaiDauGiaEntity findOneByMaLoaiDauGia(long maLoaiDauGia);
+
 }
