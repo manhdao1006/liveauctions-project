@@ -15,11 +15,12 @@ public interface SanPhamDangKyConverter {
 
         SanPhamDangKyConverter INSTANCE = Mappers.getMapper(SanPhamDangKyConverter.class);
 
-        @Mapping(target = "nguoiBan.maNguoiBan", source = "nguoiBan.maNguoiBan")
-        @Mapping(target = "danhMucCon.maDanhMucCon", source = "danhMucCon.maDanhMucCon")
-        @Mapping(target = "loaiDauGia.maLoaiDauGia", source = "loaiDauGia.maLoaiDauGia")
+        @Mapping(target = "maNguoiBan", source = "nguoiBan.maNguoiBan")
+        @Mapping(target = "maDanhMucCon", source = "danhMucCon.maDanhMucCon")
+        @Mapping(target = "maLoaiDauGia", source = "loaiDauGia.maLoaiDauGia")
         SanPhamDangKyDTO toDTO(SanPhamDangKyEntity entity);
 
+        @Mapping(target = "trangThaiXoa", defaultValue = "1")
         SanPhamDangKyEntity toEntity(SanPhamDangKyDTO dto);
 
         @Mapping(target = "maSanPhamDangKy", ignore = true)

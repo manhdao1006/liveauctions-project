@@ -16,6 +16,7 @@ public interface NhanVienConverter {
 
     NhanVienDTO toDTO(NhanVienEntity entity);
 
+    @Mapping(target = "trangThaiXoa", defaultValue = "1")
     NhanVienEntity toEntity(NhanVienDTO dto);
 
     @Mapping(target = "maNhanVien", ignore = true)

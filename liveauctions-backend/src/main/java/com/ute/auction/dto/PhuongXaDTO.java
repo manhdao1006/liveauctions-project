@@ -15,7 +15,7 @@ public class PhuongXaDTO {
 
     private Long maPhuongXa;
     private String tenPhuongXa;
-    private QuanHuyenDTO quanHuyen;
+    private Long maQuanHuyen;
     private List<NhaKhoDTO> nhaKhos;
     private List<NguoiDungDTO> nguoiDungs;
 

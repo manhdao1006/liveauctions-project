@@ -24,7 +24,7 @@ public class NguoiBanDTO {
     private String cvv;
     private String diaChiThanhToan;
     private String trangThaiXoa;
-    private NguoiDungDTO nguoiDung;
+    private Long maNguoiDung;
     private List<ThueDTO> thues;
     private List<SanPhamDangKyDTO> sanPhamDangKys;
     private List<SanPhamDTO> sanPhams;

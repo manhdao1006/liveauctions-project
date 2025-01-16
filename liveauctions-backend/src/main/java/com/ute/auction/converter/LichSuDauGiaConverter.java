@@ -15,9 +15,9 @@ public interface LichSuDauGiaConverter {
 
     LichSuDauGiaConverter INSTANCE = Mappers.getMapper(LichSuDauGiaConverter.class);
 
-    @Mapping(target = "sanPham.maSanPham", source = "sanPham.maSanPham")
-    @Mapping(target = "phienDauGia.maPhienDauGia", source = "phienDauGia.maPhienDauGia")
-    @Mapping(target = "nguoiMua.maNguoiMua", source = "nguoiMua.maNguoiMua")
+    @Mapping(target = "maSanPham", source = "sanPham.maSanPham")
+    @Mapping(target = "maPhienDauGia", source = "phienDauGia.maPhienDauGia")
+    @Mapping(target = "maNguoiMua", source = "nguoiMua.maNguoiMua")
     LichSuDauGiaDTO toDTO(LichSuDauGiaEntity entity);
 
     LichSuDauGiaEntity toEntity(LichSuDauGiaDTO dto);

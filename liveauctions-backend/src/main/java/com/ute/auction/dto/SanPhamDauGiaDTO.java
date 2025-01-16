@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SanPhamDauGiaDTO {
 
-    private PhienDauGiaDTO phienDauGia;
-    private SanPhamDTO sanPham;
+    private Long maPhienDauGia;
+    private String maSanPham;
     private Long soLuongThamGia;
     private String trangThai;
 

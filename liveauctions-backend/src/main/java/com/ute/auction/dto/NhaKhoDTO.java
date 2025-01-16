@@ -21,7 +21,7 @@ public class NhaKhoDTO {
     private String trangThaiConTrong;
     private String ngayHoatDong;
     private String trangThaiXoa;
-    private PhuongXaDTO phuongXa;
+    private Long maPhuongXa;
     private List<SanPhamDTO> sanPhams;
 
 }

@@ -15,7 +15,7 @@ public interface AnhSanPhamConverter {
 
     AnhSanPhamConverter INSTANCE = Mappers.getMapper(AnhSanPhamConverter.class);
 
-    @Mapping(target = "sanPham.maSanPham", source = "sanPham.maSanPham")
+    @Mapping(target = "maSanPham", source = "sanPham.maSanPham")
     AnhSanPhamDTO toDTO(AnhSanPhamEntity entity);
 
     AnhSanPhamEntity toEntity(AnhSanPhamDTO dto);

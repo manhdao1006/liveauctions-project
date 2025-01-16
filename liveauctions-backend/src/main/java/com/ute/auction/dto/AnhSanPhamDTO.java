@@ -13,6 +13,6 @@ public class AnhSanPhamDTO {
 
     private Long maAnhSanPham;
     private String tenAnh;
-    private SanPhamDTO sanPham;
+    private String maSanPham;
 
 }

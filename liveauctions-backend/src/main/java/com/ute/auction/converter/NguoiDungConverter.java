@@ -16,13 +16,14 @@ public interface NguoiDungConverter {
 
     NguoiDungConverter INSTANCE = Mappers.getMapper(NguoiDungConverter.class);
 
-    @Mapping(target = "vaiTros", source = "vaiTros")
-    @Mapping(target = "phuongXa.maPhuongXa", source = "phuongXa.maPhuongXa")
-    @Mapping(target = "nguoiMua.maNguoiMua", source = "nguoiMua.maNguoiMua")
-    @Mapping(target = "nguoiBan.maNguoiBan", source = "nguoiBan.maNguoiBan")
-    @Mapping(target = "nhanVien.maNhanVien", source = "nhanVien.maNhanVien")
+    @Mapping(target = "vaiTros", ignore = true)
+    @Mapping(target = "maPhuongXa", source = "phuongXa.maPhuongXa")
+    @Mapping(target = "maNguoiMua", source = "nguoiMua.maNguoiMua")
+    @Mapping(target = "maNguoiBan", source = "nguoiBan.maNguoiBan")
+    @Mapping(target = "maNhanVien", source = "nhanVien.maNhanVien")
     NguoiDungDTO toDTO(NguoiDungEntity entity);
 
+    @Mapping(target = "trangThaiXoa", defaultValue = "1")
     NguoiDungEntity toEntity(NguoiDungDTO dto);
 
     @Mapping(target = "maNguoiDung", ignore = true)

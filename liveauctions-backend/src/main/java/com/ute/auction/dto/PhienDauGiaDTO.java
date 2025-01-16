@@ -23,8 +23,8 @@ public class PhienDauGiaDTO {
     private String trangThaiHoatDong;
     private String moTa;
     private String trangThaiXoa;
-    private NhanVienDTO nhanVien;
-    private LoaiDauGiaDTO loaiDauGia;
+    private Long maNhanVien;
+    private Long maLoaiDauGia;
     private List<SanPhamDauGiaDTO> sanPhamDauGias;
     private List<PhieuDatCocDTO> phieuDatCocs;
     private List<LichSuDauGiaDTO> lichSuDauGias;

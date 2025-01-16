@@ -15,7 +15,7 @@ public interface DanhMucConConverter {
 
     DanhMucConConverter INSTANCE = Mappers.getMapper(DanhMucConConverter.class);
 
-    @Mapping(target = "danhMuc.maDanhMuc", source = "danhMuc.maDanhMuc")
+    @Mapping(target = "maDanhMuc", source = "danhMuc.maDanhMuc")
     DanhMucConDTO toDTO(DanhMucConEntity entity);
 
     DanhMucConEntity toEntity(DanhMucConDTO dto);

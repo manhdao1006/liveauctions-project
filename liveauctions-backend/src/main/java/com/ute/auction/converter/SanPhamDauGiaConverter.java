@@ -15,8 +15,8 @@ public interface SanPhamDauGiaConverter {
 
         SanPhamDauGiaConverter INSTANCE = Mappers.getMapper(SanPhamDauGiaConverter.class);
 
-        @Mapping(target = "phienDauGia.maPhienDauGia", source = "phienDauGia.maPhienDauGia")
-        @Mapping(target = "sanPham.maSanPham", source = "sanPham.maSanPham")
+        @Mapping(target = "maPhienDauGia", source = "phienDauGia.maPhienDauGia")
+        @Mapping(target = "maSanPham", source = "sanPham.maSanPham")
         SanPhamDauGiaDTO toDTO(SanPhamDauGiaEntity entity);
 
         SanPhamDauGiaEntity toDTO(SanPhamDauGiaDTO sanPhamDauGiaDTO);

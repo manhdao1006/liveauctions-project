@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PhieuDatCocDTO {
 
-    private PhienDauGiaDTO phienDauGia;
-    private NguoiMuaDTO nguoiMua;
+    private Long maPhienDauGia;
+    private Long maNguoiMua;
     private BigDecimal phanTramDatCoc;
 
 }

@@ -15,9 +15,10 @@ public interface NhaKhoConverter {
 
     NhaKhoConverter INSTANCE = Mappers.getMapper(NhaKhoConverter.class);
 
-    @Mapping(target = "phuongXa.maPhuongXa", source = "phuongXa.maPhuongXa")
+    @Mapping(target = "maPhuongXa", source = "phuongXa.maPhuongXa")
     NhaKhoDTO toDTO(NhaKhoEntity entity);
 
+    @Mapping(target = "trangThaiXoa", defaultValue = "1")
     NhaKhoEntity toEntity(NhaKhoDTO dto);
 
     @Mapping(target = "maNhaKho", ignore = true)

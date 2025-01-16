@@ -22,11 +22,11 @@ public class SanPhamDTO {
     private BigDecimal giaLonNhat;
     private String moTa;
     private String trangThaiXoa;
-    private NguoiBanDTO nguoiBan;
-    private DanhMucConDTO danhMucCon;
-    private LoaiDauGiaDTO loaiDauGia;
-    private NhaKhoDTO nhaKho;
-    private NhaThamDinhDTO nhaThamDinh;
+    private Long maNguoiBan;
+    private Long maDanhMucCon;
+    private Long maLoaiDauGia;
+    private Long maNhaKho;
+    private Long maNhaThamDinh;
     private List<AnhSanPhamDTO> anhSanPhams;
     private List<SanPhamDauGiaDTO> sanPhamDauGias;
     private List<LichSuDauGiaDTO> lichSuDauGias;

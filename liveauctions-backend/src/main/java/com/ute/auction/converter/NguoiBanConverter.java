@@ -16,6 +16,7 @@ public interface NguoiBanConverter {
 
     NguoiBanDTO toDTO(NguoiBanEntity entity);
 
+    @Mapping(target = "trangThaiXoa", defaultValue = "1")
     NguoiBanEntity toEntity(NguoiBanDTO dto);
 
     @Mapping(target = "maNguoiBan", ignore = true)

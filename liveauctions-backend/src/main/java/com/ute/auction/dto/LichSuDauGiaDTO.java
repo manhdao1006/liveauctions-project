@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LichSuDauGiaDTO {
 
-    private PhienDauGiaDTO phienDauGia;
-    private SanPhamDTO sanPham;
-    private NguoiMuaDTO nguoiMua;
-    private ChiPhiDTO chiPhi;
+    private Long maPhienDauGia;
+    private String maSanPham;
+    private Long maNguoiMua;
+    private Long maChiPhi;
     private BigDecimal giaDaDauGia;
     private LocalDate thoiGianDauGia;
     private String trangThaiDauGia;

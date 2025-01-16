@@ -15,7 +15,7 @@ public interface PhuongXaConverter {
 
     PhuongXaConverter INSTANCE = Mappers.getMapper(PhuongXaConverter.class);
 
-    @Mapping(target = "quanHuyen.maQuanHuyen", source = "quanHuyen.maQuanHuyen")
+    @Mapping(target = "maQuanHuyen", source = "quanHuyen.maQuanHuyen")
     PhuongXaDTO toDTO(PhuongXaEntity entity);
 
     PhuongXaEntity toEntity(PhuongXaDTO dto);

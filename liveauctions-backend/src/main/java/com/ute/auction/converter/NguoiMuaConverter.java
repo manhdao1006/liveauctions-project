@@ -16,6 +16,7 @@ public interface NguoiMuaConverter {
 
     NguoiMuaDTO toDTO(NguoiMuaEntity entity);
 
+    @Mapping(target = "trangThaiXoa", defaultValue = "1")
     NguoiMuaEntity toEntity(NguoiMuaDTO dto);
 
     @Mapping(target = "maNguoiMua", ignore = true)

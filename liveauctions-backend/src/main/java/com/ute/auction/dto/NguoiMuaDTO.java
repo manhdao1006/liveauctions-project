@@ -23,7 +23,7 @@ public class NguoiMuaDTO {
     private String cvv;
     private String diaChiThanhToan;
     private String trangThaiXoa;
-    private NguoiDungDTO nguoiDung;
+    private Long maNguoiDung;
     private List<PhieuDatCocDTO> phieuDatCocs;
     private List<LichSuDauGiaDTO> lichSuDauGias;
 

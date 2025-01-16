@@ -16,13 +16,14 @@ public interface SanPhamConverter {
 
     SanPhamConverter INSTANCE = Mappers.getMapper(SanPhamConverter.class);
 
-    @Mapping(target = "nhaThamDinh.maNhaThamDinh", source = "nhaThamDinh.maNhaThamDinh")
-    @Mapping(target = "nhaKho.maNhaKho", source = "nhaKho.maNhaKho")
-    @Mapping(target = "nguoiBan.maNguoiBan", source = "nguoiBan.maNguoiBan")
-    @Mapping(target = "danhMucCon.maDanhMucCon", source = "danhMucCon.maDanhMucCon")
-    @Mapping(target = "loaiDauGia.maLoaiDauGia", source = "loaiDauGia.maLoaiDauGia")
+    @Mapping(target = "maNhaThamDinh", source = "nhaThamDinh.maNhaThamDinh")
+    @Mapping(target = "maNhaKho", source = "nhaKho.maNhaKho")
+    @Mapping(target = "maNguoiBan", source = "nguoiBan.maNguoiBan")
+    @Mapping(target = "maDanhMucCon", source = "danhMucCon.maDanhMucCon")
+    @Mapping(target = "maLoaiDauGia", source = "loaiDauGia.maLoaiDauGia")
     SanPhamDTO toDTO(SanPhamEntity entity);
 
+    @Mapping(target = "trangThaiXoa", defaultValue = "1")
     SanPhamEntity toEntity(SanPhamDTO dto);
 
     @Mapping(target = "maSanPham", ignore = true)

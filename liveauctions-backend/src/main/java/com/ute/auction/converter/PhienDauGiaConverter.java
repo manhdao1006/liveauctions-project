@@ -15,10 +15,11 @@ public interface PhienDauGiaConverter {
 
     PhienDauGiaConverter INSTANCE = Mappers.getMapper(PhienDauGiaConverter.class);
 
-    @Mapping(target = "nhanVien.maNhanVien", source = "nhanVien.maNhanVien")
-    @Mapping(target = "loaiDauGia.maLoaiDauGia", source = "loaiDauGia.maLoaiDauGia")
+    @Mapping(target = "maNhanVien", source = "nhanVien.maNhanVien")
+    @Mapping(target = "maLoaiDauGia", source = "loaiDauGia.maLoaiDauGia")
     PhienDauGiaDTO toDTO(PhienDauGiaEntity entity);
 
+    @Mapping(target = "trangThaiXoa", defaultValue = "1")
     PhienDauGiaEntity toEntity(PhienDauGiaDTO dto);
 
     @Mapping(target = "maPhienDauGia", ignore = true)

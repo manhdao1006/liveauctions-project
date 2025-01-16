@@ -26,9 +26,9 @@ public class NguoiDungDTO {
     private String gioiTinh;
     private String trangThaiXoa;
     private List<VaiTroDTO> vaiTros;
-    private PhuongXaDTO phuongXa;
-    private NguoiMuaDTO nguoiMua;
-    private NguoiBanDTO nguoiBan;
-    private NhanVienDTO nhanVien;
+    private Long maPhuongXa;
+    private Long maNguoiMua;
+    private Long maNguoiBan;
+    private Long maNhanVien;
 
 }

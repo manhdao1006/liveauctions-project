@@ -16,7 +16,7 @@ public class NhanVienDTO {
     private Long maNhanVien;
     private String viTri;
     private String trangThaiXoa;
-    private NguoiDungDTO nguoiDung;
+    private Long maNguoiDung;
     private List<PhienDauGiaDTO> phienDauGias;
 
 }
