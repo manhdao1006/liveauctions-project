@@ -1,7 +1,6 @@
 package com.ute.auction.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -75,9 +74,15 @@ public class SanPhamDauGiaService implements ISanPhamDangKyService {
     @Transactional
     public SanPhamDangKyDTO registerProduct(SanPhamDangKyDTO regisProduct) {
 
-        NguoiBanEntity seller = sellerRepository.findOneByMaNguoiBan(regisProduct.getMaNguoiBan());
-        DanhMucConEntity subCategory = subCategoryRepository.findOneByMaDanhMucCon(regisProduct.getMaDanhMucCon());
-        LoaiDauGiaEntity auctionFormat = auctionFormatRepository.findOneByMaLoaiDauGia(regisProduct.getMaLoaiDauGia());
+        NguoiBanEntity seller = sellerRepository.findOneByMaNguoiBan(regisProduct.getMaNguoiBan())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy người bán nào với mã người bán là: " + regisProduct.getMaNguoiBan()));
+        DanhMucConEntity subCategory = subCategoryRepository.findOneByMaDanhMucCon(regisProduct.getMaDanhMucCon())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy danh mục con nào với mã danh mục con là: " + regisProduct.getMaDanhMucCon()));
+        LoaiDauGiaEntity auctionFormat = auctionFormatRepository.findOneByMaLoaiDauGia(regisProduct.getMaLoaiDauGia())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy loại đấu giá nào với mã loại đấu giá là: " + regisProduct.getMaLoaiDauGia()));
 
         SanPhamDangKyEntity registrationProductEntity = registrationProductConverter.toEntity(regisProduct);
         registrationProductEntity.setNguoiBan(seller);

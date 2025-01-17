@@ -1,5 +1,7 @@
 package com.ute.auction.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +10,6 @@ import com.ute.auction.entity.LoaiDauGiaEntity;
 @Repository
 public interface LoaiDauGiaRepository extends JpaRepository<LoaiDauGiaEntity, Long> {
 
-    LoaiDauGiaEntity findOneByMaLoaiDauGia(long maLoaiDauGia);
+    Optional<LoaiDauGiaEntity> findOneByMaLoaiDauGia(long maLoaiDauGia);
 
 }
