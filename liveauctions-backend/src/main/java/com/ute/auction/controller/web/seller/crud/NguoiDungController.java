@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.NguoiDungDTO;
-import com.ute.auction.dto.PhuongXaDTO;
 import com.ute.auction.exception.ResourceExistedException;
 import com.ute.auction.service.INguoiDungService;
 
