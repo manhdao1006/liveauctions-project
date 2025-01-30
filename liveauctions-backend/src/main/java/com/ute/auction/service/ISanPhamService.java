@@ -12,4 +12,12 @@ public interface ISanPhamService {
 
     List<SanPhamDTO> sortedDescByStartingPrice(long sellerId, int page, int size);
 
+    List<SanPhamDTO> getSanPhams();
+
+    SanPhamDTO addSanPham(SanPhamDTO sanPhamDTO);
+
+    SanPhamDTO updateSanPham(String maSanPham, SanPhamDTO updatedSanPham);
+
+    void deleteSanPham(String maSanPham);
+
 }

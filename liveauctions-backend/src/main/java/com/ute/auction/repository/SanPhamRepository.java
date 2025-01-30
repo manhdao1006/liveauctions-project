@@ -1,5 +1,8 @@
 package com.ute.auction.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +13,10 @@ import com.ute.auction.entity.SanPhamEntity;
 
 @Repository
 public interface SanPhamRepository extends JpaRepository<SanPhamEntity, String> {
+
+        List<SanPhamEntity> findSanPhamsByTrangThaiXoa(String trangThaiXoa);
+
+        Optional<SanPhamEntity> findOneByMaSanPham(String maSanPham);
 
         @Query(value = "SELECT p.maSanPham, p.tenSanPham, p.giaKhoiDiem, p.trangThai, p.giaNhoNhat, p.giaLonNhat, p.moTa, p.trangThaiXoa, p.maNguoiBan, p.maDanhMucCon, p.maLoaiDauGia, p.maNhaKho, p.maNhaThamDinh, "
                         +
