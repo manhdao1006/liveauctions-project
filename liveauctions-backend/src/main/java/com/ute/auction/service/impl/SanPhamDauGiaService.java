@@ -3,151 +3,85 @@ package com.ute.auction.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.ute.auction.converter.SanPhamDangKyConverter;
-import com.ute.auction.dto.SanPhamDangKyDTO;
-import com.ute.auction.entity.DanhMucConEntity;
-import com.ute.auction.entity.LoaiDauGiaEntity;
-import com.ute.auction.entity.NguoiBanEntity;
-import com.ute.auction.entity.SanPhamDangKyEntity;
+import com.ute.auction.converter.SanPhamDauGiaConverter;
+import com.ute.auction.dto.SanPhamDauGiaDTO;
+import com.ute.auction.entity.PhienDauGiaEntity;
+import com.ute.auction.entity.SanPhamDauGiaEntity;
+import com.ute.auction.entity.SanPhamEntity;
 import com.ute.auction.exception.ResourceNotFoundException;
-import com.ute.auction.repository.DanhMucConRepository;
-import com.ute.auction.repository.LoaiDauGiaRepository;
-import com.ute.auction.repository.NguoiBanRepository;
-import com.ute.auction.repository.SanPhamDangKyRepository;
-import com.ute.auction.service.ISanPhamDangKyService;
+import com.ute.auction.repository.PhienDauGiaRepository;
+import com.ute.auction.repository.SanPhamDauGiaRepository;
+import com.ute.auction.repository.SanPhamRepository;
+import com.ute.auction.service.ISanPhamDauGiaService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class SanPhamDauGiaService implements ISanPhamDangKyService {
+public class SanPhamDauGiaService implements ISanPhamDauGiaService {
 
-    private final SanPhamDangKyRepository registrationProductRepository;
-    private final NguoiBanRepository sellerRepository;
-    private final DanhMucConRepository subCategoryRepository;
-    private final LoaiDauGiaRepository auctionFormatRepository;
-    private final SanPhamDangKyConverter registrationProductConverter;
+        private final SanPhamDauGiaConverter sanPhamDauGiaConverter;
+        private final SanPhamDauGiaRepository sanPhamDauGiaRepository;
+        private final PhienDauGiaRepository phienDauGiaRepository;
+        private final SanPhamRepository sanPhamRepository;
 
-    private void checkExistedSeller(long sellerId) {
-        boolean sellerExists = sellerRepository.existsByMaNguoiBan(sellerId);
-        if (!sellerExists) {
-            throw new ResourceNotFoundException("No seller with id: " + sellerId);
-        }
-    }
-
-    /*
-     * get all registration products by seller id
-     * 
-     * @param sellerId, page, size
-     * 
-     * @return registration products
-     */
-    @Override
-    public List<SanPhamDangKyDTO> getRegistrationProductsBySellerId(long sellerId, int page, int size) {
-        checkExistedSeller(sellerId);
-
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<SanPhamDangKyEntity> entities = registrationProductRepository
-                .findRegistrationProductsBySellerId(sellerId, pageable);
-
-        if (page > entities.getTotalPages() || page <= 0) {
-            throw new ResourceNotFoundException("No products with page: " + page);
+        @Override
+        public List<SanPhamDauGiaDTO> getSanPhamDauGias() {
+                List<SanPhamDauGiaEntity> entities = sanPhamDauGiaRepository.findAll();
+                return entities.stream().map(sanPhamDauGiaConverter::toDTO).collect(Collectors.toList());
         }
 
-        return entities.stream().map(registrationProductConverter::toDTO).collect(Collectors.toList());
-    }
-
-    /*
-     * register product
-     * 
-     * @param regisProduct
-     * 
-     * @return regisProduct
-     */
-    @Override
-    @Transactional
-    public SanPhamDangKyDTO registerProduct(SanPhamDangKyDTO regisProduct) {
-
-        NguoiBanEntity seller = sellerRepository.findOneByMaNguoiBan(regisProduct.getMaNguoiBan())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Không tìm thấy người bán nào với mã người bán là: " + regisProduct.getMaNguoiBan()));
-        DanhMucConEntity subCategory = subCategoryRepository.findOneByMaDanhMucCon(regisProduct.getMaDanhMucCon())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Không tìm thấy danh mục con nào với mã danh mục con là: " + regisProduct.getMaDanhMucCon()));
-        LoaiDauGiaEntity auctionFormat = auctionFormatRepository.findOneByMaLoaiDauGia(regisProduct.getMaLoaiDauGia())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Không tìm thấy loại đấu giá nào với mã loại đấu giá là: " + regisProduct.getMaLoaiDauGia()));
-
-        SanPhamDangKyEntity registrationProductEntity = registrationProductConverter.toEntity(regisProduct);
-        registrationProductEntity.setNguoiBan(seller);
-        registrationProductEntity.setDanhMucCon(subCategory);
-        registrationProductEntity.setLoaiDauGia(auctionFormat);
-
-        registrationProductEntity = registrationProductRepository.save(registrationProductEntity);
-
-        return registrationProductConverter.toDTO(registrationProductEntity);
-    }
-
-    @Override
-    public List<SanPhamDangKyDTO> sortedAscByStartingPrice(long sellerId, int page, int size) {
-        checkExistedSeller(sellerId);
-
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<SanPhamDangKyEntity> entities = registrationProductRepository.sortedAscByStartingPrice(sellerId,
-                pageable);
-        if (page > entities.getTotalPages() || page <= 0) {
-            throw new ResourceNotFoundException("No registration products with page: " + page);
+        @Transactional
+        @Override
+        public SanPhamDauGiaDTO addSanPhamDauGia(SanPhamDauGiaDTO sanPhamDauGiaDTO) {
+                PhienDauGiaEntity phienDauGiaEntity = phienDauGiaRepository
+                                .findOneByMaPhienDauGia(sanPhamDauGiaDTO.getMaPhienDauGia())
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Không tìm thấy phiên đấu giá nào với mã phiên đấu giá là: "
+                                                                + sanPhamDauGiaDTO.getMaPhienDauGia()));
+                SanPhamEntity sanPhamEntity = sanPhamRepository
+                                .findOneByMaSanPham(sanPhamDauGiaDTO.getMaSanPham())
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Không tìm thấy sản phẩm nào với mã sản phẩm là: "
+                                                                + sanPhamDauGiaDTO.getMaSanPham()));
+                SanPhamDauGiaEntity sanPhamDauGiaEntity = sanPhamDauGiaConverter.toEntity(sanPhamDauGiaDTO);
+                sanPhamDauGiaEntity.setPhienDauGia(phienDauGiaEntity);
+                sanPhamDauGiaEntity.setSanPham(sanPhamEntity);
+                return sanPhamDauGiaConverter.toDTO(sanPhamDauGiaRepository.save(sanPhamDauGiaEntity));
         }
 
-        return entities.stream().map(registrationProductConverter::toDTO).collect(Collectors.toList());
-    }
+        @Transactional
+        @Override
+        public SanPhamDauGiaDTO updateSanPhamDauGia(long maPhienDauGia, String maSanPham,
+                        SanPhamDauGiaDTO updatedSanPhamDauGia) {
+                SanPhamDauGiaEntity sanPhamDauGiaEntity = sanPhamDauGiaRepository
+                                .findOneByMaSanPhamDauGia_MaPhienDauGiaAndMaSanPhamDauGia_MaSanPham(maPhienDauGia,
+                                                maSanPham)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Không tìm thấy sản phẩm đấu giá nào!"));
 
-    @Override
-    public List<SanPhamDangKyDTO> sortedDescByStartingPrice(long sellerId, int page, int size) {
-        checkExistedSeller(sellerId);
-
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<SanPhamDangKyEntity> entities = registrationProductRepository.sortedDescByStartingPrice(sellerId,
-                pageable);
-        if (page > entities.getTotalPages() || page <= 0) {
-            throw new ResourceNotFoundException("No registration products with page: " + page);
+                if (updatedSanPhamDauGia.getMaPhienDauGia() != null) {
+                        PhienDauGiaEntity phienDauGiaEntity = phienDauGiaRepository
+                                        .findOneByMaPhienDauGia(updatedSanPhamDauGia.getMaPhienDauGia())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "Không tìm thấy phiên đấu giá nào với mã phiên đấu giá là: "
+                                                                        + updatedSanPhamDauGia.getMaPhienDauGia()));
+                        sanPhamDauGiaEntity.setPhienDauGia(phienDauGiaEntity);
+                }
+                if (updatedSanPhamDauGia.getMaSanPham() != null) {
+                        SanPhamEntity sanPhamEntity = sanPhamRepository
+                                        .findOneByMaSanPham(updatedSanPhamDauGia.getMaSanPham())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "Không tìm thấy sản phẩm nào với mã sản phẩm là: "
+                                                                        + updatedSanPhamDauGia.getMaSanPham()));
+                        sanPhamDauGiaEntity.setSanPham(sanPhamEntity);
+                }
+                SanPhamDauGiaEntity sanPhamDauGiaUpdated = sanPhamDauGiaConverter.toEntity(updatedSanPhamDauGia,
+                                sanPhamDauGiaEntity);
+                return sanPhamDauGiaConverter.toDTO(sanPhamDauGiaRepository.save(sanPhamDauGiaUpdated));
         }
-
-        return entities.stream().map(registrationProductConverter::toDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<SanPhamDangKyDTO> sortedAscByRegistrationDate(long sellerId, int page, int size) {
-        checkExistedSeller(sellerId);
-
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<SanPhamDangKyEntity> entities = registrationProductRepository.sortedAscByRegistrationDate(sellerId,
-                pageable);
-        if (page > entities.getTotalPages() || page <= 0) {
-            throw new ResourceNotFoundException("No registration products with page: " + page);
-        }
-
-        return entities.stream().map(registrationProductConverter::toDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<SanPhamDangKyDTO> sortedDescByRegistrationDate(long sellerId, int page, int size) {
-        checkExistedSeller(sellerId);
-
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<SanPhamDangKyEntity> entities = registrationProductRepository.sortedDescByRegistrationDate(sellerId,
-                pageable);
-        if (page > entities.getTotalPages() || page <= 0) {
-            throw new ResourceNotFoundException("No registration products with page: " + page);
-        }
-
-        return entities.stream().map(registrationProductConverter::toDTO).collect(Collectors.toList());
-    }
 
 }

@@ -19,9 +19,9 @@ public interface SanPhamDauGiaConverter {
         @Mapping(target = "maSanPham", source = "sanPham.maSanPham")
         SanPhamDauGiaDTO toDTO(SanPhamDauGiaEntity entity);
 
-        SanPhamDauGiaEntity toDTO(SanPhamDauGiaDTO sanPhamDauGiaDTO);
+        SanPhamDauGiaEntity toEntity(SanPhamDauGiaDTO dto);
 
         @Mapping(target = "maSanPhamDauGia", ignore = true)
-        SanPhamDauGiaEntity toDTO(SanPhamDauGiaDTO sanPhamDauGiaDTO,
+        SanPhamDauGiaEntity toEntity(SanPhamDauGiaDTO sanPhamDauGiaDTO,
                         @MappingTarget SanPhamDauGiaEntity updatedSanPhamDauGia);
 }
