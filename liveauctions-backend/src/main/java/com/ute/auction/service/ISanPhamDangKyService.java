@@ -6,6 +6,10 @@ import com.ute.auction.dto.SanPhamDangKyDTO;
 
 public interface ISanPhamDangKyService {
 
+    List<SanPhamDangKyDTO> getSanPhamDangKys();
+
+    SanPhamDangKyDTO getSanPhamDangKyByMaSanPhamDangKy(long maSanPhamDangKy);
+
     List<SanPhamDangKyDTO> getRegistrationProductsBySellerId(long sellerId, int page, int size);
 
     SanPhamDangKyDTO registerProduct(SanPhamDangKyDTO regisProduct);

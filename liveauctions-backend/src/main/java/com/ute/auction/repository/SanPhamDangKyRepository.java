@@ -1,5 +1,8 @@
 package com.ute.auction.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +13,11 @@ import com.ute.auction.entity.SanPhamDangKyEntity;
 
 @Repository
 public interface SanPhamDangKyRepository extends JpaRepository<SanPhamDangKyEntity, Long> {
+
+        List<SanPhamDangKyEntity> findSanPhamDangKysByTrangThaiXoa(String trangThaiXoa);
+
+        Optional<SanPhamDangKyEntity> findOneByMaSanPhamDangKyAndTrangThaiXoa(long maSanPhamDangKy,
+                        String trangThaiXoa);
 
         @Query(value = "SELECT rp.maSanPhamDangKy, rp.tenSanPham, rp.giaKhoiDiem, rp.trangThaiDangKy, rp.ngayDangKy, rp.moTa, rp.trangThaiXoa, rp.maNguoiBan, rp.maDanhMucCon, rp.maLoaiDauGia "
                         +
