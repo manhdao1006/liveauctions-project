@@ -1,4 +1,4 @@
-package com.ute.auction.controller.api.v1.admin.crud;
+package com.ute.auction.controller.api.v1.staff.crud;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController(value = "danhMucCon" + ApiName.CRUD_ADMIN)
-@RequestMapping(ApiUrl.API_ADMIN + "/danh-muc-con")
+@RequestMapping(ApiUrl.API_STAFF + "/danh-muc-con")
 public class DanhMucConController {
 
     private final IDanhMucConService danhMucConService;

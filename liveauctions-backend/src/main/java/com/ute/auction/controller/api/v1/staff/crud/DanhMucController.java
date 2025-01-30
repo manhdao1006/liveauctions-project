@@ -1,28 +1,27 @@
-package com.ute.auction.controller.api.v1.admin.crud;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import com.ute.auction.constant.ApiName;
-import com.ute.auction.constant.ApiUrl;
-import com.ute.auction.service.IDanhMucService;
-import com.ute.auction.dto.ApiResponse;
-import com.ute.auction.dto.DanhMucDTO;
-
-import lombok.RequiredArgsConstructor;
+package com.ute.auction.controller.api.v1.staff.crud;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ute.auction.constant.ApiName;
+import com.ute.auction.constant.ApiUrl;
+import com.ute.auction.dto.ApiResponse;
+import com.ute.auction.dto.DanhMucDTO;
+import com.ute.auction.service.IDanhMucService;
+
+import lombok.RequiredArgsConstructor;
+
 @RequiredArgsConstructor
 @RestController(value = "danhMuc" + ApiName.CRUD_ADMIN)
-@RequestMapping(ApiUrl.API_ADMIN + "/danh-muc")
+@RequestMapping(ApiUrl.API_STAFF + "/danh-muc")
 public class DanhMucController {
 
     private final IDanhMucService danhMucService;

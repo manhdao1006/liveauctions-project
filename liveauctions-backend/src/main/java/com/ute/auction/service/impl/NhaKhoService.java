@@ -14,6 +14,7 @@ import com.ute.auction.repository.NhaKhoRepository;
 import com.ute.auction.repository.PhuongXaRepository;
 import com.ute.auction.service.INhaKhoService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,6 +31,7 @@ public class NhaKhoService implements INhaKhoService {
         return entities.stream().map(nhaKhoConverter::toDTO).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public NhaKhoDTO addNhaKho(NhaKhoDTO nhaKhoDTO) {
         PhuongXaEntity phuongXaEntity = phuongXaRepository.findOneByMaPhuongXa(nhaKhoDTO.getMaPhuongXa())
@@ -40,6 +42,7 @@ public class NhaKhoService implements INhaKhoService {
         return nhaKhoConverter.toDTO(nhaKhoRepository.save(nhaKhoEntity));
     }
 
+    @Transactional
     @Override
     public NhaKhoDTO updateNhaKho(long maNhaKho, NhaKhoDTO updatedNhaKho) {
         NhaKhoEntity nhaKhoEntity = nhaKhoRepository.findOneByMaNhaKho(maNhaKho)
@@ -55,6 +58,7 @@ public class NhaKhoService implements INhaKhoService {
         return nhaKhoConverter.toDTO(nhaKhoRepository.save(nhaKhoUpdated));
     }
 
+    @Transactional
     @Override
     public void deleteNhaKho(long maNhaKho) {
         NhaKhoEntity nhaKhoEntity = nhaKhoRepository.findOneByMaNhaKho(maNhaKho)

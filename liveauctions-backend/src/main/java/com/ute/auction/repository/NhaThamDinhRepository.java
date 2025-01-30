@@ -15,6 +15,8 @@ import com.ute.auction.entity.NhaThamDinhEntity;
 @Repository
 public interface NhaThamDinhRepository extends JpaRepository<NhaThamDinhEntity, Long> {
 
+        Optional<NhaThamDinhEntity> findOneByMaNhaThamDinh(long maNhaThamDinh);
+
         Optional<NhaThamDinhEntity> findOneByEmail(String email);
 
         @Query(value = "SELECT ap.* FROM nha_tham_dinh ap WHERE " +
