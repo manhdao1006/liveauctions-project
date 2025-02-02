@@ -21,6 +21,7 @@ public class NguoiDungDTO {
     private String soDienThoai;
     private String diaChi;
     private String trangThaiHoatDong;
+    private String avatarId;
     private String avatar;
     private LocalDate ngaySinh;
     private String gioiTinh;

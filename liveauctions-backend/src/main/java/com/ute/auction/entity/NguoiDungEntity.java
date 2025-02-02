@@ -53,6 +53,9 @@ public class NguoiDungEntity {
     @Column(name = " trangThaiHoatDong")
     private String trangThaiHoatDong;
 
+    @Column(name = "avatarId")
+    private String avatarId;
+
     @Column(name = "avatar")
     private String avatar;
 

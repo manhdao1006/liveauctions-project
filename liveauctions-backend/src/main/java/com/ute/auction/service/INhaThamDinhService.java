@@ -1,6 +1,9 @@
 package com.ute.auction.service;
 
+import java.io.IOException;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ute.auction.dto.NhaThamDinhDTO;
 
@@ -12,9 +15,9 @@ public interface INhaThamDinhService {
 
     NhaThamDinhDTO getAppraiserByEmail(String email);
 
-    NhaThamDinhDTO addAppraiser(NhaThamDinhDTO appraiser);
+    NhaThamDinhDTO addAppraiser(NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar) throws IOException;
 
-    NhaThamDinhDTO updateAppraiser(long id, NhaThamDinhDTO updatedAppraiser);
+    NhaThamDinhDTO updateAppraiser(long id, NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar) throws IOException;
 
     void deleteAppraiser(long id);
 

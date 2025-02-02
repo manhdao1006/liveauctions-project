@@ -1,17 +1,17 @@
 package com.ute.auction.service.impl;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.ute.auction.converter.NguoiDungConverter;
 import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.entity.NguoiBanEntity;
@@ -38,55 +38,56 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NguoiDungService implements INguoiDungService {
 
-    private final NguoiDungRepository userRepository;
-    private final PhuongXaRepository cityRepository;
-    private final VaiTroRepository roleRepository;
-    private final NguoiMuaRepository buyerRepository;
-    private final NguoiBanRepository sellerRepository;
-    private final NhanVienRepository staffRepository;
-    private final NguoiDungConverter userConverter;
+    private final NguoiDungRepository nguoiDungRepository;
+    private final PhuongXaRepository phuongXaRepository;
+    private final VaiTroRepository vaiTroRepository;
+    private final NguoiMuaRepository nguoiMuaRepository;
+    private final NguoiBanRepository nguoiBanRepository;
+    private final NhanVienRepository nhanVienRepository;
+    private final NguoiDungConverter nguoiDungConverter;
     private final PasswordEncoder passwordEncoder;
-
-    @Value("${user.images.path}")
-    private String imagePath;
+    private final Cloudinary cloudinary;
 
     /*
      * edit profile of seller by id
      * 
-     * @param id, updatedUser
+     * @param id, newNguoiDung
      * 
      * @return userUpdated
      */
     @Override
     @Transactional
-    public NguoiDungDTO updateProfile(long id, NguoiDungDTO userDTO, MultipartFile avatar) throws IOException {
-        NguoiDungEntity oldUser = userRepository.findByUserId(id);
-        if (oldUser == null) {
-            throw new ResourceNotFoundException("User with id " + id + " is not found");
-        }
+    public NguoiDungDTO updateProfile(long maNguoiDung, NguoiDungDTO nguoiDungDTO, MultipartFile avatar)
+            throws IOException {
+        NguoiDungEntity oldNguoiDung = nguoiDungRepository.findOneByMaNguoiDung(maNguoiDung)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không có người dùng nào có mã người dùng là " + maNguoiDung));
 
-        if (userDTO.getMaPhuongXa() != null) {
-            PhuongXaEntity cityEntity = cityRepository.findOneByMaPhuongXa(userDTO.getMaPhuongXa())
+        NguoiDungEntity newNguoiDung = nguoiDungConverter.toEntity(nguoiDungDTO, oldNguoiDung);
+
+        if (nguoiDungDTO.getMaPhuongXa() != null) {
+            PhuongXaEntity cityEntity = phuongXaRepository.findOneByMaPhuongXa(nguoiDungDTO.getMaPhuongXa())
                     .orElseThrow(() -> new ResourceNotFoundException(
-                            "City with id " + userDTO.getMaPhuongXa() + " is not found"));
-            oldUser.setPhuongXa(cityEntity);
+                            "Không có phường xã nào với mã phường xã là " + nguoiDungDTO.getMaPhuongXa()));
+            oldNguoiDung.setPhuongXa(cityEntity);
         }
 
         if (avatar != null && !avatar.isEmpty()) {
-            if (userDTO.getAvatar() != null && !userDTO.getAvatar().isEmpty()) {
-                // delete old avatar
-                System.out.println(userDTO.getAvatar());
-                Path path = Paths.get(imagePath, userDTO.getAvatar());
-                Files.deleteIfExists(path);
+            if (oldNguoiDung.getMaNguoiDung() != null) {
+                if (oldNguoiDung.getAvatarId() != null && !oldNguoiDung.getAvatarId().isEmpty()) {
+                    cloudinary.uploader().destroy(newNguoiDung.getAvatarId(), ObjectUtils.emptyMap());
+                }
             }
 
-            validateImage(avatar);
-            String fileName = saveImageToFolder(avatar);
-            oldUser.setAvatar(fileName);
+            Map<String, String> avatarInfo = uploadAvatar(avatar);
+            newNguoiDung.setAvatarId(avatarInfo.get("publicId"));
+            newNguoiDung.setAvatar(avatarInfo.get("url"));
+        } else {
+            newNguoiDung.setAvatarId(newNguoiDung.getAvatarId());
+            newNguoiDung.setAvatar(newNguoiDung.getAvatar());
         }
 
-        NguoiDungEntity updatedUser = userConverter.toEntity(userDTO, oldUser);
-        return userConverter.toDTO(userRepository.save(updatedUser));
+        return nguoiDungConverter.toDTO(nguoiDungRepository.save(newNguoiDung));
     }
 
     /*
@@ -97,11 +98,11 @@ public class NguoiDungService implements INguoiDungService {
     @Override
     @Transactional
     public void forgotPassword(String email, String password) {
-        NguoiDungEntity userEntity = (userRepository.findByEmail(email)
+        NguoiDungEntity userEntity = (nguoiDungRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email)));
 
         userEntity.setMatKhau(passwordEncoder.encode(password));
-        userRepository.save(userEntity);
+        nguoiDungRepository.save(userEntity);
     }
 
     /*
@@ -113,26 +114,26 @@ public class NguoiDungService implements INguoiDungService {
      */
     @Override
     @Transactional
-    public NguoiDungDTO register(NguoiDungDTO userDTO) {
-        if (userRepository.existsByEmail(userDTO.getEmail())) {
+    public NguoiDungDTO register(NguoiDungDTO nguoiDungDTO) {
+        if (nguoiDungRepository.existsByEmail(nguoiDungDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        NguoiDungEntity userEntity = userConverter.toEntity(userDTO);
-        userEntity.setEmail(userDTO.getEmail());
-        userEntity.setMatKhau(passwordEncoder.encode(userDTO.getMatKhau()));
+        NguoiDungEntity userEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
+        userEntity.setEmail(nguoiDungDTO.getEmail());
+        userEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
 
-        VaiTroEntity roles = roleRepository.findByTenVaiTro("ROLE_BUYER")
+        VaiTroEntity roles = vaiTroRepository.findByTenVaiTro("ROLE_BUYER")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
         userEntity.setVaiTros(Collections.singletonList(roles));
 
-        NguoiDungEntity savedUserEntity = userRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(userEntity);
 
         NguoiMuaEntity buyerEntity = new NguoiMuaEntity();
         buyerEntity.setNguoiDung(savedUserEntity);
-        buyerRepository.save(buyerEntity);
+        nguoiMuaRepository.save(buyerEntity);
 
-        return userConverter.toDTO(savedUserEntity);
+        return nguoiDungConverter.toDTO(savedUserEntity);
     }
 
     /*
@@ -143,26 +144,27 @@ public class NguoiDungService implements INguoiDungService {
      * @return seller
      */
     @Override
-    public NguoiDungDTO registerSeller(NguoiDungDTO userDTO) {
-        if (userRepository.existsByEmail(userDTO.getEmail())) {
+    @Transactional
+    public NguoiDungDTO registerSeller(NguoiDungDTO nguoiDungDTO) {
+        if (nguoiDungRepository.existsByEmail(nguoiDungDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        NguoiDungEntity userEntity = userConverter.toEntity(userDTO);
-        userEntity.setEmail(userDTO.getEmail());
-        userEntity.setMatKhau(passwordEncoder.encode(userDTO.getMatKhau()));
+        NguoiDungEntity userEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
+        userEntity.setEmail(nguoiDungDTO.getEmail());
+        userEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
 
-        VaiTroEntity roles = roleRepository.findByTenVaiTro("ROLE_SELLER")
+        VaiTroEntity roles = vaiTroRepository.findByTenVaiTro("ROLE_SELLER")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
         userEntity.setVaiTros(Collections.singletonList(roles));
 
-        NguoiDungEntity savedUserEntity = userRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(userEntity);
 
         NguoiBanEntity sellerEntity = new NguoiBanEntity();
         sellerEntity.setNguoiDung(savedUserEntity);
-        sellerRepository.save(sellerEntity);
+        nguoiBanRepository.save(sellerEntity);
 
-        return userConverter.toDTO(savedUserEntity);
+        return nguoiDungConverter.toDTO(savedUserEntity);
     }
 
     /*
@@ -173,26 +175,27 @@ public class NguoiDungService implements INguoiDungService {
      * @return staff
      */
     @Override
-    public NguoiDungDTO registerStaff(NguoiDungDTO userDTO) {
-        if (userRepository.existsByEmail(userDTO.getEmail())) {
+    @Transactional
+    public NguoiDungDTO registerStaff(NguoiDungDTO nguoiDungDTO) {
+        if (nguoiDungRepository.existsByEmail(nguoiDungDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        NguoiDungEntity userEntity = userConverter.toEntity(userDTO);
-        userEntity.setEmail(userDTO.getEmail());
-        userEntity.setMatKhau(passwordEncoder.encode(userDTO.getMatKhau()));
+        NguoiDungEntity userEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
+        userEntity.setEmail(nguoiDungDTO.getEmail());
+        userEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
 
-        VaiTroEntity roles = roleRepository.findByTenVaiTro("ROLE_STAFF")
+        VaiTroEntity roles = vaiTroRepository.findByTenVaiTro("ROLE_STAFF")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
         userEntity.setVaiTros(Collections.singletonList(roles));
 
-        NguoiDungEntity savedUserEntity = userRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(userEntity);
 
         NhanVienEntity staffEntity = new NhanVienEntity();
         staffEntity.setNguoiDung(savedUserEntity);
-        staffRepository.save(staffEntity);
+        nhanVienRepository.save(staffEntity);
 
-        return userConverter.toDTO(savedUserEntity);
+        return nguoiDungConverter.toDTO(savedUserEntity);
     }
 
     /*
@@ -203,56 +206,61 @@ public class NguoiDungService implements INguoiDungService {
      * @return admin
      */
     @Override
-    public NguoiDungDTO registerAdmin(NguoiDungDTO userDTO) {
-        if (userRepository.existsByEmail(userDTO.getEmail())) {
+    @Transactional
+    public NguoiDungDTO registerAdmin(NguoiDungDTO nguoiDungDTO) {
+        if (nguoiDungRepository.existsByEmail(nguoiDungDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        NguoiDungEntity userEntity = userConverter.toEntity(userDTO);
-        userEntity.setEmail(userDTO.getEmail());
-        userEntity.setMatKhau(passwordEncoder.encode(userDTO.getMatKhau()));
+        NguoiDungEntity userEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
+        userEntity.setEmail(nguoiDungDTO.getEmail());
+        userEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
 
-        VaiTroEntity roles = roleRepository.findByTenVaiTro("ROLE_ADMIN")
+        VaiTroEntity roles = vaiTroRepository.findByTenVaiTro("ROLE_ADMIN")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
         userEntity.setVaiTros(Collections.singletonList(roles));
 
-        NguoiDungEntity savedUserEntity = userRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(userEntity);
 
         NhanVienEntity staffEntity = new NhanVienEntity();
         staffEntity.setNguoiDung(savedUserEntity);
-        staffRepository.save(staffEntity);
+        nhanVienRepository.save(staffEntity);
 
-        return userConverter.toDTO(savedUserEntity);
-    }
-
-    // save image to folder
-    private String saveImageToFolder(MultipartFile imageFIle) throws IOException {
-        try {
-            String fileName = System.currentTimeMillis() + "_" + imageFIle.getOriginalFilename();
-            Path path = Paths.get(imagePath, fileName);
-            Files.createDirectories(path.getParent());
-            Files.write(path, imageFIle.getBytes());
-
-            return fileName;
-        } catch (IOException e) {
-            throw new ResourceNotFormatException("Error saving file: " + e.getMessage());
-        }
-    }
-
-    // validate image
-    @SuppressWarnings("null")
-    private void validateImage(MultipartFile imageFile) {
-        String contentType = imageFile.getContentType();
-        if (!contentType.startsWith("image/")) {
-            throw new ResourceNotFormatException("Uploaded file is not an image");
-        }
+        return nguoiDungConverter.toDTO(savedUserEntity);
     }
 
     @Override
     public List<NguoiDungDTO> getAllUsersByRole(long roleId) {
-        List<NguoiDungEntity> entities = userRepository.findNguoiDungsByVaiTro(roleId);
+        List<NguoiDungEntity> entities = nguoiDungRepository.findNguoiDungsByVaiTro(roleId);
 
-        return entities.stream().map(userConverter::toDTO).toList();
+        return entities.stream().map(nguoiDungConverter::toDTO).toList();
+    }
+
+    @SuppressWarnings({ "null", "unchecked" })
+    private Map<String, String> uploadAvatar(MultipartFile avatar) throws IOException {
+        Map<String, String> avatarInfo = new HashMap<>();
+
+        // check valid image
+        if (avatar == null || avatar.isEmpty()) {
+            avatarInfo.put("publicId", null);
+            avatarInfo.put("url", null);
+        } else {
+            if (!avatar.getContentType().startsWith("image/")) {
+                throw new ResourceNotFormatException("Phải là file ảnh!");
+            }
+            // upload image
+            Map<String, Object> result = cloudinary.uploader().upload(avatar.getBytes(),
+                    ObjectUtils.asMap("folder", "nguoi-dung"));
+
+            // get info from cloudinary
+            String publicId = (String) result.get("public_id");
+            String url = (String) result.get("url");
+
+            avatarInfo.put("publicId", publicId);
+            avatarInfo.put("url", url);
+        }
+
+        return avatarInfo;
     }
 
 }

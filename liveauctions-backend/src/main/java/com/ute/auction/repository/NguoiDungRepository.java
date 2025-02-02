@@ -12,6 +12,8 @@ import com.ute.auction.entity.NguoiDungEntity;
 @Repository
 public interface NguoiDungRepository extends JpaRepository<NguoiDungEntity, Long> {
 
+        Optional<NguoiDungEntity> findOneByMaNguoiDung(long maNguoiDung);
+
         @Query("SELECT u FROM NguoiDungEntity u " +
                         "JOIN u.phuongXa c " +
                         "JOIN c.quanHuyen st " +
