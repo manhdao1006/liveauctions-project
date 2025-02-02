@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class AnhSanPhamDTO {
 
     private Long maAnhSanPham;
+    private String tenAnhId;
     private String tenAnh;
     private String maSanPham;
 

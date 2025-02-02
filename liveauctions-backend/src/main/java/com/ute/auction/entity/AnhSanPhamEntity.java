@@ -25,6 +25,9 @@ public class AnhSanPhamEntity {
     @Column(name = "maAnhSanPham")
     private Long maAnhSanPham;
 
+    @Column(name = "tenAnhId")
+    private String tenAnhId;
+
     @Column(name = "tenAnh")
     private String tenAnh;
 

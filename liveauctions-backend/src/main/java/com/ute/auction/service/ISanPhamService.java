@@ -1,6 +1,9 @@
 package com.ute.auction.service;
 
+import java.io.IOException;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ute.auction.dto.SanPhamDTO;
 
@@ -14,9 +17,10 @@ public interface ISanPhamService {
 
     List<SanPhamDTO> getSanPhams();
 
-    SanPhamDTO addSanPham(SanPhamDTO sanPhamDTO);
+    SanPhamDTO addSanPham(SanPhamDTO sanPhamDTO, List<MultipartFile> anhSanPhamList) throws IOException;
 
-    SanPhamDTO updateSanPham(String maSanPham, SanPhamDTO updatedSanPham);
+    SanPhamDTO updateSanPham(String maSanPham, SanPhamDTO sanPhamDTO, List<MultipartFile> anhSanPhamList)
+            throws IOException;
 
     void deleteSanPham(String maSanPham);
 
