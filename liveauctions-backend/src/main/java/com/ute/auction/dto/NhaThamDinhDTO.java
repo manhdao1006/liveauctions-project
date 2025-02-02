@@ -22,6 +22,7 @@ public class NhaThamDinhDTO {
     private String diaChi;
     private String loai;
     private String trangThaiHoatDong;
+    private String avatarId;
     private String avatar;
     private LocalDate ngaySinh;
     private String moTa;

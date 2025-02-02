@@ -1,7 +1,9 @@
 package com.ute.auction.service.impl;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -9,11 +11,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.ute.auction.converter.NhaThamDinhConverter;
 import com.ute.auction.dto.NhaThamDinhDTO;
 import com.ute.auction.entity.NhaThamDinhEntity;
 import com.ute.auction.exception.ResourceExistedException;
+import com.ute.auction.exception.ResourceNotFormatException;
 import com.ute.auction.exception.ResourceNotFoundException;
 import com.ute.auction.repository.NhaThamDinhRepository;
 import com.ute.auction.service.INhaThamDinhService;
@@ -26,8 +32,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NhaThamDinhService implements INhaThamDinhService {
 
-    private final NhaThamDinhRepository appraiserRepository;
-    private final NhaThamDinhConverter appraiserConverter;
+    private final NhaThamDinhRepository nhaThamDinhRepository;
+    private final NhaThamDinhConverter nhaThamDinhConverter;
+    private final Cloudinary cloudinary;
 
     /*
      * get all appraisers
@@ -39,19 +46,13 @@ public class NhaThamDinhService implements INhaThamDinhService {
     @Override
     public List<NhaThamDinhDTO> getAll(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = appraiserRepository.findAll(pageable);
+        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.findAll(pageable);
         if (entities.isEmpty()) {
             if (page > entities.getTotalPages() || page <= 0) {
                 throw new ResourceNotFoundException("No appraisers with page: " + page);
             }
         }
-        List<NhaThamDinhDTO> models = new ArrayList<>();
-        for (NhaThamDinhEntity item : entities) {
-            NhaThamDinhDTO appraiserDTO = appraiserConverter.toDTO(item);
-            models.add(appraiserDTO);
-        }
-
-        return models;
+        return entities.stream().map(nhaThamDinhConverter::toDTO).collect(Collectors.toList());
     }
 
     /*
@@ -63,9 +64,9 @@ public class NhaThamDinhService implements INhaThamDinhService {
      */
     @Override
     public NhaThamDinhDTO getAppraiserById(long id) {
-        NhaThamDinhEntity appraiserEntity = appraiserRepository.findById(id)
+        NhaThamDinhEntity appraiserEntity = nhaThamDinhRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " not found"));
-        NhaThamDinhDTO appraiserDTO = appraiserConverter.toDTO(appraiserEntity);
+        NhaThamDinhDTO appraiserDTO = nhaThamDinhConverter.toDTO(appraiserEntity);
         return appraiserDTO;
     }
 
@@ -78,9 +79,9 @@ public class NhaThamDinhService implements INhaThamDinhService {
      */
     @Override
     public NhaThamDinhDTO getAppraiserByEmail(String email) {
-        NhaThamDinhEntity appraiserEntity = appraiserRepository.findOneByEmail(email)
+        NhaThamDinhEntity appraiserEntity = nhaThamDinhRepository.findOneByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + email + " not found"));
-        NhaThamDinhDTO appraiserDTO = appraiserConverter.toDTO(appraiserEntity);
+        NhaThamDinhDTO appraiserDTO = nhaThamDinhConverter.toDTO(appraiserEntity);
         return appraiserDTO;
     }
 
@@ -93,14 +94,14 @@ public class NhaThamDinhService implements INhaThamDinhService {
      */
     @Override
     @Transactional
-    public NhaThamDinhDTO addAppraiser(NhaThamDinhDTO appraiser) {
-        try {
-            NhaThamDinhEntity appraiserEntity = appraiserConverter.toEntity(appraiser);
-            appraiserEntity = appraiserRepository.save(appraiserEntity);
-            return appraiserConverter.toDTO(appraiserEntity);
-        } catch (DataIntegrityViolationException ex) {
-            throw new ResourceExistedException("Email already exists!");
-        }
+    public NhaThamDinhDTO addAppraiser(NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar) throws IOException {
+        Map<String, String> avatarInfo = uploadAvatar(avatar);
+
+        NhaThamDinhEntity appraiserEntity = nhaThamDinhConverter.toEntity(nhaThamDinhDTO);
+        appraiserEntity.setAvatarId(avatarInfo.get("publicId"));
+        appraiserEntity.setAvatar(avatarInfo.get("url"));
+        appraiserEntity = nhaThamDinhRepository.save(appraiserEntity);
+        return nhaThamDinhConverter.toDTO(appraiserEntity);
     }
 
     /*
@@ -112,23 +113,32 @@ public class NhaThamDinhService implements INhaThamDinhService {
      */
     @Override
     @Transactional
-    public NhaThamDinhDTO updateAppraiser(long id, NhaThamDinhDTO updatedAppraiser) {
-        NhaThamDinhEntity appraiserEntity = appraiserRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
-        appraiserEntity.setHoVaTen(updatedAppraiser.getHoVaTen());
-        appraiserEntity.setEmail(updatedAppraiser.getEmail());
-        appraiserEntity.setGioiTinh(updatedAppraiser.getGioiTinh());
-        appraiserEntity.setSoDienThoai(updatedAppraiser.getSoDienThoai());
-        appraiserEntity.setDiaChi(updatedAppraiser.getDiaChi());
-        appraiserEntity.setLoai(updatedAppraiser.getLoai());
-        appraiserEntity.setTrangThaiHoatDong(updatedAppraiser.getTrangThaiHoatDong());
-        appraiserEntity.setAvatar(updatedAppraiser.getAvatar());
-        appraiserEntity.setNgaySinh(updatedAppraiser.getNgaySinh());
-        appraiserEntity.setMoTa(updatedAppraiser.getMoTa());
+    public NhaThamDinhDTO updateAppraiser(long maNhaThamDinh, NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar)
+            throws IOException {
+        NhaThamDinhEntity oldNhaThamDinh = nhaThamDinhRepository.findOneByMaNhaThamDinh(maNhaThamDinh)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không có nhà thẩm định nào có mã nhà thẩm định là " + maNhaThamDinh));
+
+        NhaThamDinhEntity newNhaThamDinh = nhaThamDinhConverter.toEntity(nhaThamDinhDTO, oldNhaThamDinh);
+
+        if (avatar != null && !avatar.isEmpty()) {
+            if (oldNhaThamDinh.getMaNhaThamDinh() != null) {
+                if (oldNhaThamDinh.getAvatarId() != null && !oldNhaThamDinh.getAvatarId().isEmpty()) {
+                    cloudinary.uploader().destroy(newNhaThamDinh.getAvatarId(), ObjectUtils.emptyMap());
+                }
+            }
+
+            Map<String, String> avatarInfo = uploadAvatar(avatar);
+            newNhaThamDinh.setAvatarId(avatarInfo.get("publicId"));
+            newNhaThamDinh.setAvatar(avatarInfo.get("url"));
+        } else {
+            newNhaThamDinh.setAvatarId(newNhaThamDinh.getAvatarId());
+            newNhaThamDinh.setAvatar(newNhaThamDinh.getAvatar());
+        }
 
         try {
-            NhaThamDinhEntity appraiserUpdated = appraiserRepository.save(appraiserEntity);
-            return appraiserConverter.toDTO(appraiserUpdated);
+            NhaThamDinhEntity appraiserUpdated = nhaThamDinhRepository.save(newNhaThamDinh);
+            return nhaThamDinhConverter.toDTO(appraiserUpdated);
         } catch (DataIntegrityViolationException | ConstraintViolationException ex) {
             throw new ResourceExistedException("Email already exists!");
         }
@@ -140,11 +150,12 @@ public class NhaThamDinhService implements INhaThamDinhService {
      * @param id
      */
     @Override
+    @Transactional
     public void deleteAppraiser(long id) {
-        NhaThamDinhEntity appraiserEntity = appraiserRepository.findById(id)
+        NhaThamDinhEntity appraiserEntity = nhaThamDinhRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
         if (appraiserEntity != null) {
-            appraiserRepository.deleteById(id);
+            nhaThamDinhRepository.deleteById(id);
         }
     }
 
@@ -153,13 +164,13 @@ public class NhaThamDinhService implements INhaThamDinhService {
      * 
      * @param id
      */
-    @Override
     @Transactional
+    @Override
     public void banAppraiser(long id) {
-        NhaThamDinhEntity appraiserEntity = appraiserRepository.findById(id)
+        NhaThamDinhEntity appraiserEntity = nhaThamDinhRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
         appraiserEntity.setTrangThaiHoatDong("Inactive");
-        appraiserRepository.save(appraiserEntity);
+        nhaThamDinhRepository.save(appraiserEntity);
     }
 
     /*
@@ -171,20 +182,20 @@ public class NhaThamDinhService implements INhaThamDinhService {
      */
     @Override
     public List<NhaThamDinhDTO> searchAppraiser(String keyword, int page, int size) {
-        List<NhaThamDinhEntity> appraiserExists = appraiserRepository.existsAppraiser(keyword);
+        List<NhaThamDinhEntity> appraiserExists = nhaThamDinhRepository.existsAppraiser(keyword);
         if (appraiserExists.isEmpty()) {
             throw new ResourceNotFoundException("No appraisers with keyword: " +
                     keyword);
         }
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = appraiserRepository.searchAppraiser(keyword, pageable);
+        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.searchAppraiser(keyword, pageable);
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No appraisers with page: " + page);
         }
 
         return entities.stream()
-                .map(appraiserConverter::toDTO)
+                .map(nhaThamDinhConverter::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -198,7 +209,7 @@ public class NhaThamDinhService implements INhaThamDinhService {
     @Override
     public List<NhaThamDinhDTO> sortedAscByName(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = appraiserRepository.sortedAscByName(pageable);
+        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.sortedAscByName(pageable);
         if (entities.isEmpty()) {
             if (page > entities.getTotalPages() || page <= 0) {
                 throw new ResourceNotFoundException("No appraisers with page: " + page);
@@ -206,7 +217,7 @@ public class NhaThamDinhService implements INhaThamDinhService {
         }
 
         return entities.stream()
-                .map(appraiserConverter::toDTO)
+                .map(nhaThamDinhConverter::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -220,7 +231,7 @@ public class NhaThamDinhService implements INhaThamDinhService {
     @Override
     public List<NhaThamDinhDTO> sortedDescByName(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = appraiserRepository.sortedDescByName(pageable);
+        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.sortedDescByName(pageable);
         if (entities.isEmpty()) {
             if (page > entities.getTotalPages() || page <= 0) {
                 throw new ResourceNotFoundException("No appraisers with page: " + page);
@@ -228,7 +239,7 @@ public class NhaThamDinhService implements INhaThamDinhService {
         }
 
         return entities.stream()
-                .map(appraiserConverter::toDTO)
+                .map(nhaThamDinhConverter::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -242,7 +253,7 @@ public class NhaThamDinhService implements INhaThamDinhService {
     @Override
     public List<NhaThamDinhDTO> sortedAscByDoB(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = appraiserRepository.sortedAscByDoB(pageable);
+        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.sortedAscByDoB(pageable);
         if (entities.isEmpty()) {
             if (page > entities.getTotalPages() || page <= 0) {
                 throw new ResourceNotFoundException("No appraisers with page: " + page);
@@ -250,7 +261,7 @@ public class NhaThamDinhService implements INhaThamDinhService {
         }
 
         return entities.stream()
-                .map(appraiserConverter::toDTO)
+                .map(nhaThamDinhConverter::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -264,7 +275,7 @@ public class NhaThamDinhService implements INhaThamDinhService {
     @Override
     public List<NhaThamDinhDTO> sortedDescByDoB(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = appraiserRepository.sortedDescByDoB(pageable);
+        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.sortedDescByDoB(pageable);
         if (entities.isEmpty()) {
             if (page > entities.getTotalPages() || page <= 0) {
                 throw new ResourceNotFoundException("No appraisers with page: " + page);
@@ -272,8 +283,35 @@ public class NhaThamDinhService implements INhaThamDinhService {
         }
 
         return entities.stream()
-                .map(appraiserConverter::toDTO)
+                .map(nhaThamDinhConverter::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    @SuppressWarnings({ "null", "unchecked" })
+    private Map<String, String> uploadAvatar(MultipartFile avatar) throws IOException {
+        Map<String, String> avatarInfo = new HashMap<>();
+
+        // check valid image
+        if (avatar == null || avatar.isEmpty()) {
+            avatarInfo.put("publicId", null);
+            avatarInfo.put("url", null);
+        } else {
+            if (!avatar.getContentType().startsWith("image/")) {
+                throw new ResourceNotFormatException("Phải là file ảnh!");
+            }
+            // upload image
+            Map<String, Object> result = cloudinary.uploader().upload(avatar.getBytes(),
+                    ObjectUtils.asMap("folder", "nha-tham-dinh"));
+
+            // get info from cloudinary
+            String publicId = (String) result.get("public_id");
+            String url = (String) result.get("url");
+
+            avatarInfo.put("publicId", publicId);
+            avatarInfo.put("url", url);
+        }
+
+        return avatarInfo;
     }
 
 }
