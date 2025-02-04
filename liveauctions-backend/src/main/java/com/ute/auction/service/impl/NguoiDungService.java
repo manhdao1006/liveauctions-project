@@ -55,8 +55,8 @@ public class NguoiDungService implements INguoiDungService {
      * 
      * @return userUpdated
      */
-    @Override
     @Transactional
+    @Override
     public NguoiDungDTO updateProfile(long maNguoiDung, NguoiDungDTO nguoiDungDTO, MultipartFile avatar)
             throws IOException {
         NguoiDungEntity oldNguoiDung = nguoiDungRepository.findOneByMaNguoiDung(maNguoiDung)
@@ -75,7 +75,7 @@ public class NguoiDungService implements INguoiDungService {
         if (avatar != null && !avatar.isEmpty()) {
             if (oldNguoiDung.getMaNguoiDung() != null) {
                 if (oldNguoiDung.getAvatarId() != null && !oldNguoiDung.getAvatarId().isEmpty()) {
-                    cloudinary.uploader().destroy(newNguoiDung.getAvatarId(), ObjectUtils.emptyMap());
+                    cloudinary.uploader().destroy(oldNguoiDung.getAvatarId(), ObjectUtils.emptyMap());
                 }
             }
 
@@ -83,8 +83,8 @@ public class NguoiDungService implements INguoiDungService {
             newNguoiDung.setAvatarId(avatarInfo.get("publicId"));
             newNguoiDung.setAvatar(avatarInfo.get("url"));
         } else {
-            newNguoiDung.setAvatarId(newNguoiDung.getAvatarId());
-            newNguoiDung.setAvatar(newNguoiDung.getAvatar());
+            newNguoiDung.setAvatarId(oldNguoiDung.getAvatarId());
+            newNguoiDung.setAvatar(oldNguoiDung.getAvatar());
         }
 
         return nguoiDungConverter.toDTO(nguoiDungRepository.save(newNguoiDung));
@@ -95,8 +95,8 @@ public class NguoiDungService implements INguoiDungService {
      * 
      * @param email, password
      */
-    @Override
     @Transactional
+    @Override
     public void forgotPassword(String email, String password) {
         NguoiDungEntity userEntity = (nguoiDungRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email)));
@@ -112,8 +112,8 @@ public class NguoiDungService implements INguoiDungService {
      * 
      * @return buyer
      */
-    @Override
     @Transactional
+    @Override
     public NguoiDungDTO register(NguoiDungDTO nguoiDungDTO) {
         if (nguoiDungRepository.existsByEmail(nguoiDungDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
@@ -143,8 +143,8 @@ public class NguoiDungService implements INguoiDungService {
      * 
      * @return seller
      */
-    @Override
     @Transactional
+    @Override
     public NguoiDungDTO registerSeller(NguoiDungDTO nguoiDungDTO) {
         if (nguoiDungRepository.existsByEmail(nguoiDungDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
@@ -174,8 +174,8 @@ public class NguoiDungService implements INguoiDungService {
      * 
      * @return staff
      */
-    @Override
     @Transactional
+    @Override
     public NguoiDungDTO registerStaff(NguoiDungDTO nguoiDungDTO) {
         if (nguoiDungRepository.existsByEmail(nguoiDungDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");
@@ -205,8 +205,8 @@ public class NguoiDungService implements INguoiDungService {
      * 
      * @return admin
      */
-    @Override
     @Transactional
+    @Override
     public NguoiDungDTO registerAdmin(NguoiDungDTO nguoiDungDTO) {
         if (nguoiDungRepository.existsByEmail(nguoiDungDTO.getEmail())) {
             throw new ResourceExistedException("Email is taken!");

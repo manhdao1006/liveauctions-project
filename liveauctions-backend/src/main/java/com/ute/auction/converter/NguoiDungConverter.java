@@ -24,6 +24,7 @@ public interface NguoiDungConverter {
     NguoiDungDTO toDTO(NguoiDungEntity entity);
 
     @Mapping(target = "trangThaiXoa", defaultValue = "1")
+    @Mapping(target = "trangThaiHoatDong", defaultValue = "Active")
     NguoiDungEntity toEntity(NguoiDungDTO dto);
 
     @Mapping(target = "maNguoiDung", ignore = true)
