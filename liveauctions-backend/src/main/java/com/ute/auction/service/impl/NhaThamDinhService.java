@@ -92,8 +92,8 @@ public class NhaThamDinhService implements INhaThamDinhService {
      * 
      * @return appraiser
      */
-    @Override
     @Transactional
+    @Override
     public NhaThamDinhDTO addAppraiser(NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar) throws IOException {
         Map<String, String> avatarInfo = uploadAvatar(avatar);
 
@@ -111,8 +111,8 @@ public class NhaThamDinhService implements INhaThamDinhService {
      * 
      * @return appraiserUpdated
      */
-    @Override
     @Transactional
+    @Override
     public NhaThamDinhDTO updateAppraiser(long maNhaThamDinh, NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar)
             throws IOException {
         NhaThamDinhEntity oldNhaThamDinh = nhaThamDinhRepository.findOneByMaNhaThamDinh(maNhaThamDinh)
@@ -124,7 +124,7 @@ public class NhaThamDinhService implements INhaThamDinhService {
         if (avatar != null && !avatar.isEmpty()) {
             if (oldNhaThamDinh.getMaNhaThamDinh() != null) {
                 if (oldNhaThamDinh.getAvatarId() != null && !oldNhaThamDinh.getAvatarId().isEmpty()) {
-                    cloudinary.uploader().destroy(newNhaThamDinh.getAvatarId(), ObjectUtils.emptyMap());
+                    cloudinary.uploader().destroy(oldNhaThamDinh.getAvatarId(), ObjectUtils.emptyMap());
                 }
             }
 
@@ -132,8 +132,8 @@ public class NhaThamDinhService implements INhaThamDinhService {
             newNhaThamDinh.setAvatarId(avatarInfo.get("publicId"));
             newNhaThamDinh.setAvatar(avatarInfo.get("url"));
         } else {
-            newNhaThamDinh.setAvatarId(newNhaThamDinh.getAvatarId());
-            newNhaThamDinh.setAvatar(newNhaThamDinh.getAvatar());
+            newNhaThamDinh.setAvatarId(oldNhaThamDinh.getAvatarId());
+            newNhaThamDinh.setAvatar(oldNhaThamDinh.getAvatar());
         }
 
         try {
@@ -149,8 +149,8 @@ public class NhaThamDinhService implements INhaThamDinhService {
      * 
      * @param id
      */
-    @Override
     @Transactional
+    @Override
     public void deleteAppraiser(long id) {
         NhaThamDinhEntity appraiserEntity = nhaThamDinhRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));

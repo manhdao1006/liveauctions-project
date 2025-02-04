@@ -208,16 +208,6 @@ public class SanPhamService implements ISanPhamService {
         }
 
         if (anhSanPhamList != null && !anhSanPhamList.isEmpty()) {
-            // Xóa tất cả ảnh cũ từ Cloudinary
-            List<AnhSanPhamEntity> anhSanPhamListOld = anhSanPhamRepository.findOneBySanPham(sanPhamEntity);
-            for (AnhSanPhamEntity anhSanPham : anhSanPhamListOld) {
-                if (anhSanPham.getTenAnhId() != null) {
-                    // Xóa ảnh cũ từ Cloudinary
-                    cloudinary.uploader().destroy(anhSanPham.getTenAnhId(), ObjectUtils.emptyMap());
-                }
-            }
-
-            // Thêm ảnh mới
             for (MultipartFile file : anhSanPhamList) {
                 Map<String, String> anhSanPhamInfo = uploadAnhSanPham(file);
                 AnhSanPhamEntity anhSanPham = new AnhSanPhamEntity();
