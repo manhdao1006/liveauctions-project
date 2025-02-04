@@ -72,9 +72,16 @@ public class AuthController {
                 .authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getMatKhau()));
         // sau khi đăng nhập thành công thì sẽ lưu vào để đánh dấu là đã đăng nhập
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtGenerator.generateToken(authentication);
+        String accessToken = jwtGenerator.generateToken(authentication);
+        String refreshToken = jwtGenerator.generateRefreshToken(userDTO.getEmail());
 
-        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponseDTO(accessToken, refreshToken), HttpStatus.OK);
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<AuthResponseDTO> refreshToken(@RequestParam String refreshToken) {
+        String newAccessToken = jwtGenerator.refreshAccessToken(refreshToken);
+        return ResponseEntity.ok(new AuthResponseDTO(newAccessToken, refreshToken));
     }
 
 }
