@@ -43,7 +43,7 @@ public class NhanVienController {
     }
 
     @GetMapping("/{maNguoiDung}")
-    public ApiResponse<NhanVienResponseDTO> getNhanViens(@PathVariable("maNguoiDung") long maNguoiDung) {
+    public ApiResponse<NhanVienResponseDTO> getNhanVienByMaNhanVien(@PathVariable("maNguoiDung") long maNguoiDung) {
         return ApiResponse.<NhanVienResponseDTO>builder()
                 .code(200)
                 .message("Nhân viên với mã nhân viên là " + maNguoiDung)
@@ -52,7 +52,7 @@ public class NhanVienController {
     }
 
     @PostMapping("/add")
-    public ApiResponse<NhanVienResponseDTO> addAppraiser(
+    public ApiResponse<NhanVienResponseDTO> addNhanVien(
             @ModelAttribute NguoiDungDTO nguoiDungDTO,
             @ModelAttribute NhanVienDTO nhanVienDTO,
             @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
