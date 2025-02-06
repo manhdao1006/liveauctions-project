@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
+import com.ute.auction.dto.ApiResponse;
 import com.ute.auction.dto.NguoiMuaDTO;
+import com.ute.auction.dto.NguoiMuaResponseDTO;
 import com.ute.auction.service.INguoiMuaService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,9 +24,12 @@ public class NguoiMuaController {
 
     // Build API get buyer by id
     @GetMapping("/buyer/id={buyerId}")
-    public ResponseEntity<NguoiMuaDTO> getBuyerById(@PathVariable("buyerId") long id) {
-        NguoiMuaDTO buyerDTO = buyerService.getNguoiMuaByMaNguoiMua(id);
-        return ResponseEntity.ok(buyerDTO);
+    public ApiResponse<NguoiMuaResponseDTO> getBuyerById(@PathVariable("buyerId") long id) {
+        return ApiResponse.<NguoiMuaResponseDTO>builder()
+                .code(200)
+                .message("Nhân viên với mã người bán là " + id)
+                .result(buyerService.getNguoiMuaByMaNguoiMua(id))
+                .build();
     }
 
     // Build API get buyer by email
