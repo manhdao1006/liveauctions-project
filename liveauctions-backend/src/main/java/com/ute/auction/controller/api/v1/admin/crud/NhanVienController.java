@@ -1,7 +1,6 @@
 package com.ute.auction.controller.api.v1.admin.crud;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +19,7 @@ import com.ute.auction.dto.ApiResponse;
 import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.NhanVienDTO;
 import com.ute.auction.dto.NhanVienResponseDTO;
+import com.ute.auction.dto.PageResponse;
 import com.ute.auction.service.INhanVienService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,11 +32,13 @@ public class NhanVienController {
     private final INhanVienService nhanVienService;
 
     @GetMapping("/list")
-    public ApiResponse<List<NhanVienResponseDTO>> getNhanViens() {
-        return ApiResponse.<List<NhanVienResponseDTO>>builder()
+    public ApiResponse<PageResponse<NhanVienResponseDTO>> getNhanViens(
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "3") int size) {
+        return ApiResponse.<PageResponse<NhanVienResponseDTO>>builder()
                 .code(200)
                 .message("Danh sách nhân viên")
-                .result(nhanVienService.getNhanViens())
+                .result(nhanVienService.getNhanViens(page, size))
                 .build();
     }
 

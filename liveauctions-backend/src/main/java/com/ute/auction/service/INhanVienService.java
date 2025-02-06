@@ -1,17 +1,17 @@
 package com.ute.auction.service;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.NhanVienDTO;
 import com.ute.auction.dto.NhanVienResponseDTO;
+import com.ute.auction.dto.PageResponse;
 
 public interface INhanVienService {
 
-        List<NhanVienResponseDTO> getNhanViens();
+        PageResponse<NhanVienResponseDTO> getNhanViens(int page, int size);
 
         NhanVienResponseDTO getNhanVienByMaNhanVien(long maNguoiDung);
 
