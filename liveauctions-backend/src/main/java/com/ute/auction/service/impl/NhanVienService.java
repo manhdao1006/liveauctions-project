@@ -87,6 +87,10 @@ public class NhanVienService implements INhanVienService {
         VaiTroEntity roles = vaiTroRepository.findByTenVaiTro("ROLE_STAFF")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
         nguoiDungEntity.setVaiTros(Collections.singletonList(roles));
+        PhuongXaEntity cityEntity = phuongXaRepository.findOneByMaPhuongXa(nguoiDungDTO.getMaPhuongXa())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không có phường xã nào với mã phường xã là " + nguoiDungDTO.getMaPhuongXa()));
+        nguoiDungEntity.setPhuongXa(cityEntity);
         nguoiDungEntity = nguoiDungRepository.save(nguoiDungEntity);
 
         NhanVienEntity nhanVienEntity = nhanVienConverter.toEntity(nhanVienDTO);
