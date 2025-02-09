@@ -35,6 +35,7 @@ import com.ute.auction.repository.PhuongXaRepository;
 import com.ute.auction.repository.VaiTroRepository;
 import com.ute.auction.service.INguoiBanService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -86,6 +87,7 @@ public class NguoiBanService implements INguoiBanService {
         return new NguoiBanResponseDTO(nguoiDungDTO, nguoiBanDTO);
     }
 
+    @Transactional
     @Override
     public NguoiBanResponseDTO addNguoiBan(NguoiDungDTO nguoiDungDTO, NguoiBanDTO nguoiBanDTO, MultipartFile avatar)
             throws IOException {
@@ -112,6 +114,7 @@ public class NguoiBanService implements INguoiBanService {
                 nguoiBanConverter.toDTO(nguoiBanEntity));
     }
 
+    @Transactional
     @Override
     public NguoiBanResponseDTO updateNguoiBan(long maNguoiDung, NguoiDungDTO nguoiDungDTO, NguoiBanDTO nguoiBanDTO,
             MultipartFile avatar) throws IOException {
@@ -156,6 +159,7 @@ public class NguoiBanService implements INguoiBanService {
         return new NguoiBanResponseDTO(nguoiDungConverter.toDTO(newNguoiDung), nguoiBanConverter.toDTO(newNguoiBan));
     }
 
+    @Transactional
     @Override
     public void deleteNguoiBan(long maNguoiDung) {
         NguoiDungEntity nguoiDungEntity = nguoiDungRepository.findOneByMaNguoiDung(maNguoiDung)
@@ -170,6 +174,7 @@ public class NguoiBanService implements INguoiBanService {
         nguoiBanRepository.save(nguoiBanEntity);
     }
 
+    @Transactional
     @Override
     public void banNguoiBan(long maNguoiDung) {
         NguoiDungEntity nguoiDungEntity = nguoiDungRepository.findOneByMaNguoiDung(maNguoiDung)
