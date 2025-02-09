@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.LichSuDauGiaDTO;
+import com.ute.auction.dto.LichSuDauGiaResponseDTO;
+import com.ute.auction.dto.PageResponse;
 import com.ute.auction.service.ILichSuDauGiaService;
 
 import lombok.RequiredArgsConstructor;
@@ -73,10 +75,11 @@ public class LichSuDauGiaController {
 
     // Build API get orders by seller id
     @GetMapping("/order-history/{id}")
-    public ResponseEntity<List<LichSuDauGiaDTO>> getOrders(@PathVariable("id") int sellerId,
-            @RequestParam("page") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        List<LichSuDauGiaDTO> orders = auctionHistoryService.getOrders(sellerId, page, size);
+    public ResponseEntity<PageResponse<LichSuDauGiaResponseDTO>> getOrders(@PathVariable("id") long sellerId,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+        PageResponse<LichSuDauGiaResponseDTO> orders = auctionHistoryService.getLichSuDauGiasByMaNguoiBan(sellerId,
+                page, size);
         return ResponseEntity.ok(orders);
     }
 

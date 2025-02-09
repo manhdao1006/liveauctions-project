@@ -3,10 +3,14 @@ package com.ute.auction.service;
 import java.util.List;
 
 import com.ute.auction.dto.LichSuDauGiaDTO;
+import com.ute.auction.dto.LichSuDauGiaResponseDTO;
+import com.ute.auction.dto.PageResponse;
 
 public interface ILichSuDauGiaService {
 
-    List<LichSuDauGiaDTO> getOrders(long sellerId, int page, int size);
+    PageResponse<LichSuDauGiaResponseDTO> getLichSuDauGiasByMaNguoiMua(long maNguoiMua, int page, int size);
+
+    PageResponse<LichSuDauGiaResponseDTO> getLichSuDauGiasByMaNguoiBan(long maNguoiBan, int page, int size);
 
     List<LichSuDauGiaDTO> getOrdersByOrderStatus(long sellerId, String orderStatus, int page, int size);
 

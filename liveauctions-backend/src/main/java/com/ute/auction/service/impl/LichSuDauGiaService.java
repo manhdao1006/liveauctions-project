@@ -1,16 +1,35 @@
 package com.ute.auction.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.ute.auction.converter.ChiPhiConverter;
 import com.ute.auction.converter.LichSuDauGiaConverter;
+import com.ute.auction.converter.NguoiBanConverter;
+import com.ute.auction.converter.NguoiMuaConverter;
+import com.ute.auction.converter.PhienDauGiaConverter;
+import com.ute.auction.converter.SanPhamConverter;
+import com.ute.auction.dto.ChiPhiDTO;
 import com.ute.auction.dto.LichSuDauGiaDTO;
+import com.ute.auction.dto.LichSuDauGiaResponseDTO;
+import com.ute.auction.dto.NguoiBanDTO;
+import com.ute.auction.dto.NguoiMuaDTO;
+import com.ute.auction.dto.PageResponse;
+import com.ute.auction.dto.PhienDauGiaDTO;
+import com.ute.auction.dto.SanPhamDTO;
+import com.ute.auction.entity.ChiPhiEntity;
 import com.ute.auction.entity.LichSuDauGiaEntity;
+import com.ute.auction.entity.NguoiBanEntity;
+import com.ute.auction.entity.NguoiMuaEntity;
+import com.ute.auction.entity.PhienDauGiaEntity;
+import com.ute.auction.entity.SanPhamEntity;
 import com.ute.auction.exception.ResourceNotFoundException;
 import com.ute.auction.repository.LichSuDauGiaRepository;
 import com.ute.auction.repository.NguoiBanRepository;
@@ -22,9 +41,49 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LichSuDauGiaService implements ILichSuDauGiaService {
 
-    private final LichSuDauGiaRepository auctionHistoryRepository;
-    private final NguoiBanRepository sellerRepository;
-    private final LichSuDauGiaConverter auctionHistoryConverter;
+    private final LichSuDauGiaRepository lichSuDauGiaRepository;
+    private final NguoiBanRepository nguoiBanRepository;
+    private final LichSuDauGiaConverter lichSuDauGiaConverter;
+    private final PhienDauGiaConverter phienDauGiaConverter;
+    private final SanPhamConverter sanPhamConverter;
+    private final NguoiMuaConverter nguoiMuaConverter;
+    private final NguoiBanConverter nguoiBanConverter;
+    private final ChiPhiConverter chiPhiConverter;
+
+    @Override
+    public PageResponse<LichSuDauGiaResponseDTO> getLichSuDauGiasByMaNguoiMua(long maNguoiMua, int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("thoiGianDauGia").descending());
+
+        Page<LichSuDauGiaEntity> entities = lichSuDauGiaRepository.findByMaNguoiMua(maNguoiMua, pageable);
+        List<LichSuDauGiaResponseDTO> responseList = new ArrayList<>();
+        for (LichSuDauGiaEntity lichSuDauGiaEntity : entities) {
+            LichSuDauGiaDTO lichSuDauGiaDTO = lichSuDauGiaConverter.toDTO(lichSuDauGiaEntity);
+
+            PhienDauGiaEntity phienDauGiaEntity = lichSuDauGiaEntity.getPhienDauGia();
+            PhienDauGiaDTO phienDauGiaDTO = phienDauGiaConverter.toDTO(phienDauGiaEntity);
+
+            SanPhamEntity sanPhamEntity = lichSuDauGiaEntity.getSanPham();
+            SanPhamDTO sanPhamDTO = sanPhamConverter.toDTO(sanPhamEntity);
+
+            NguoiMuaEntity nguoiMuaEntity = lichSuDauGiaEntity.getNguoiMua();
+            NguoiMuaDTO nguoiMuaDTO = nguoiMuaConverter.toDTO(nguoiMuaEntity);
+
+            NguoiBanEntity nguoiBanEntity = lichSuDauGiaEntity.getSanPham().getNguoiBan();
+            NguoiBanDTO nguoiBanDTO = nguoiBanConverter.toDTO(nguoiBanEntity);
+
+            ChiPhiEntity chiPhiEntity = lichSuDauGiaEntity.getChiPhi();
+            ChiPhiDTO chiPhiDTO = chiPhiConverter.toDTO(chiPhiEntity);
+
+            responseList.add(
+                    new LichSuDauGiaResponseDTO(lichSuDauGiaDTO, phienDauGiaDTO, sanPhamDTO, nguoiMuaDTO, nguoiBanDTO,
+                            chiPhiDTO));
+
+        }
+
+        return PageResponse.<LichSuDauGiaResponseDTO>builder().currentPage(page).pageSize(entities.getSize())
+                .totalPages(entities.getTotalPages()).totalElements(entities.getTotalElements()).data(responseList)
+                .build();
+    }
 
     /*
      * get all orders by seller id
@@ -34,17 +93,38 @@ public class LichSuDauGiaService implements ILichSuDauGiaService {
      * @return orders
      */
     @Override
-    public List<LichSuDauGiaDTO> getOrders(long sellerId, int page, int size) {
-        checkExistedSeller(sellerId);
+    public PageResponse<LichSuDauGiaResponseDTO> getLichSuDauGiasByMaNguoiBan(long maNguoiBan, int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("thoiGianDauGia").descending());
 
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<LichSuDauGiaEntity> entities = auctionHistoryRepository.findOrdersBySellerId(sellerId, pageable);
+        Page<LichSuDauGiaEntity> entities = lichSuDauGiaRepository.findByMaNguoiBan(maNguoiBan, pageable);
+        List<LichSuDauGiaResponseDTO> responseList = new ArrayList<>();
+        for (LichSuDauGiaEntity lichSuDauGiaEntity : entities) {
+            LichSuDauGiaDTO lichSuDauGiaDTO = lichSuDauGiaConverter.toDTO(lichSuDauGiaEntity);
 
-        if (page > entities.getTotalPages() || page <= 0) {
-            throw new ResourceNotFoundException("No orders with page: " + page);
+            PhienDauGiaEntity phienDauGiaEntity = lichSuDauGiaEntity.getPhienDauGia();
+            PhienDauGiaDTO phienDauGiaDTO = phienDauGiaConverter.toDTO(phienDauGiaEntity);
+
+            SanPhamEntity sanPhamEntity = lichSuDauGiaEntity.getSanPham();
+            SanPhamDTO sanPhamDTO = sanPhamConverter.toDTO(sanPhamEntity);
+
+            NguoiMuaEntity nguoiMuaEntity = lichSuDauGiaEntity.getNguoiMua();
+            NguoiMuaDTO nguoiMuaDTO = nguoiMuaConverter.toDTO(nguoiMuaEntity);
+
+            NguoiBanEntity nguoiBanEntity = lichSuDauGiaEntity.getSanPham().getNguoiBan();
+            NguoiBanDTO nguoiBanDTO = nguoiBanConverter.toDTO(nguoiBanEntity);
+
+            ChiPhiEntity chiPhiEntity = lichSuDauGiaEntity.getChiPhi();
+            ChiPhiDTO chiPhiDTO = chiPhiConverter.toDTO(chiPhiEntity);
+
+            responseList.add(
+                    new LichSuDauGiaResponseDTO(lichSuDauGiaDTO, phienDauGiaDTO, sanPhamDTO, nguoiMuaDTO, nguoiBanDTO,
+                            chiPhiDTO));
+
         }
 
-        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+        return PageResponse.<LichSuDauGiaResponseDTO>builder().currentPage(page).pageSize(entities.getSize())
+                .totalPages(entities.getTotalPages()).totalElements(entities.getTotalElements()).data(responseList)
+                .build();
     }
 
     /*
@@ -59,18 +139,18 @@ public class LichSuDauGiaService implements ILichSuDauGiaService {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<LichSuDauGiaEntity> entities = auctionHistoryRepository.findOrdersByOrderStatus(sellerId, orderStatus,
+        Page<LichSuDauGiaEntity> entities = lichSuDauGiaRepository.findOrdersByOrderStatus(sellerId, orderStatus,
                 pageable);
 
         if (page > entities.getTotalPages() || page <= 0) {
             throw new ResourceNotFoundException("No orders with page: " + page);
         }
 
-        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+        return entities.stream().map(lichSuDauGiaConverter::toDTO).collect(Collectors.toList());
     }
 
     private void checkExistedSeller(long sellerId) {
-        boolean sellerExists = sellerRepository.existsByMaNguoiBan(sellerId);
+        boolean sellerExists = nguoiBanRepository.existsByMaNguoiBan(sellerId);
         if (!sellerExists) {
             throw new ResourceNotFoundException("No seller with id: " + sellerId);
         }
@@ -81,9 +161,9 @@ public class LichSuDauGiaService implements ILichSuDauGiaService {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<LichSuDauGiaEntity> entities = auctionHistoryRepository.sortedAscByAuctionedPrice(sellerId, pageable);
+        Page<LichSuDauGiaEntity> entities = lichSuDauGiaRepository.sortedAscByAuctionedPrice(sellerId, pageable);
 
-        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+        return entities.stream().map(lichSuDauGiaConverter::toDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -91,9 +171,9 @@ public class LichSuDauGiaService implements ILichSuDauGiaService {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<LichSuDauGiaEntity> entities = auctionHistoryRepository.sortedDescByAuctionedPrice(sellerId, pageable);
+        Page<LichSuDauGiaEntity> entities = lichSuDauGiaRepository.sortedDescByAuctionedPrice(sellerId, pageable);
 
-        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+        return entities.stream().map(lichSuDauGiaConverter::toDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -101,9 +181,9 @@ public class LichSuDauGiaService implements ILichSuDauGiaService {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<LichSuDauGiaEntity> entities = auctionHistoryRepository.sortedAscByOrderDate(sellerId, pageable);
+        Page<LichSuDauGiaEntity> entities = lichSuDauGiaRepository.sortedAscByOrderDate(sellerId, pageable);
 
-        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+        return entities.stream().map(lichSuDauGiaConverter::toDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -111,9 +191,9 @@ public class LichSuDauGiaService implements ILichSuDauGiaService {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<LichSuDauGiaEntity> entities = auctionHistoryRepository.sortedDescByOrderDate(sellerId, pageable);
+        Page<LichSuDauGiaEntity> entities = lichSuDauGiaRepository.sortedDescByOrderDate(sellerId, pageable);
 
-        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+        return entities.stream().map(lichSuDauGiaConverter::toDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -121,9 +201,9 @@ public class LichSuDauGiaService implements ILichSuDauGiaService {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<LichSuDauGiaEntity> entities = auctionHistoryRepository.sortedAscByDeliveryDate(sellerId, pageable);
+        Page<LichSuDauGiaEntity> entities = lichSuDauGiaRepository.sortedAscByDeliveryDate(sellerId, pageable);
 
-        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+        return entities.stream().map(lichSuDauGiaConverter::toDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -131,9 +211,9 @@ public class LichSuDauGiaService implements ILichSuDauGiaService {
         checkExistedSeller(sellerId);
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<LichSuDauGiaEntity> entities = auctionHistoryRepository.sortedDescByDeliveryDate(sellerId, pageable);
+        Page<LichSuDauGiaEntity> entities = lichSuDauGiaRepository.sortedDescByDeliveryDate(sellerId, pageable);
 
-        return entities.stream().map(auctionHistoryConverter::toDTO).collect(Collectors.toList());
+        return entities.stream().map(lichSuDauGiaConverter::toDTO).collect(Collectors.toList());
     }
 
 }
