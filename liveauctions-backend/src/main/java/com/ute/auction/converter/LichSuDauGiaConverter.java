@@ -18,10 +18,12 @@ public interface LichSuDauGiaConverter {
     @Mapping(target = "maSanPham", source = "sanPham.maSanPham")
     @Mapping(target = "maPhienDauGia", source = "phienDauGia.maPhienDauGia")
     @Mapping(target = "maNguoiMua", source = "nguoiMua.maNguoiMua")
+    @Mapping(target = "maChiPhi", source = "chiPhi.maChiPhi")
     LichSuDauGiaDTO toDTO(LichSuDauGiaEntity entity);
 
     LichSuDauGiaEntity toEntity(LichSuDauGiaDTO dto);
 
     @Mapping(target = "maLichSuDauGia", ignore = true)
+    @Mapping(target = "thoiGianDauGia", ignore = true)
     LichSuDauGiaEntity toEntity(LichSuDauGiaDTO lichSuDauGiaDTO, @MappingTarget LichSuDauGiaEntity updatedLichSuDauGia);
 }

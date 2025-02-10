@@ -12,6 +12,11 @@ public interface ILichSuDauGiaService {
 
     PageResponse<LichSuDauGiaResponseDTO> getLichSuDauGiasByMaNguoiBan(long maNguoiBan, int page, int size);
 
+    LichSuDauGiaResponseDTO addLichSuDauGia(LichSuDauGiaDTO lichSuDauGiaDTO);
+
+    LichSuDauGiaResponseDTO updateLichSuDauGia(long maPhienDauGia, String maSanPham, long maNguoiMua, long maChiPhi,
+            LichSuDauGiaDTO lichSuDauGiaDTO);
+
     List<LichSuDauGiaDTO> getOrdersByOrderStatus(long sellerId, String orderStatus, int page, int size);
 
     List<LichSuDauGiaDTO> sortedAscByAuctionedPrice(long sellerId, int page, int size);

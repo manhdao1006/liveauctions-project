@@ -1,5 +1,7 @@
 package com.ute.auction.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +14,9 @@ import com.ute.auction.entity.impl.MaLichSuDauGia;
 
 @Repository
 public interface LichSuDauGiaRepository extends JpaRepository<LichSuDauGiaEntity, MaLichSuDauGia> {
+
+        Optional<LichSuDauGiaEntity> findOneByMaLichSuDauGia_MaPhienDauGiaAndMaLichSuDauGia_MaSanPhamAndMaLichSuDauGia_MaNguoiMuaAndMaLichSuDauGia_MaChiPhi(
+                        long maPhienDauGia, String maSanPham, long maNguoiMua, long maChiPhi);
 
         @Query(value = "SELECT * FROM lich_su_dau_gia WHERE maNguoiMua = :maNguoiMua", nativeQuery = true)
         Page<LichSuDauGiaEntity> findByMaNguoiMua(@Param("maNguoiMua") Long maNguoiMua, Pageable pageable);

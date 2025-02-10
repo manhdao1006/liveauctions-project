@@ -1,7 +1,7 @@
 package com.ute.auction.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.ute.auction.entity.impl.MaLichSuDauGia;
 
@@ -50,16 +50,16 @@ public class LichSuDauGiaEntity {
     private BigDecimal giaDaDauGia;
 
     @Column(name = "thoiGianDauGia")
-    private LocalDate thoiGianDauGia;
+    private LocalDateTime thoiGianDauGia;
 
     @Column(name = "trangThaiDauGia")
     private String trangThaiDauGia;
 
     @Column(name = "ngayDatHang")
-    private LocalDate ngayDatHang;
+    private LocalDateTime ngayDatHang;
 
     @Column(name = "ngayGiaoHang")
-    private LocalDate ngayGiaoHang;
+    private LocalDateTime ngayGiaoHang;
 
     @Column(name = "trangThaiDonHang")
     private String trangThaiDonHang;
