@@ -17,7 +17,7 @@ public interface NguoiMuaConverter {
     NguoiMuaDTO toDTO(NguoiMuaEntity entity);
 
     @Mapping(target = "trangThaiXoa", defaultValue = "1")
-    @Mapping(target = "ngayDangKy", expression = "java(java.time.LocalDate.now())")
+    @Mapping(target = "ngayDangKy", expression = "java(java.time.LocalDateTime.now())")
     NguoiMuaEntity toEntity(NguoiMuaDTO dto);
 
     @Mapping(target = "maNguoiMua", ignore = true)

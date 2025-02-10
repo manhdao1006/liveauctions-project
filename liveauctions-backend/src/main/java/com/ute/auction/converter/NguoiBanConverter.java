@@ -17,7 +17,7 @@ public interface NguoiBanConverter {
     NguoiBanDTO toDTO(NguoiBanEntity entity);
 
     @Mapping(target = "trangThaiXoa", defaultValue = "1")
-    @Mapping(target = "ngayDangKy", expression = "java(java.time.LocalDate.now())")
+    @Mapping(target = "ngayDangKy", expression = "java(java.time.LocalDateTime.now())")
     NguoiBanEntity toEntity(NguoiBanDTO dto);
 
     @Mapping(target = "maNguoiBan", ignore = true)

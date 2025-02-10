@@ -1,7 +1,7 @@
 package com.ute.auction.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +18,7 @@ public class SanPhamDangKyDTO {
     private String tenSanPham;
     private BigDecimal giaKhoiDiem;
     private String trangThaiDangKy;
-    private LocalDate ngayDangKy;
+    private LocalDateTime ngayDangKy;
     private String moTa;
     private String trangThaiXoa;
     private Long maNguoiBan;

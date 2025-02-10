@@ -1,6 +1,6 @@
 package com.ute.auction.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class NguoiBanEntity {
     private String maSoThue;
 
     @Column(name = "ngayDangKy")
-    private LocalDate ngayDangKy;
+    private LocalDateTime ngayDangKy;
 
     @Column(name = "tenTaiKhoan")
     private String tenTaiKhoan;
@@ -47,7 +47,7 @@ public class NguoiBanEntity {
     private String nganHang;
 
     @Column(name = "ngayHetHan")
-    private LocalDate ngayHetHan;
+    private LocalDateTime ngayHetHan;
 
     @Column(name = "cvv")
     private String cvv;

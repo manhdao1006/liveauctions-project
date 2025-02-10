@@ -1,6 +1,6 @@
 package com.ute.auction.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -16,11 +16,11 @@ public class NguoiBanDTO {
 
     private Long maNguoiBan;
     private String maSoThue;
-    private LocalDate ngayDangKy;
+    private LocalDateTime ngayDangKy;
     private String tenTaiKhoan;
     private String soThe;
     private String nganHang;
-    private LocalDate ngayHetHan;
+    private LocalDateTime ngayHetHan;
     private String cvv;
     private String diaChiThanhToan;
     private String trangThaiXoa;

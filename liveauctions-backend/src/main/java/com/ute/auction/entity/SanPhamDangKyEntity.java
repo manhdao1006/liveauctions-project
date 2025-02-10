@@ -1,7 +1,7 @@
 package com.ute.auction.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,7 +38,7 @@ public class SanPhamDangKyEntity {
     private String trangThaiDangKy;
 
     @Column(name = "ngayDangKy")
-    private LocalDate ngayDangKy;
+    private LocalDateTime ngayDangKy;
 
     @Column(name = "moTa", columnDefinition = "TEXT")
     private String moTa;
