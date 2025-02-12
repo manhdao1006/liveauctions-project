@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.NguoiMuaDTO;
 import com.ute.auction.dto.NguoiMuaResponseDTO;
-import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.PageResponse;
 
 public interface INguoiMuaService {
@@ -25,7 +25,5 @@ public interface INguoiMuaService {
     void deleteNguoiMua(long maNguoiDung);
 
     void banNguoiMua(long maNguoiDung);
-
-    NguoiMuaDTO getNguoiMuaByEmail(String email);
 
 }

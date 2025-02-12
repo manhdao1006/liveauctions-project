@@ -75,13 +75,6 @@ public class NguoiMuaService implements INguoiMuaService {
                 .build();
     }
 
-    /*
-     * get buyer by id
-     * 
-     * @param id
-     * 
-     * @return buyer
-     */
     @Override
     public NguoiMuaResponseDTO getNguoiMuaByMaNguoiMua(long maNguoiDung) {
         NguoiMuaEntity nguoiMuaEntity = nguoiMuaRepository.findOneByMaNguoiMua(maNguoiDung)
@@ -92,22 +85,6 @@ public class NguoiMuaService implements INguoiMuaService {
         NguoiDungDTO nguoiDungDTO = nguoiDungConverter.toDTO(nguoiDungEntity);
 
         return new NguoiMuaResponseDTO(nguoiDungDTO, nguoiMuaDTO);
-    }
-
-    /*
-     * get buyer by email
-     * 
-     * @param email
-     * 
-     * @return buyer
-     */
-    @Override
-    public NguoiMuaDTO getNguoiMuaByEmail(String email) {
-        NguoiMuaEntity buyerEntity = nguoiMuaRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
-
-        NguoiMuaDTO buyerDTO = nguoiMuaConverter.toDTO(buyerEntity);
-        return buyerDTO;
     }
 
     @Transactional
