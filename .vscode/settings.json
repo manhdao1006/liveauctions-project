@@ -1,0 +1,8 @@
+{
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "java.format.settings.url": "https://raw.githubusercontent.com/redhat-developer/vscode-java/master/eclipse-formatter.xml",
+    "java.format.settings.profile": "GoogleStyle",
+    "editor.detectIndentation": false,
+    "java.compile.nullAnalysis.mode": "disabled"
+}
