@@ -12,24 +12,24 @@ import com.ute.auction.entity.NguoiDungEntity;
 @Repository
 public interface NguoiDungRepository extends JpaRepository<NguoiDungEntity, Long> {
 
-        List<NguoiDungEntity> findNguoiDungsByTrangThaiXoa(String trangThaiXoa);
+    List<NguoiDungEntity> findNguoiDungsByTrangThaiXoa(String trangThaiXoa);
 
-        Optional<NguoiDungEntity> findOneByMaNguoiDung(long maNguoiDung);
+    Optional<NguoiDungEntity> findOneByMaNguoiDung(long maNguoiDung);
 
-        @Query("SELECT u FROM NguoiDungEntity u " +
-                        "JOIN u.phuongXa c " +
-                        "JOIN c.quanHuyen st " +
-                        "LEFT JOIN u.nhanVien staff " +
-                        "LEFT JOIN u.nguoiBan seller " +
-                        "LEFT JOIN u.nguoiMua buyer " +
-                        "WHERE u.maNguoiDung = ?1")
-        NguoiDungEntity findByUserId(long userId);
+    @Query("SELECT u FROM NguoiDungEntity u " +
+            "JOIN u.phuongXa c " +
+            "JOIN c.quanHuyen st " +
+            "LEFT JOIN u.nhanVien staff " +
+            "LEFT JOIN u.nguoiBan seller " +
+            "LEFT JOIN u.nguoiMua buyer " +
+            "WHERE u.maNguoiDung = ?1")
+    NguoiDungEntity findByUserId(long userId);
 
-        @Query("SELECT u FROM NguoiDungEntity u JOIN u.vaiTros r WHERE r.maVaiTro = ?1")
-        List<NguoiDungEntity> findNguoiDungsByVaiTro(long roleId);
+    @Query("SELECT u FROM NguoiDungEntity u JOIN u.vaiTros r WHERE r.maVaiTro = ?1")
+    List<NguoiDungEntity> findNguoiDungsByVaiTro(long maVaiTro);
 
-        Optional<NguoiDungEntity> findByEmail(String email);
+    Optional<NguoiDungEntity> findByEmail(String email);
 
-        Boolean existsByEmail(String email);
+    Boolean existsByEmail(String email);
 
 }
