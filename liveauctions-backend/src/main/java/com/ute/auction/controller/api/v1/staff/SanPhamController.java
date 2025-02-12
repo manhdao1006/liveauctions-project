@@ -1,4 +1,4 @@
-package com.ute.auction.controller.api.v1.staff.crud;
+package com.ute.auction.controller.api.v1.staff;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,20 +17,21 @@ import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.ApiResponse;
 import com.ute.auction.dto.SanPhamDTO;
+import com.ute.auction.dto.SanPhamResponseDTO;
 import com.ute.auction.service.ISanPhamService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController(value = "sanPham" + ApiName.CRUD_ADMIN)
+@RestController(value = "sanPham" + ApiName.API)
 @RequestMapping(ApiUrl.API_STAFF + "/san-pham")
 public class SanPhamController {
 
     private final ISanPhamService sanPhamService;
 
     @GetMapping("/list")
-    public ApiResponse<List<SanPhamDTO>> getSanPhams() {
-        return ApiResponse.<List<SanPhamDTO>>builder()
+    public ApiResponse<List<SanPhamResponseDTO>> getSanPhams() {
+        return ApiResponse.<List<SanPhamResponseDTO>>builder()
                 .code(200)
                 .message("Danh sách sản phẩm")
                 .result(sanPhamService.getSanPhams())

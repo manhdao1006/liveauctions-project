@@ -1,4 +1,4 @@
-package com.ute.auction.controller.api.v1.staff.crud;
+package com.ute.auction.controller.api.v1.staff;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import com.ute.auction.service.IPhienDauGiaService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController(value = "phienDauGia" + ApiName.CRUD_ADMIN)
+@RestController(value = "phienDauGia" + ApiName.API)
 @RequestMapping(ApiUrl.API_STAFF + "/phien-dau-gia")
 public class PhienDauGiaController {
 

@@ -1,6 +1,4 @@
-package com.ute.auction.controller.api.v1.staff.crud;
-
-import java.util.List;
+package com.ute.auction.controller.api.v1.staff;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,29 +6,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.ApiResponse;
+import com.ute.auction.dto.PageResponse;
 import com.ute.auction.dto.SanPhamDauGiaDTO;
+import com.ute.auction.dto.SanPhamDauGiaResponseDTO;
 import com.ute.auction.service.ISanPhamDauGiaService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController(value = "sanPhamDauGia" + ApiName.CRUD_ADMIN)
+@RestController(value = "sanPhamDauGia" + ApiName.API)
 @RequestMapping(ApiUrl.API_STAFF + "/san-pham-dau-gia")
 public class SanPhamDauGiaController {
 
     private final ISanPhamDauGiaService sanPhamDauGiaService;
 
     @GetMapping("/list")
-    public ApiResponse<List<SanPhamDauGiaDTO>> getSanPhamDauGias() {
-        return ApiResponse.<List<SanPhamDauGiaDTO>>builder()
+    public ApiResponse<PageResponse<SanPhamDauGiaResponseDTO>> getSanPhamDauGias(
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "3") int size) {
+        return ApiResponse.<PageResponse<SanPhamDauGiaResponseDTO>>builder()
                 .code(200)
                 .message("Danh sách sản phẩm đấu giá")
-                .result(sanPhamDauGiaService.getSanPhamDauGias())
+                .result(sanPhamDauGiaService.getSanPhamDauGias(page, size))
                 .build();
     }
 
