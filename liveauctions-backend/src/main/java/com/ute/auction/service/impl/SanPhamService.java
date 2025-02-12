@@ -1,10 +1,10 @@
 package com.ute.auction.service.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,8 +14,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.ute.auction.converter.DanhMucConConverter;
+import com.ute.auction.converter.LoaiDauGiaConverter;
+import com.ute.auction.converter.NguoiBanConverter;
+import com.ute.auction.converter.NhaKhoConverter;
+import com.ute.auction.converter.NhaThamDinhConverter;
 import com.ute.auction.converter.SanPhamConverter;
+import com.ute.auction.dto.DanhMucConDTO;
+import com.ute.auction.dto.LoaiDauGiaDTO;
+import com.ute.auction.dto.NguoiBanDTO;
+import com.ute.auction.dto.NhaKhoDTO;
+import com.ute.auction.dto.NhaThamDinhDTO;
+import com.ute.auction.dto.PageResponse;
 import com.ute.auction.dto.SanPhamDTO;
+import com.ute.auction.dto.SanPhamResponseDTO;
 import com.ute.auction.entity.AnhSanPhamEntity;
 import com.ute.auction.entity.DanhMucConEntity;
 import com.ute.auction.entity.LoaiDauGiaEntity;
@@ -49,68 +61,76 @@ public class SanPhamService implements ISanPhamService {
     private final NhaThamDinhRepository nhaThamDinhRepository;
     private final AnhSanPhamRepository anhSanPhamRepository;
     private final SanPhamConverter sanPhamConverter;
+    private final NguoiBanConverter nguoiBanConverter;
+    private final DanhMucConConverter danhMucConConverter;
+    private final LoaiDauGiaConverter loaiDauGiaConverter;
+    private final NhaKhoConverter nhaKhoConverter;
+    private final NhaThamDinhConverter nhaThamDinhConverter;
     private final Cloudinary cloudinary;
 
-    /*
-     * get all products by seller id
-     * 
-     * @param sellerId, page, size
-     * 
-     * @return products
-     */
     @Override
-    public List<SanPhamDTO> getProductsBySellerId(long sellerId, int page, int size) {
-        checkExistedSeller(sellerId);
-
+    public PageResponse<SanPhamResponseDTO> getSanPhamsByMaNguoiBan(long maNguoiBan, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<SanPhamEntity> entities = sanPhamRepository.findProductsBySellerId(sellerId, pageable);
 
-        if (page > entities.getTotalPages() || page <= 0) {
-            throw new ResourceNotFoundException("No products with page: " + page);
+        Page<SanPhamEntity> entities = sanPhamRepository.findSanPhamsByMaNguoiBan(maNguoiBan, "1", pageable);
+        List<SanPhamResponseDTO> responseList = new ArrayList<>();
+        for (SanPhamEntity sanPhamEntity : entities) {
+            SanPhamDTO sanPhamDTO = sanPhamConverter.toDTO(sanPhamEntity);
+
+            NguoiBanEntity nguoiBanEntity = sanPhamEntity.getNguoiBan();
+            NguoiBanDTO nguoiBanDTO = nguoiBanConverter.toDTO(nguoiBanEntity);
+
+            DanhMucConEntity danhMucConEntity = sanPhamEntity.getDanhMucCon();
+            DanhMucConDTO danhMucConDTO = danhMucConConverter.toDTO(danhMucConEntity);
+
+            LoaiDauGiaEntity loaiDauGiaEntity = sanPhamEntity.getLoaiDauGia();
+            LoaiDauGiaDTO loaiDauGiaDTO = loaiDauGiaConverter.toDTO(loaiDauGiaEntity);
+
+            NhaKhoEntity nhaKhoEntity = sanPhamEntity.getNhaKho();
+            NhaKhoDTO nhaKhoDTO = nhaKhoConverter.toDTO(nhaKhoEntity);
+
+            NhaThamDinhEntity nhaThamDinhEntity = sanPhamEntity.getNhaThamDinh();
+            NhaThamDinhDTO nhaThamDinhDTO = nhaThamDinhConverter.toDTO(nhaThamDinhEntity);
+
+            responseList.add(new SanPhamResponseDTO(sanPhamDTO, nguoiBanDTO, danhMucConDTO, loaiDauGiaDTO, nhaKhoDTO,
+                    nhaThamDinhDTO));
         }
 
-        return entities.stream().map(sanPhamConverter::toDTO).collect(Collectors.toList());
+        return PageResponse.<SanPhamResponseDTO>builder()
+                .currentPage(page)
+                .pageSize(entities.getSize())
+                .totalPages(entities.getTotalPages())
+                .totalElements(entities.getTotalElements())
+                .data(responseList)
+                .build();
     }
 
     @Override
-    public List<SanPhamDTO> sortedAscByStartingPrice(long sellerId, int page, int size) {
-        checkExistedSeller(sellerId);
-
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<SanPhamEntity> entities = sanPhamRepository.sortedAscByStartingPrice(sellerId, pageable);
-
-        if (page > entities.getTotalPages() || page <= 0) {
-            throw new ResourceNotFoundException("No products with page: " + page);
-        }
-
-        return entities.stream().map(sanPhamConverter::toDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<SanPhamDTO> sortedDescByStartingPrice(long sellerId, int page, int size) {
-        checkExistedSeller(sellerId);
-
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<SanPhamEntity> entities = sanPhamRepository.sortedAscByStartingPrice(sellerId, pageable);
-
-        if (page > entities.getTotalPages() || page <= 0) {
-            throw new ResourceNotFoundException("No products with page: " + page);
-        }
-
-        return entities.stream().map(sanPhamConverter::toDTO).collect(Collectors.toList());
-    }
-
-    private void checkExistedSeller(long sellerId) {
-        boolean sellerExists = nguoiBanRepository.existsByMaNguoiBan(sellerId);
-        if (!sellerExists) {
-            throw new ResourceNotFoundException("No seller with id: " + sellerId);
-        }
-    }
-
-    @Override
-    public List<SanPhamDTO> getSanPhams() {
+    public List<SanPhamResponseDTO> getSanPhams() {
         List<SanPhamEntity> entities = sanPhamRepository.findSanPhamsByTrangThaiXoa("1");
-        return entities.stream().map(sanPhamConverter::toDTO).collect(Collectors.toList());
+        List<SanPhamResponseDTO> responseList = new ArrayList<>();
+        for (SanPhamEntity sanPhamEntity : entities) {
+            SanPhamDTO sanPhamDTO = sanPhamConverter.toDTO(sanPhamEntity);
+
+            NguoiBanEntity nguoiBanEntity = sanPhamEntity.getNguoiBan();
+            NguoiBanDTO nguoiBanDTO = nguoiBanConverter.toDTO(nguoiBanEntity);
+
+            DanhMucConEntity danhMucConEntity = sanPhamEntity.getDanhMucCon();
+            DanhMucConDTO danhMucConDTO = danhMucConConverter.toDTO(danhMucConEntity);
+
+            LoaiDauGiaEntity loaiDauGiaEntity = sanPhamEntity.getLoaiDauGia();
+            LoaiDauGiaDTO loaiDauGiaDTO = loaiDauGiaConverter.toDTO(loaiDauGiaEntity);
+
+            NhaKhoEntity nhaKhoEntity = sanPhamEntity.getNhaKho();
+            NhaKhoDTO nhaKhoDTO = nhaKhoConverter.toDTO(nhaKhoEntity);
+
+            NhaThamDinhEntity nhaThamDinhEntity = sanPhamEntity.getNhaThamDinh();
+            NhaThamDinhDTO nhaThamDinhDTO = nhaThamDinhConverter.toDTO(nhaThamDinhEntity);
+
+            responseList.add(new SanPhamResponseDTO(sanPhamDTO, nguoiBanDTO, danhMucConDTO, loaiDauGiaDTO, nhaKhoDTO,
+                    nhaThamDinhDTO));
+        }
+        return responseList;
     }
 
     @Transactional

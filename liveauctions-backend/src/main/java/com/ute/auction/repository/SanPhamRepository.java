@@ -14,46 +14,11 @@ import com.ute.auction.entity.SanPhamEntity;
 @Repository
 public interface SanPhamRepository extends JpaRepository<SanPhamEntity, String> {
 
-        List<SanPhamEntity> findSanPhamsByTrangThaiXoa(String trangThaiXoa);
+    List<SanPhamEntity> findSanPhamsByTrangThaiXoa(String trangThaiXoa);
 
-        Optional<SanPhamEntity> findOneByMaSanPham(String maSanPham);
+    Optional<SanPhamEntity> findOneByMaSanPham(String maSanPham);
 
-        @Query(value = "SELECT p.maSanPham, p.tenSanPham, p.giaKhoiDiem, p.trangThai, p.giaNhoNhat, p.giaLonNhat, p.moTa, p.trangThaiXoa, p.maNguoiBan, p.maDanhMucCon, p.maLoaiDauGia, p.maNhaKho, p.maNhaThamDinh, "
-                        +
-                        "ap.maPhienDauGia " +
-                        "FROM san_pham p " +
-                        "LEFT JOIN nha_kho w ON p.maNhaKho = w.maNhaKho " +
-                        "LEFT JOIN sanpham_daugia ap ON p.maSanPham = ap.maSanPham " +
-                        "LEFT JOIN phien_dau_gia au ON ap.maPhienDauGia = au.maPhienDauGia " +
-                        "LEFT JOIN anh_san_pham i ON p.maSanPham = i.maSanPham " +
-                        "LEFT JOIN nha_tham_dinh a ON p.maNhaThamDinh = a.maNhaThamDinh " +
-                        "WHERE p.maNguoiBan like ?1", countQuery = "SELECT COUNT(p.maSanPham) FROM san_pham p WHERE p.maNguoiBan like ?1", nativeQuery = true)
-        Page<SanPhamEntity> findProductsBySellerId(long sellerId, Pageable pageable);
-
-        @Query(value = "SELECT p.maSanPham, p.tenSanPham, p.giaKhoiDiem, p.trangThai, p.giaNhoNhat, p.giaLonNhat, p.moTa, p.trangThaiXoa, p.maNguoiBan, p.maDanhMucCon, p.maLoaiDauGia, p.maNhaKho, p.maNhaThamDinh, "
-                        +
-                        "ap.maPhienDauGia " +
-                        "FROM san_pham p " +
-                        "LEFT JOIN nha_kho w ON p.maNhaKho = w.maNhaKho " +
-                        "LEFT JOIN sanpham_daugia ap ON p.maSanPham = ap.maSanPham " +
-                        "LEFT JOIN phien_dau_gia au ON ap.maPhienDauGia = au.maPhienDauGia " +
-                        "LEFT JOIN anh_san_pham i ON p.maSanPham = i.maSanPham " +
-                        "LEFT JOIN nha_tham_dinh a ON p.maNhaThamDinh = a.maNhaThamDinh " +
-                        "WHERE p.maNguoiBan like ?1 " +
-                        "ORDER BY p.giaKhoiDiem ASC", countQuery = "SELECT COUNT(p.maSanPham) FROM san_pham p WHERE p.maNguoiBan like ?1", nativeQuery = true)
-        Page<SanPhamEntity> sortedAscByStartingPrice(long sellerId, Pageable pageable);
-
-        @Query(value = "SELECT p.maSanPham, p.tenSanPham, p.giaKhoiDiem, p.trangThai, p.giaNhoNhat, p.giaLonNhat, p.moTa, p.trangThaiXoa, p.maNguoiBan, p.maDanhMucCon, p.maLoaiDauGia, p.maNhaKho, p.maNhaThamDinh, "
-                        +
-                        "ap.maPhienDauGia " +
-                        "FROM san_pham p " +
-                        "LEFT JOIN nha_kho w ON p.maNhaKho = w.maNhaKho " +
-                        "LEFT JOIN sanpham_daugia ap ON p.maSanPham = ap.maSanPham " +
-                        "LEFT JOIN phien_dau_gia au ON ap.maPhienDauGia = au.maPhienDauGia " +
-                        "LEFT JOIN anh_san_pham i ON p.maSanPham = i.maSanPham " +
-                        "LEFT JOIN nha_tham_dinh a ON p.maNhaThamDinh = a.maNhaThamDinh " +
-                        "WHERE p.maNguoiBan like ?1 " +
-                        "ORDER BY p.giaKhoiDiem DESC", countQuery = "SELECT COUNT(p.maSanPham) FROM san_pham p WHERE p.maNguoiBan like ?1", nativeQuery = true)
-        Page<SanPhamEntity> sortedDescByStartingPrice(long sellerId, Pageable pageable);
+    @Query("SELECT s FROM SanPhamEntity s WHERE s.nguoiBan.maNguoiBan = :maNguoiBan AND s.trangThaiXoa = :trangThaiXoa")
+    Page<SanPhamEntity> findSanPhamsByMaNguoiBan(long maNguoiBan, String trangThaiXoa, Pageable pageable);
 
 }
