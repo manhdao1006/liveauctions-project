@@ -1,4 +1,4 @@
-package com.ute.auction.controller.web.buyer.crud;
+package com.ute.auction.controller.web.buyer;
 
 import java.io.IOException;
 
@@ -23,8 +23,8 @@ import com.ute.auction.service.INguoiMuaService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController(value = "nguoiMua" + ApiName.CRUD_WEB)
-@RequestMapping(ApiUrl.API_BUYER)
+@RestController(value = "nguoiMua" + ApiName.WEB)
+@RequestMapping(ApiUrl.API_BUYER + "/nguoi-mua")
 public class NguoiMuaController {
 
     private final INguoiMuaService nguoiMuaService;
@@ -33,7 +33,7 @@ public class NguoiMuaController {
     public ApiResponse<NguoiMuaResponseDTO> getNguoiMuaByMaNguoiMua(@PathVariable("maNguoiDung") long maNguoiDung) {
         return ApiResponse.<NguoiMuaResponseDTO>builder()
                 .code(200)
-                .message("Nhân viên với mã người mua là " + maNguoiDung)
+                .message("Người mua với mã người mua là " + maNguoiDung)
                 .result(nguoiMuaService.getNguoiMuaByMaNguoiMua(maNguoiDung))
                 .build();
     }
