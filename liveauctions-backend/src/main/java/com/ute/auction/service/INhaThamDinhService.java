@@ -9,28 +9,21 @@ import com.ute.auction.dto.NhaThamDinhDTO;
 
 public interface INhaThamDinhService {
 
-    List<NhaThamDinhDTO> getAll(int page, int size);
+    List<NhaThamDinhDTO> getNhaThamDinhs();
 
-    NhaThamDinhDTO getAppraiserById(long id);
+    NhaThamDinhDTO getNhaThamDinhByMaNhaThamDinh(long maNhaThamDinh);
 
-    NhaThamDinhDTO getAppraiserByEmail(String email);
+    NhaThamDinhDTO getNhaThamDinhByEmail(String email);
 
-    NhaThamDinhDTO addAppraiser(NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar) throws IOException;
+    NhaThamDinhDTO addNhaThamDinh(NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar) throws IOException;
 
-    NhaThamDinhDTO updateAppraiser(long id, NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar) throws IOException;
+    NhaThamDinhDTO updateNhaThamDinh(long maNhaThamDinh, NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar)
+            throws IOException;
 
-    void deleteAppraiser(long id);
+    void deleteNhaThamDinh(long maNhaThamDinh);
 
-    void banAppraiser(long id);
+    void banNhaThamDinh(long maNhaThamDinh);
 
-    List<NhaThamDinhDTO> searchAppraiser(String keyword, int page, int size);
-
-    List<NhaThamDinhDTO> sortedAscByName(int page, int size);
-
-    List<NhaThamDinhDTO> sortedDescByName(int page, int size);
-
-    List<NhaThamDinhDTO> sortedAscByDoB(int page, int size);
-
-    List<NhaThamDinhDTO> sortedDescByDoB(int page, int size);
+    List<NhaThamDinhDTO> searchNhaThamDinh(String keyword, int page, int size);
 
 }

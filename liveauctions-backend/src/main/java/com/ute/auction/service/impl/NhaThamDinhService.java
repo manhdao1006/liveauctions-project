@@ -36,84 +36,45 @@ public class NhaThamDinhService implements INhaThamDinhService {
     private final NhaThamDinhConverter nhaThamDinhConverter;
     private final Cloudinary cloudinary;
 
-    /*
-     * get all appraisers
-     * 
-     * @param page, size
-     * 
-     * @return appraisers
-     */
     @Override
-    public List<NhaThamDinhDTO> getAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.findAll(pageable);
-        if (entities.isEmpty()) {
-            if (page > entities.getTotalPages() || page <= 0) {
-                throw new ResourceNotFoundException("No appraisers with page: " + page);
-            }
-        }
+    public List<NhaThamDinhDTO> getNhaThamDinhs() {
+        List<NhaThamDinhEntity> entities = nhaThamDinhRepository.findNhaThamDinhsByTrangThaiXoa("1");
         return entities.stream().map(nhaThamDinhConverter::toDTO).collect(Collectors.toList());
     }
 
-    /*
-     * get an appraiser by id
-     * 
-     * @param id
-     * 
-     * @return appraiser
-     */
     @Override
-    public NhaThamDinhDTO getAppraiserById(long id) {
-        NhaThamDinhEntity appraiserEntity = nhaThamDinhRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " not found"));
-        NhaThamDinhDTO appraiserDTO = nhaThamDinhConverter.toDTO(appraiserEntity);
-        return appraiserDTO;
+    public NhaThamDinhDTO getNhaThamDinhByMaNhaThamDinh(long maNhaThamDinh) {
+        NhaThamDinhEntity nhaThamDinhEntity = nhaThamDinhRepository.findOneByMaNhaThamDinh(maNhaThamDinh)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy nhà thẩm định nào với mã nhà thẩm định là " + maNhaThamDinh));
+        NhaThamDinhDTO nhaThamDinhDTO = nhaThamDinhConverter.toDTO(nhaThamDinhEntity);
+        return nhaThamDinhDTO;
     }
 
-    /*
-     * get an appraiser by email
-     * 
-     * @param email
-     * 
-     * @return appraiser
-     */
     @Override
-    public NhaThamDinhDTO getAppraiserByEmail(String email) {
-        NhaThamDinhEntity appraiserEntity = nhaThamDinhRepository.findOneByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + email + " not found"));
-        NhaThamDinhDTO appraiserDTO = nhaThamDinhConverter.toDTO(appraiserEntity);
-        return appraiserDTO;
+    public NhaThamDinhDTO getNhaThamDinhByEmail(String email) {
+        NhaThamDinhEntity nhaThamDinhEntity = nhaThamDinhRepository.findOneByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy nhà thẩm định nào với email là " + email));
+        NhaThamDinhDTO nhaThamDinhDTO = nhaThamDinhConverter.toDTO(nhaThamDinhEntity);
+        return nhaThamDinhDTO;
     }
 
-    /*
-     * add an appraiser
-     * 
-     * @param appraiser
-     * 
-     * @return appraiser
-     */
     @Transactional
     @Override
-    public NhaThamDinhDTO addAppraiser(NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar) throws IOException {
+    public NhaThamDinhDTO addNhaThamDinh(NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar) throws IOException {
         Map<String, String> avatarInfo = uploadAvatar(avatar);
 
-        NhaThamDinhEntity appraiserEntity = nhaThamDinhConverter.toEntity(nhaThamDinhDTO);
-        appraiserEntity.setAvatarId(avatarInfo.get("publicId"));
-        appraiserEntity.setAvatar(avatarInfo.get("url"));
-        appraiserEntity = nhaThamDinhRepository.save(appraiserEntity);
-        return nhaThamDinhConverter.toDTO(appraiserEntity);
+        NhaThamDinhEntity nhaThamDinhEntity = nhaThamDinhConverter.toEntity(nhaThamDinhDTO);
+        nhaThamDinhEntity.setAvatarId(avatarInfo.get("publicId"));
+        nhaThamDinhEntity.setAvatar(avatarInfo.get("url"));
+        nhaThamDinhEntity = nhaThamDinhRepository.save(nhaThamDinhEntity);
+        return nhaThamDinhConverter.toDTO(nhaThamDinhEntity);
     }
 
-    /*
-     * edit an existed appraiser
-     * 
-     * @param id, updatedAppraiser
-     * 
-     * @return appraiserUpdated
-     */
     @Transactional
     @Override
-    public NhaThamDinhDTO updateAppraiser(long maNhaThamDinh, NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar)
+    public NhaThamDinhDTO updateNhaThamDinh(long maNhaThamDinh, NhaThamDinhDTO nhaThamDinhDTO, MultipartFile avatar)
             throws IOException {
         NhaThamDinhEntity oldNhaThamDinh = nhaThamDinhRepository.findOneByMaNhaThamDinh(maNhaThamDinh)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -123,7 +84,8 @@ public class NhaThamDinhService implements INhaThamDinhService {
 
         if (avatar != null && !avatar.isEmpty()) {
             if (oldNhaThamDinh.getMaNhaThamDinh() != null) {
-                if (oldNhaThamDinh.getAvatarId() != null && !oldNhaThamDinh.getAvatarId().isEmpty()) {
+                if (oldNhaThamDinh.getAvatarId() != null
+                        && !oldNhaThamDinh.getAvatarId().isEmpty()) {
                     cloudinary.uploader().destroy(oldNhaThamDinh.getAvatarId(), ObjectUtils.emptyMap());
                 }
             }
@@ -137,149 +99,44 @@ public class NhaThamDinhService implements INhaThamDinhService {
         }
 
         try {
-            NhaThamDinhEntity appraiserUpdated = nhaThamDinhRepository.save(newNhaThamDinh);
-            return nhaThamDinhConverter.toDTO(appraiserUpdated);
+            NhaThamDinhEntity nhaThamDinhUpdated = nhaThamDinhRepository.save(newNhaThamDinh);
+            return nhaThamDinhConverter.toDTO(nhaThamDinhUpdated);
         } catch (DataIntegrityViolationException | ConstraintViolationException ex) {
-            throw new ResourceExistedException("Email already exists!");
+            throw new ResourceExistedException("Email đã tồn tại!");
         }
     }
 
-    /*
-     * delete an existed appraiser
-     * 
-     * @param id
-     */
     @Transactional
     @Override
-    public void deleteAppraiser(long id) {
-        NhaThamDinhEntity appraiserEntity = nhaThamDinhRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
-        if (appraiserEntity != null) {
-            nhaThamDinhRepository.deleteById(id);
-        }
+    public void deleteNhaThamDinh(long maNhaThamDinh) {
+        NhaThamDinhEntity nhaThamDinhEntity = nhaThamDinhRepository.findOneByMaNhaThamDinh(maNhaThamDinh)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy nhà thẩm định nào với mã nhà thẩm định là " + maNhaThamDinh));
+        nhaThamDinhEntity.setTrangThaiXoa("0");
+        nhaThamDinhRepository.save(nhaThamDinhEntity);
     }
 
-    /*
-     * ban an existed appraiser
-     * 
-     * @param id
-     */
     @Transactional
     @Override
-    public void banAppraiser(long id) {
-        NhaThamDinhEntity appraiserEntity = nhaThamDinhRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Appraiser with " + id + " is not found"));
-        appraiserEntity.setTrangThaiHoatDong("Inactive");
-        nhaThamDinhRepository.save(appraiserEntity);
+    public void banNhaThamDinh(long maNhaThamDinh) {
+        NhaThamDinhEntity nhaThamDinhEntity = nhaThamDinhRepository.findOneByMaNhaThamDinh(maNhaThamDinh)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy nhà thẩm định nào với mã nhà thẩm định là " + maNhaThamDinh));
+        nhaThamDinhEntity.setTrangThaiHoatDong("Inactive");
+        nhaThamDinhRepository.save(nhaThamDinhEntity);
     }
 
-    /*
-     * search appraiser
-     * 
-     * @param keyword, page, size
-     * 
-     * @return appraiser
-     */
     @Override
-    public List<NhaThamDinhDTO> searchAppraiser(String keyword, int page, int size) {
-        List<NhaThamDinhEntity> appraiserExists = nhaThamDinhRepository.existsAppraiser(keyword);
-        if (appraiserExists.isEmpty()) {
-            throw new ResourceNotFoundException("No appraisers with keyword: " +
-                    keyword);
+    public List<NhaThamDinhDTO> searchNhaThamDinh(String keyword, int page, int size) {
+        List<NhaThamDinhEntity> nhaThamDinhExists = nhaThamDinhRepository.existsNhaThamDinh(keyword);
+        if (nhaThamDinhExists.isEmpty()) {
+            throw new ResourceNotFoundException("Không tìm thấy nhà thẩm định nào với keyword là " + keyword);
         }
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.searchAppraiser(keyword, pageable);
+        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.searchNhaThamDinh(keyword, pageable);
         if (page > entities.getTotalPages() || page <= 0) {
-            throw new ResourceNotFoundException("No appraisers with page: " + page);
-        }
-
-        return entities.stream()
-                .map(nhaThamDinhConverter::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    /*
-     * sorted appraiser asc by name
-     * 
-     * @param page, size
-     * 
-     * @return appraisers
-     */
-    @Override
-    public List<NhaThamDinhDTO> sortedAscByName(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.sortedAscByName(pageable);
-        if (entities.isEmpty()) {
-            if (page > entities.getTotalPages() || page <= 0) {
-                throw new ResourceNotFoundException("No appraisers with page: " + page);
-            }
-        }
-
-        return entities.stream()
-                .map(nhaThamDinhConverter::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    /*
-     * sorted appraiser desc by name
-     * 
-     * @param page, size
-     * 
-     * @return appraisers
-     */
-    @Override
-    public List<NhaThamDinhDTO> sortedDescByName(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.sortedDescByName(pageable);
-        if (entities.isEmpty()) {
-            if (page > entities.getTotalPages() || page <= 0) {
-                throw new ResourceNotFoundException("No appraisers with page: " + page);
-            }
-        }
-
-        return entities.stream()
-                .map(nhaThamDinhConverter::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    /*
-     * sorted appraiser from young to old by dob
-     * 
-     * @param page, size
-     * 
-     * @return appraisers
-     */
-    @Override
-    public List<NhaThamDinhDTO> sortedAscByDoB(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.sortedAscByDoB(pageable);
-        if (entities.isEmpty()) {
-            if (page > entities.getTotalPages() || page <= 0) {
-                throw new ResourceNotFoundException("No appraisers with page: " + page);
-            }
-        }
-
-        return entities.stream()
-                .map(nhaThamDinhConverter::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    /*
-     * sorted appraiser from old to young by dob
-     * 
-     * @param page, size
-     * 
-     * @return appraisers
-     */
-    @Override
-    public List<NhaThamDinhDTO> sortedDescByDoB(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<NhaThamDinhEntity> entities = nhaThamDinhRepository.sortedDescByDoB(pageable);
-        if (entities.isEmpty()) {
-            if (page > entities.getTotalPages() || page <= 0) {
-                throw new ResourceNotFoundException("No appraisers with page: " + page);
-            }
+            throw new ResourceNotFoundException("Không tìm thấy nhà thẩm định nào với page là " + page);
         }
 
         return entities.stream()
