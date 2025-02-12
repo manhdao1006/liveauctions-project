@@ -1,4 +1,4 @@
-package com.ute.auction.controller.api.v1.admin.crud;
+package com.ute.auction.controller.api.v1.admin;
 
 import java.io.IOException;
 
@@ -25,7 +25,7 @@ import com.ute.auction.service.INguoiBanService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController(value = "nguoiBan" + ApiName.CRUD_ADMIN)
+@RestController(value = "nguoiBan" + ApiName.API)
 @RequestMapping(ApiUrl.API_ADMIN + "/nguoi-ban")
 public class NguoiBanController {
 
@@ -46,7 +46,7 @@ public class NguoiBanController {
     public ApiResponse<NguoiBanResponseDTO> getNguoiBanByMaNguoiBan(@PathVariable("maNguoiDung") long maNguoiDung) {
         return ApiResponse.<NguoiBanResponseDTO>builder()
                 .code(200)
-                .message("Nhân viên với mã người bán là " + maNguoiDung)
+                .message("Người bán với mã người bán là " + maNguoiDung)
                 .result(nguoiBanService.getNguoiBanByMaNguoiBan(maNguoiDung))
                 .build();
     }
@@ -58,7 +58,7 @@ public class NguoiBanController {
             @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         return ApiResponse.<NguoiBanResponseDTO>builder()
                 .code(200)
-                .message("Save successfully!")
+                .message("Thêm mới thành công")
                 .result(nguoiBanService.addNguoiBan(nguoiDungDTO, nguoiBanDTO, file))
                 .build();
     }

@@ -1,4 +1,4 @@
-package com.ute.auction.controller.api.v1.admin.crud;
+package com.ute.auction.controller.api.v1.admin;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RequiredArgsConstructor
-@RestController(value = "nhaKho" + ApiName.CRUD_ADMIN)
+@RestController(value = "nhaKho" + ApiName.API)
 @RequestMapping(ApiUrl.API_ADMIN + "/nha-kho")
 public class NhaKhoController {
 

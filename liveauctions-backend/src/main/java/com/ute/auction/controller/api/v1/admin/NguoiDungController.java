@@ -1,4 +1,4 @@
-package com.ute.auction.controller.api.v1.admin.search;
+package com.ute.auction.controller.api.v1.admin;
 
 import java.util.List;
 
@@ -16,16 +16,16 @@ import com.ute.auction.service.INguoiDungService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController(value = "user" + ApiName.SEARCH_ADMIN)
-@RequestMapping(ApiUrl.API_ADMIN + "/users")
+@RestController(value = "nguoiDung" + ApiName.API)
+@RequestMapping(ApiUrl.API_ADMIN + "/nguoi-dung")
 public class NguoiDungController {
 
-    private final INguoiDungService userService;
+    private final INguoiDungService nguoiDungService;
 
-    @GetMapping("/role/{roleId}")
-    public ResponseEntity<List<NguoiDungDTO>> getAllUsersByRole(@PathVariable("roleId") int roleId) {
-        List<NguoiDungDTO> models = userService.getAllUsersByRole(roleId);
-        return ResponseEntity.ok(models);
+    @GetMapping("/role/{maVaiTro}")
+    public ResponseEntity<List<NguoiDungDTO>> getNguoiDungsByMaVaiTro(@PathVariable("maVaiTro") long maVaiTro) {
+        List<NguoiDungDTO> nguoiDungs = nguoiDungService.getNguoiDungsByMaVaiTro(maVaiTro);
+        return ResponseEntity.ok(nguoiDungs);
     }
 
 }

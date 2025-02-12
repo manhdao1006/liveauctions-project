@@ -1,4 +1,4 @@
-package com.ute.auction.controller.api.v1.admin.crud;
+package com.ute.auction.controller.api.v1.admin;
 
 import java.io.IOException;
 
@@ -16,16 +16,16 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.ApiResponse;
+import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.NguoiMuaDTO;
 import com.ute.auction.dto.NguoiMuaResponseDTO;
-import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.PageResponse;
 import com.ute.auction.service.INguoiMuaService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController(value = "nguoiMua" + ApiName.CRUD_ADMIN)
+@RestController(value = "nguoiMua" + ApiName.API)
 @RequestMapping(ApiUrl.API_ADMIN + "/nguoi-mua")
 public class NguoiMuaController {
 
@@ -37,7 +37,7 @@ public class NguoiMuaController {
             @RequestParam(value = "size", required = false, defaultValue = "3") int size) {
         return ApiResponse.<PageResponse<NguoiMuaResponseDTO>>builder()
                 .code(200)
-                .message("Danh sách người bán")
+                .message("Danh sách người mua")
                 .result(nguoiMuaService.getNguoiMuas(page, size))
                 .build();
     }
@@ -46,7 +46,7 @@ public class NguoiMuaController {
     public ApiResponse<NguoiMuaResponseDTO> getNguoiMuaByMaNguoiMua(@PathVariable("maNguoiDung") long maNguoiDung) {
         return ApiResponse.<NguoiMuaResponseDTO>builder()
                 .code(200)
-                .message("Nhân viên với mã người bán là " + maNguoiDung)
+                .message("Người mua với mã người mua là " + maNguoiDung)
                 .result(nguoiMuaService.getNguoiMuaByMaNguoiMua(maNguoiDung))
                 .build();
     }
@@ -58,7 +58,7 @@ public class NguoiMuaController {
             @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         return ApiResponse.<NguoiMuaResponseDTO>builder()
                 .code(200)
-                .message("Save successfully!")
+                .message("Thêm mới thành công")
                 .result(nguoiMuaService.addNguoiMua(nguoiDungDTO, nguoiMuaDTO, file))
                 .build();
     }

@@ -1,4 +1,4 @@
-package com.ute.auction.controller.api.v1.admin.crud;
+package com.ute.auction.controller.api.v1.admin;
 
 import java.io.IOException;
 
@@ -25,7 +25,7 @@ import com.ute.auction.service.INhanVienService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController(value = "nhanVien" + ApiName.CRUD_ADMIN)
+@RestController(value = "nhanVien" + ApiName.API)
 @RequestMapping(ApiUrl.API_ADMIN + "/nhan-vien")
 public class NhanVienController {
 
@@ -58,7 +58,7 @@ public class NhanVienController {
             @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         return ApiResponse.<NhanVienResponseDTO>builder()
                 .code(200)
-                .message("Save successfully!")
+                .message("Thêm mới thành công")
                 .result(nhanVienService.addNhanVien(nguoiDungDTO, nhanVienDTO, file))
                 .build();
     }
