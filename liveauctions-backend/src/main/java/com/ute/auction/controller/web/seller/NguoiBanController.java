@@ -1,4 +1,4 @@
-package com.ute.auction.controller.web.seller.crud;
+package com.ute.auction.controller.web.seller;
 
 import java.io.IOException;
 
@@ -23,8 +23,8 @@ import com.ute.auction.service.INguoiBanService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController(value = "user" + ApiName.CRUD_WEB)
-@RequestMapping(ApiUrl.API_SELLER)
+@RestController(value = "nguoiBan" + ApiName.WEB)
+@RequestMapping(ApiUrl.API_SELLER + "/nguoi-ban")
 public class NguoiBanController {
 
     private final INguoiBanService nguoiBanService;
@@ -33,7 +33,7 @@ public class NguoiBanController {
     public ApiResponse<NguoiBanResponseDTO> getNguoiBanByMaNguoiBan(@PathVariable("maNguoiDung") long maNguoiDung) {
         return ApiResponse.<NguoiBanResponseDTO>builder()
                 .code(200)
-                .message("Nhân viên với mã người bán là " + maNguoiDung)
+                .message("Người bán với mã người bán là " + maNguoiDung)
                 .result(nguoiBanService.getNguoiBanByMaNguoiBan(maNguoiDung))
                 .build();
     }
