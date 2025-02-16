@@ -122,7 +122,7 @@ public class NhaThamDinhService implements INhaThamDinhService {
         NhaThamDinhEntity nhaThamDinhEntity = nhaThamDinhRepository.findOneByMaNhaThamDinh(maNhaThamDinh)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Không tìm thấy nhà thẩm định nào với mã nhà thẩm định là " + maNhaThamDinh));
-        nhaThamDinhEntity.setTrangThaiHoatDong("Inactive");
+        nhaThamDinhEntity.setTrangThaiHoatDong("Không hoạt động");
         nhaThamDinhRepository.save(nhaThamDinhEntity);
     }
 

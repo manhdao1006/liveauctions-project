@@ -17,6 +17,7 @@ public interface NhaThamDinhConverter {
     NhaThamDinhDTO toDTO(NhaThamDinhEntity entity);
 
     @Mapping(target = "trangThaiXoa", defaultValue = "1")
+    @Mapping(target = "trangThaiHoatDong", defaultValue = "Hoạt động")
     NhaThamDinhEntity toEntity(NhaThamDinhDTO dto);
 
     @Mapping(target = "maNhaThamDinh", ignore = true)

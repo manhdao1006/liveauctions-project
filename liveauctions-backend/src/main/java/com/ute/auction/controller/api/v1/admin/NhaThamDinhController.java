@@ -3,7 +3,6 @@ package com.ute.auction.controller.api.v1.admin;
 import java.io.IOException;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,29 +29,42 @@ public class NhaThamDinhController {
     private final INhaThamDinhService nhaThamDinhService;
 
     @GetMapping("/search")
-    public ResponseEntity<List<NhaThamDinhDTO>> searchNhaThamDinh(@RequestParam("keyword") String keyword,
+    public ApiResponse<List<NhaThamDinhDTO>> searchNhaThamDinh(@RequestParam("keyword") String keyword,
             @RequestParam("page") int page,
             @RequestParam(defaultValue = "10") int size) {
-        List<NhaThamDinhDTO> nhaThamDinhs = nhaThamDinhService.searchNhaThamDinh(keyword, page, size);
-        return ResponseEntity.ok(nhaThamDinhs);
+        return ApiResponse.<List<NhaThamDinhDTO>>builder()
+                .code(200)
+                .message("Danh sách nhà thẩm định")
+                .result(nhaThamDinhService.searchNhaThamDinh(keyword, page, size))
+                .build();
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<NhaThamDinhDTO>> getNhaThamDinhs() {
-        List<NhaThamDinhDTO> nhaThamDinhs = nhaThamDinhService.getNhaThamDinhs();
-        return ResponseEntity.ok(nhaThamDinhs);
+    public ApiResponse<List<NhaThamDinhDTO>> getNhaThamDinhs() {
+        return ApiResponse.<List<NhaThamDinhDTO>>builder()
+                .code(200)
+                .message("Danh sách nhà thẩm định")
+                .result(nhaThamDinhService.getNhaThamDinhs())
+                .build();
     }
 
-    @GetMapping("/id={id}")
-    public ResponseEntity<NhaThamDinhDTO> getNhaThamDinhByMaNhaThamDinh(@PathVariable("id") int maNhaThamDinh) {
-        NhaThamDinhDTO nhaThamDinhDTO = nhaThamDinhService.getNhaThamDinhByMaNhaThamDinh(maNhaThamDinh);
-        return ResponseEntity.ok(nhaThamDinhDTO);
+    @GetMapping("/maNhaThamDinh={maNhaThamDinh}")
+    public ApiResponse<NhaThamDinhDTO> getNhaThamDinhByMaNhaThamDinh(
+            @PathVariable("maNhaThamDinh") long maNhaThamDinh) {
+        return ApiResponse.<NhaThamDinhDTO>builder()
+                .code(200)
+                .message("Nhà thẩm định với mã nhà thẩm định là " + maNhaThamDinh)
+                .result(nhaThamDinhService.getNhaThamDinhByMaNhaThamDinh(maNhaThamDinh))
+                .build();
     }
 
     @GetMapping("/email={email}")
-    public ResponseEntity<NhaThamDinhDTO> getNhaThamDinhByEmail(@PathVariable("email") String email) {
-        NhaThamDinhDTO nhaThamDinhDTO = nhaThamDinhService.getNhaThamDinhByEmail(email);
-        return ResponseEntity.ok(nhaThamDinhDTO);
+    public ApiResponse<NhaThamDinhDTO> getNhaThamDinhByEmail(@PathVariable("email") String email) {
+        return ApiResponse.<NhaThamDinhDTO>builder()
+                .code(200)
+                .message("Nhà thẩm định với email là " + email)
+                .result(nhaThamDinhService.getNhaThamDinhByEmail(email))
+                .build();
     }
 
     @PostMapping("/add")
@@ -77,15 +89,21 @@ public class NhaThamDinhController {
     }
 
     @PutMapping("/delete/{maNhaThamDinh}")
-    public ResponseEntity<String> deleteNhaThamDinh(@PathVariable("maNhaThamDinh") long maNhaThamDinh) {
+    public ApiResponse<String> deleteNhaThamDinh(@PathVariable("maNhaThamDinh") long maNhaThamDinh) {
         nhaThamDinhService.deleteNhaThamDinh(maNhaThamDinh);
-        return ResponseEntity.ok("Xóa thành công");
+        return ApiResponse.<String>builder()
+                .code(200)
+                .message("Xóa thành công!")
+                .build();
     }
 
     @PutMapping("ban/{maNhaThamDinh}")
-    public ResponseEntity<String> banNhaThamDinh(@PathVariable("maNhaThamDinh") long maNhaThamDinh) {
+    public ApiResponse<String> banNhaThamDinh(@PathVariable("maNhaThamDinh") long maNhaThamDinh) {
         nhaThamDinhService.banNhaThamDinh(maNhaThamDinh);
-        return ResponseEntity.ok("Cấm thành công!");
+        return ApiResponse.<String>builder()
+                .code(200)
+                .message("Cấm thành công!")
+                .build();
     }
 
 }
