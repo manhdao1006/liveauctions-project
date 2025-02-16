@@ -7,7 +7,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ute.auction.converter.NguoiDungConverter;
+import com.ute.auction.converter.VaiTroConverter;
 import com.ute.auction.dto.NguoiDungDTO;
+import com.ute.auction.dto.NguoiDungResponseDTO;
+import com.ute.auction.dto.VaiTroDTO;
 import com.ute.auction.entity.NguoiBanEntity;
 import com.ute.auction.entity.NguoiDungEntity;
 import com.ute.auction.entity.NguoiMuaEntity;
@@ -35,16 +38,17 @@ public class NguoiDungService implements INguoiDungService {
     private final NguoiBanRepository nguoiBanRepository;
     private final NhanVienRepository nhanVienRepository;
     private final NguoiDungConverter nguoiDungConverter;
+    private final VaiTroConverter vaiTroConverter;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
     public void forgotPassword(String email, String password) {
-        NguoiDungEntity userEntity = (nguoiDungRepository.findByEmail(email)
+        NguoiDungEntity nguoiDungEntity = (nguoiDungRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email)));
 
-        userEntity.setMatKhau(passwordEncoder.encode(password));
-        nguoiDungRepository.save(userEntity);
+        nguoiDungEntity.setMatKhau(passwordEncoder.encode(password));
+        nguoiDungRepository.save(nguoiDungEntity);
     }
 
     @Transactional
@@ -54,19 +58,19 @@ public class NguoiDungService implements INguoiDungService {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        NguoiDungEntity userEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
-        userEntity.setEmail(nguoiDungDTO.getEmail());
-        userEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
+        NguoiDungEntity nguoiDungEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
+        nguoiDungEntity.setEmail(nguoiDungDTO.getEmail());
+        nguoiDungEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
 
-        VaiTroEntity roles = vaiTroRepository.findByTenVaiTro("ROLE_BUYER")
+        VaiTroEntity vaiTros = vaiTroRepository.findOneByTenVaiTro("ROLE_BUYER")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
-        userEntity.setVaiTros(Collections.singletonList(roles));
+        nguoiDungEntity.setVaiTros(Collections.singletonList(vaiTros));
 
-        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(nguoiDungEntity);
 
-        NguoiMuaEntity buyerEntity = new NguoiMuaEntity();
-        buyerEntity.setNguoiDung(savedUserEntity);
-        nguoiMuaRepository.save(buyerEntity);
+        NguoiMuaEntity nguoiMuaEntity = new NguoiMuaEntity();
+        nguoiMuaEntity.setNguoiDung(savedUserEntity);
+        nguoiMuaRepository.save(nguoiMuaEntity);
 
         return nguoiDungConverter.toDTO(savedUserEntity);
     }
@@ -78,19 +82,19 @@ public class NguoiDungService implements INguoiDungService {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        NguoiDungEntity userEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
-        userEntity.setEmail(nguoiDungDTO.getEmail());
-        userEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
+        NguoiDungEntity nguoiDungEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
+        nguoiDungEntity.setEmail(nguoiDungDTO.getEmail());
+        nguoiDungEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
 
-        VaiTroEntity roles = vaiTroRepository.findByTenVaiTro("ROLE_SELLER")
+        VaiTroEntity vaiTros = vaiTroRepository.findOneByTenVaiTro("ROLE_SELLER")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
-        userEntity.setVaiTros(Collections.singletonList(roles));
+        nguoiDungEntity.setVaiTros(Collections.singletonList(vaiTros));
 
-        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(nguoiDungEntity);
 
-        NguoiBanEntity sellerEntity = new NguoiBanEntity();
-        sellerEntity.setNguoiDung(savedUserEntity);
-        nguoiBanRepository.save(sellerEntity);
+        NguoiBanEntity nguoiBanEntity = new NguoiBanEntity();
+        nguoiBanEntity.setNguoiDung(savedUserEntity);
+        nguoiBanRepository.save(nguoiBanEntity);
 
         return nguoiDungConverter.toDTO(savedUserEntity);
     }
@@ -102,19 +106,19 @@ public class NguoiDungService implements INguoiDungService {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        NguoiDungEntity userEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
-        userEntity.setEmail(nguoiDungDTO.getEmail());
-        userEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
+        NguoiDungEntity nguoiDungEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
+        nguoiDungEntity.setEmail(nguoiDungDTO.getEmail());
+        nguoiDungEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
 
-        VaiTroEntity roles = vaiTroRepository.findByTenVaiTro("ROLE_STAFF")
+        VaiTroEntity vaiTros = vaiTroRepository.findOneByTenVaiTro("ROLE_STAFF")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
-        userEntity.setVaiTros(Collections.singletonList(roles));
+        nguoiDungEntity.setVaiTros(Collections.singletonList(vaiTros));
 
-        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(nguoiDungEntity);
 
-        NhanVienEntity staffEntity = new NhanVienEntity();
-        staffEntity.setNguoiDung(savedUserEntity);
-        nhanVienRepository.save(staffEntity);
+        NhanVienEntity nhanVienEntity = new NhanVienEntity();
+        nhanVienEntity.setNguoiDung(savedUserEntity);
+        nhanVienRepository.save(nhanVienEntity);
 
         return nguoiDungConverter.toDTO(savedUserEntity);
     }
@@ -126,19 +130,19 @@ public class NguoiDungService implements INguoiDungService {
             throw new ResourceExistedException("Email is taken!");
         }
 
-        NguoiDungEntity userEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
-        userEntity.setEmail(nguoiDungDTO.getEmail());
-        userEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
+        NguoiDungEntity nguoiDungEntity = nguoiDungConverter.toEntity(nguoiDungDTO);
+        nguoiDungEntity.setEmail(nguoiDungDTO.getEmail());
+        nguoiDungEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
 
-        VaiTroEntity roles = vaiTroRepository.findByTenVaiTro("ROLE_ADMIN")
+        VaiTroEntity vaiTros = vaiTroRepository.findOneByTenVaiTro("ROLE_ADMIN")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
-        userEntity.setVaiTros(Collections.singletonList(roles));
+        nguoiDungEntity.setVaiTros(Collections.singletonList(vaiTros));
 
-        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(userEntity);
+        NguoiDungEntity savedUserEntity = nguoiDungRepository.save(nguoiDungEntity);
 
-        NhanVienEntity staffEntity = new NhanVienEntity();
-        staffEntity.setNguoiDung(savedUserEntity);
-        nhanVienRepository.save(staffEntity);
+        NhanVienEntity nhanVienEntity = new NhanVienEntity();
+        nhanVienEntity.setNguoiDung(savedUserEntity);
+        nhanVienRepository.save(nhanVienEntity);
 
         return nguoiDungConverter.toDTO(savedUserEntity);
     }
@@ -148,6 +152,26 @@ public class NguoiDungService implements INguoiDungService {
         List<NguoiDungEntity> entities = nguoiDungRepository.findNguoiDungsByVaiTro(maVaiTro);
 
         return entities.stream().map(nguoiDungConverter::toDTO).toList();
+    }
+
+    @Override
+    public NguoiDungResponseDTO getNguoiDungByMaNguoiDung(long maNguoiDung) {
+        NguoiDungEntity nguoiDungEntity = nguoiDungRepository.findOneByMaNguoiDung(maNguoiDung)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy người dùng với mã người dùng là " + maNguoiDung));
+        NguoiDungDTO nguoiDungDTO = nguoiDungConverter.toDTO(nguoiDungEntity);
+        List<VaiTroEntity> vaiTros = nguoiDungEntity.getVaiTros();
+        VaiTroDTO vaiTroDTO = vaiTros.isEmpty() ? null : vaiTroConverter.toDTO(vaiTros.get(0));
+
+        return new NguoiDungResponseDTO(nguoiDungDTO, vaiTroDTO);
+    }
+
+    @Override
+    public NguoiDungDTO getNguoiDungByEmail(String email) {
+        NguoiDungEntity nguoiDungEntity = nguoiDungRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy người dùng với email là " + email));
+        return nguoiDungConverter.toDTO(nguoiDungEntity);
     }
 
 }

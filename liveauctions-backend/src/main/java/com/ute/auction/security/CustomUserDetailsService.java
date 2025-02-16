@@ -22,17 +22,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final NguoiDungRepository userRepository;
+    private final NguoiDungRepository nguoiDungRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        NguoiDungEntity user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Email not found"));
-        return new User(user.getEmail(), user.getMatKhau(), mapRolesToAuthorities(user.getVaiTros()));
+    public UserDetails loadUserByUsername(String email) {
+        NguoiDungEntity nguoiDungEntity = nguoiDungRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy email!"));
+        return new User(nguoiDungEntity.getEmail(), nguoiDungEntity.getMatKhau(),
+                mapRolesToAuthorities(nguoiDungEntity.getVaiTros()));
     }
 
-    private Collection<GrantedAuthority> mapRolesToAuthorities(List<VaiTroEntity> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getTenVaiTro())).collect(Collectors.toList());
+    private Collection<GrantedAuthority> mapRolesToAuthorities(List<VaiTroEntity> vaiTros) {
+        return vaiTros.stream().map(vaiTro -> new SimpleGrantedAuthority(vaiTro.getTenVaiTro()))
+                .collect(Collectors.toList());
     }
 
 }

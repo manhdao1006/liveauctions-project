@@ -10,6 +10,6 @@ import com.ute.auction.entity.VaiTroEntity;
 @Repository
 public interface VaiTroRepository extends JpaRepository<VaiTroEntity, Long> {
 
-    Optional<VaiTroEntity> findByTenVaiTro(String name);
+    Optional<VaiTroEntity> findOneByTenVaiTro(String tenVaiTro);
 
 }

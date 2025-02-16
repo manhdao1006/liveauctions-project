@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -16,15 +16,18 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class JWTGenerator {
 
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    private final BlackList blackList;
 
-    public String generateToken(Authentication authentication) {
-        String username = authentication.getName();
-        Collection<? extends GrantedAuthority> roles = authentication.getAuthorities();
+    public String generateToken(UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + SecurityConstants.ACCESS_TOKEN_EXPIRATION);
 
@@ -84,6 +87,10 @@ public class JWTGenerator {
     // kiểm tra tính hợp lệ của JWT
     public boolean validateToken(String token) {
         try {
+            if (blackList.isBlackListed(token)) {
+                throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
+            }
+
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
@@ -92,6 +99,23 @@ public class JWTGenerator {
             return true;
         } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
+        }
+    }
+
+    public boolean validateRefreshToken(String token) {
+        try {
+            if (blackList.isBlackListed(token)) {
+                throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
+            }
+
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+
+            return true;
+        } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+            throw new AuthenticationCredentialsNotFoundException("Refresh token was expired or incorrect");
         }
     }
 

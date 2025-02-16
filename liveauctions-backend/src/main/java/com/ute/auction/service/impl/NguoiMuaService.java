@@ -97,9 +97,9 @@ public class NguoiMuaService implements INguoiMuaService {
         nguoiDungEntity.setMatKhau(passwordEncoder.encode(nguoiDungDTO.getMatKhau()));
         nguoiDungEntity.setAvatarId(avatarInfo.get("publicId"));
         nguoiDungEntity.setAvatar(avatarInfo.get("url"));
-        VaiTroEntity roles = vaiTroRepository.findByTenVaiTro("ROLE_BUYER")
+        VaiTroEntity vaiTros = vaiTroRepository.findOneByTenVaiTro("ROLE_BUYER")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
-        nguoiDungEntity.setVaiTros(Collections.singletonList(roles));
+        nguoiDungEntity.setVaiTros(Collections.singletonList(vaiTros));
         PhuongXaEntity cityEntity = phuongXaRepository.findOneByMaPhuongXa(nguoiDungDTO.getMaPhuongXa())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Không có phường xã nào với mã phường xã là " + nguoiDungDTO.getMaPhuongXa()));
@@ -180,7 +180,7 @@ public class NguoiMuaService implements INguoiMuaService {
         NguoiDungEntity nguoiDungEntity = nguoiDungRepository.findOneByMaNguoiDung(maNguoiDung)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Không tìm thấy người dùng nào với mã người dùng là " + maNguoiDung));
-        nguoiDungEntity.setTrangThaiHoatDong("Inactive");
+        nguoiDungEntity.setTrangThaiHoatDong("Không hoạt động");
         nguoiDungRepository.save(nguoiDungEntity);
     }
 
