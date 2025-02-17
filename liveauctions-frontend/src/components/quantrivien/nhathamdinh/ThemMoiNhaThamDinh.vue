@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="row justify-content-evenly m-0">
+        <div class="row justify-content-evenly m-0 mt-3 mb-3">
             <div class="card-header col-xl-6">
                 <h5 class="card-title mb-0">Thêm mới nhà thẩm định</h5>
             </div>
@@ -12,6 +12,9 @@
             </div>
         </div>
         <div class="row m-0">
+            <div v-if="isError" class="alert alert-danger">
+                {{ messageError }}
+            </div>
             <div class="col-xl-4">
                 <div class="mb-3">
                     <label for="hoVaTen" class="form-label">Họ và tên<span class="text-danger">*</span></label>
@@ -20,7 +23,6 @@
                         type="text"
                         class="form-control"
                         id="hoVaTen"
-                        required
                     />
                 </div>
                 <div class="mb-3">
@@ -30,8 +32,10 @@
                         type="email"
                         class="form-control"
                         id="email"
-                        required
                     />
+                    <div v-if="isErrorEmail" class="text-danger">
+                        {{ messageEmail }}
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="gioiTinh" class="form-label">Giới tính<span class="text-danger">*</span></label>
@@ -39,7 +43,6 @@
                         v-model="nhaThamDinh.gioiTinh"
                         class="form-select"
                         aria-label="Default select example"
-                        required
                     >
                         <option selected disabled>Chọn giới tính</option>
                         <option value="Nam">Nam</option>
@@ -54,8 +57,10 @@
                         type="text"
                         class="form-control"
                         id="soDienThoai"
-                        required
                     />
+                    <div v-if="isErrorSoDienThoai" class="text-danger">
+                        {{ messageSoDienThoai }}
+                    </div>
                 </div>
             </div>
             <div class="col-xl-4">
@@ -66,7 +71,6 @@
                         type="text"
                         class="form-control"
                         id="diaChi"
-                        required
                     />
                 </div>
                 <div class="mb-3">
@@ -74,7 +78,6 @@
                     <select
                         v-model="nhaThamDinh.loai"
                         class="form-select"
-                        required
                     >
                         <option value="" disabled selected hidden>Chọn loại</option>
                         <option value="Nội bộ">Nhà thẩm định nội bộ</option>
@@ -88,7 +91,6 @@
                         type="date"
                         class="form-control"
                         id="ngaySinh"
-                        required
                     />
                 </div>
                 <div class="mb-3">
@@ -114,11 +116,10 @@
                         name="file"
                         ref="fileInput"
                         @change="handleFileChange"
-                        required
                         accept="image/*"
                         class="form-control mt-2"
                     />
-                    <p v-if="error" class="text-danger">Vui lòng chọn ảnh.</p>
+                    <p v-if="isErrorAnh" class="text-danger">{{ messageAnh}}</p>
                 </div>
             </div>
             <div class="text-center">
@@ -130,17 +131,25 @@
     </div>
 </template>
 <script lang="ts">
-    import { addNhaThamDinh } from '@/services/quantrivien/nhaThamDinhService';
-import { defineComponent, Ref, ref } from 'vue'
-    import { useRouter } from 'vue-router';
+    import { addNhaThamDinh } from '@/services/quantrivien/nhaThamDinhService'
+    import { validateEmail, validateSoDienThoai } from '@/utils/validation'
+    import { defineComponent, ref } from 'vue'
+    import { useRouter } from 'vue-router'
 
     export default defineComponent({
         name: 'ThemMoiNhaThamDinh',
         setup() {
             const router = useRouter()
             const fileInput = ref<HTMLInputElement | null>(null)
-            const error = ref(false)
-            const nhaThamDinh: Ref<Record<string, undefined>> = ref({})
+            const isError = ref(false)
+            const isErrorAnh = ref(false)
+            const isErrorSoDienThoai = ref(false)
+            const isErrorEmail = ref(false)
+            const messageError = ref<string>('')
+            const messageAnh = ref<string>('')
+            const messageSoDienThoai = ref<string>('')
+            const messageEmail = ref<string>('')
+            const nhaThamDinh = ref<Record<string, undefined>>({})
             const previewImage = ref<string | null>(null)
             
             const handleFileChange = (event: Event) => {
@@ -149,20 +158,61 @@ import { defineComponent, Ref, ref } from 'vue'
 
                 if (file) {
                     previewImage.value = URL.createObjectURL(file)
-                    error.value = false
+                    isError.value = false
                 } else {
                     previewImage.value = null
-                    error.value = true
+                    isError.value = true
                 }
             }
 
             const handleThemMoi = async () => {
                 const file = fileInput.value?.files?.[0]
-                if (!file) {
-                    return error.value = true
+                let hasError = false
+
+                if (!nhaThamDinh.value.hoVaTen || !nhaThamDinh.value.email || !nhaThamDinh.value.gioiTinh || !nhaThamDinh.value.ngaySinh ||
+                    !nhaThamDinh.value.soDienThoai || !nhaThamDinh.value.diaChi || !nhaThamDinh.value.loai) {
+                    isError.value = true
+                    messageError.value = 'Vui lòng nhập đầy đủ các trường dữ liệu!'
+                    setTimeout(() => {
+                        isError.value = false
+                        messageError.value = ''
+                    }, 3000)
+                    return
                 }
 
-                error.value = false
+                if (!file) {
+                    isErrorAnh.value = true
+                    messageAnh.value = 'Vui lòng chọn ảnh!'
+                    hasError = true
+                    return                    
+                }
+
+                const soDienThoaiCheck = validateSoDienThoai(String(nhaThamDinh.value.soDienThoai))
+                if (!soDienThoaiCheck.isValid) {
+                    isErrorSoDienThoai.value = true
+                    messageSoDienThoai.value = soDienThoaiCheck.message || ''
+                    hasError = true
+                }
+
+                const emailCheck = validateEmail(String(nhaThamDinh.value.email))
+                if (!emailCheck.isValid) {
+                    isErrorEmail.value = true
+                    messageEmail.value = emailCheck.message || ''
+                    hasError = true
+                }
+
+                if (hasError) {
+                    setTimeout(() => {
+                        isErrorAnh.value = false
+                        messageAnh.value = ''
+                        isErrorSoDienThoai.value = false
+                        messageSoDienThoai.value = ''
+                        isErrorEmail.value = false
+                        messageEmail.value = ''
+                    }, 3000)
+                    return
+                }
+
                 const formData = new FormData()
                 Object.entries(nhaThamDinh.value).forEach(([key, value]) => {
                     if (value !== undefined) {
@@ -179,7 +229,14 @@ import { defineComponent, Ref, ref } from 'vue'
 
             return {
                 fileInput,
-                error,
+                isError,
+                isErrorAnh,
+                isErrorSoDienThoai,
+                isErrorEmail,
+                messageError,
+                messageAnh,
+                messageSoDienThoai,
+                messageEmail,
                 previewImage,
                 nhaThamDinh,
                 handleFileChange,

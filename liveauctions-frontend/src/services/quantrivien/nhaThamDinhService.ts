@@ -46,13 +46,13 @@ export const addNhaThamDinh = async (formData: FormData) => {
         })
 
         if (response.data.code === 200) {
-            return { success: true, message: 'Thêm mới người dùng thành công' }
+            return { success: true, message: 'Thêm mới thành công' }
         } else {
-            return { success: false, message: 'Thêm mới người dùng thất bại' }
+            return { success: false, message: 'Thêm mới thất bại' }
         }
     } catch (error) {
         console.error('Error adding user:', error)
-        return { success: false, message: 'Có lỗi khi thêm mới người dùng' }
+        return { success: false, message: 'Có lỗi khi thêm mới' }
     }
 }
 
@@ -89,12 +89,12 @@ export const deleteNhaThamDinh = async (maNhaThamDinh: number) => {
         )
 
         if (response.data.code === 200) {
-            return { success: true, message: 'Xóa người dùng thành công' }
+            return { success: true, message: 'Xóa thành công' }
         } else {
-            return { success: false, message: 'Xóa người dùng thất bại' }
+            return { success: false, message: 'Xóa thất bại' }
         }
     } catch (error) {
         console.error('Error deleting user:', error)
-        return { success: false, message: 'Có lỗi khi xóa người dùng' }
+        return { success: false, message: 'Có lỗi khi xóa' }
     }
 }
