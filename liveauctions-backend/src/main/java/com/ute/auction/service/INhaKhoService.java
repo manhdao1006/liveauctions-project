@@ -14,4 +14,6 @@ public interface INhaKhoService {
 
     void deleteNhaKho(long maNhaKho);
 
+    NhaKhoDTO getNhaKhoByMaNhaKho(long maNhaKho);
+
 }

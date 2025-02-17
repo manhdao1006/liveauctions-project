@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import com.ute.auction.dto.QuanHuyenDTO;
 import com.ute.auction.entity.QuanHuyenEntity;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { NguoiDungConverter.class, VaiTroConverter.class })
 public interface QuanHuyenConverter {
     QuanHuyenDTO toDTO(QuanHuyenEntity entity);
 }

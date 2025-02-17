@@ -35,6 +35,16 @@ public class NhaKhoController {
                 .build();
     }
 
+    @GetMapping("/maNhaKho={maNhaKho}")
+    public ApiResponse<NhaKhoDTO> getNhaKhoByMaNhaKho(
+            @PathVariable("maNhaKho") long maNhaKho) {
+        return ApiResponse.<NhaKhoDTO>builder()
+                .code(200)
+                .message("Nhà kho với mã nhà kho là " + maNhaKho)
+                .result(nhaKhoService.getNhaKhoByMaNhaKho(maNhaKho))
+                .build();
+    }
+
     @PostMapping("/add")
     public ApiResponse<NhaKhoDTO> addNhaKho(@RequestBody NhaKhoDTO nhaKhoDTO) {
         return ApiResponse.<NhaKhoDTO>builder()

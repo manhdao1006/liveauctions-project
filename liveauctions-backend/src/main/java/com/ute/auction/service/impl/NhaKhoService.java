@@ -68,4 +68,12 @@ public class NhaKhoService implements INhaKhoService {
         nhaKhoRepository.save(nhaKhoEntity);
     }
 
+    @Override
+    public NhaKhoDTO getNhaKhoByMaNhaKho(long maNhaKho) {
+        NhaKhoEntity nhaKhoEntity = nhaKhoRepository.findOneByMaNhaKho(maNhaKho)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy nhà kho nào với mã nhà kho là " + maNhaKho));
+        return nhaKhoConverter.toDTO(nhaKhoEntity);
+    }
+
 }

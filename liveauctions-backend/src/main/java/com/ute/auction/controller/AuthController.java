@@ -1,5 +1,7 @@
 package com.ute.auction.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,10 +22,14 @@ import com.ute.auction.dto.ApiResponse;
 import com.ute.auction.dto.AuthResponseDTO;
 import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.NguoiDungResponseDTO;
+import com.ute.auction.dto.PhuongXaDTO;
+import com.ute.auction.dto.QuanHuyenDTO;
 import com.ute.auction.security.BlackList;
 import com.ute.auction.security.CustomUserDetailsService;
 import com.ute.auction.security.JWTGenerator;
 import com.ute.auction.service.INguoiDungService;
+import com.ute.auction.service.IPhuongXaService;
+import com.ute.auction.service.IQuanHuyenService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +43,35 @@ public class AuthController {
     private final JWTGenerator jwtGenerator;
     private final BlackList blackList;
     private final CustomUserDetailsService userDetailsService;
+    private final IPhuongXaService phuongXaService;
+    private final IQuanHuyenService quanHuyenService;
+
+    @GetMapping("/quan-huyen")
+    public ApiResponse<List<QuanHuyenDTO>> getQuanHuyens() {
+        return ApiResponse.<List<QuanHuyenDTO>>builder()
+                .code(200)
+                .message("Danh sách quận huyện")
+                .result(quanHuyenService.getQuanHuyens())
+                .build();
+    }
+
+    @GetMapping("/phuong-xa/maQuanHuyen={maQuanHuyen}")
+    public ApiResponse<List<PhuongXaDTO>> getPhuongXaByMaQuanHuyen(@PathVariable("maQuanHuyen") long maQuanHuyen) {
+        return ApiResponse.<List<PhuongXaDTO>>builder()
+                .code(200)
+                .message("Danh sách phường xã")
+                .result(phuongXaService.getPhuongXaByMaQuanHuyen(maQuanHuyen))
+                .build();
+    }
+
+    @GetMapping("/phuong-xa")
+    public ApiResponse<List<PhuongXaDTO>> getPhuongXas() {
+        return ApiResponse.<List<PhuongXaDTO>>builder()
+                .code(200)
+                .message("Danh sách phường xã")
+                .result(phuongXaService.getPhuongXas())
+                .build();
+    }
 
     @GetMapping("/profile")
     public ApiResponse<NguoiDungDTO> getUserProfile(Authentication authentication) {
