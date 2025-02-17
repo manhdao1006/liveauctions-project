@@ -29,10 +29,10 @@
                 </li>
 
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/posts">
+                    <router-link class="sidebar-link" :to="{ name: 'DanhSachNhaKhoView' }">
                         <i class="fa-solid fa-warehouse"></i>
                         <span class="align-middle">Nhà kho</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <li class="sidebar-item">

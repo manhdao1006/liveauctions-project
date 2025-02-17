@@ -9,6 +9,9 @@ export const API_ENDPOINTS = {
         DANGNHAP: `${BASE_URL}/api/auth/login`,
         DANGXUAT: `${BASE_URL}/api/auth/logout`,
         REFRESH_TOKEN: `${BASE_URL}/api/auth/refresh-token`,
+        GET_QUANHUYENS: `${BASE_URL}/api/auth/quan-huyen`,
+        GET_PHUONGXA_BY_MAQUANHUYEN: (maQuanHuyen: number) => `${BASE_URL}/api/auth/phuong-xa/maQuanHuyen=${maQuanHuyen}`,
+        GET_PHUONGXAS: `${BASE_URL}/api/auth/phuong-xa`,
     },
     NGUOIDUNG: {
         GET_BY_MANGUOIDUNG: (maNguoiDung: number) => `${BASE_URL}/api/auth/view/${maNguoiDung}`,
@@ -21,16 +24,6 @@ export const API_ENDPOINTS = {
         SEARCH: `${BASE_URL}/api/users/search`,
         FILTER: `${BASE_URL}/api/users/filter`,
     },
-    POSTS: {
-        GET_POSTS: `${BASE_URL}/api/posts/`,
-        GET_BY_ID: (postId: number) => `${BASE_URL}/api/posts/view/${postId}`,
-        ADD_POST: `${BASE_URL}/api/posts/create`,
-        UPDATE_POST: (postId: number) => `${BASE_URL}/api/posts/edit/${postId}`,
-        DELETE_POST: (postId: number) => `${BASE_URL}/api/posts/soft-delete/${postId}`,
-        SEARCH_POST: `${BASE_URL}/api/posts/search`,
-        SORT_POST_LATEST: `${BASE_URL}/api/posts/latest`,
-        SORT_POST_OLDEST: `${BASE_URL}/api/posts/oldest`,
-    },
     NHATHAMDINH: {
         GET_NHATHAMDINHS: `${BASE_URL}/api/v1/admin/nha-tham-dinh/list`,
         GET_BY_MANHATHAMDINH: (maNhaThamDinh: number) =>`${BASE_URL}/api/v1/admin/nha-tham-dinh/maNhaThamDinh=${maNhaThamDinh}`,
@@ -39,6 +32,13 @@ export const API_ENDPOINTS = {
         UPDATE: (maNhaThamDinh: number) => `${BASE_URL}/api/v1/admin/nha-tham-dinh/edit/${maNhaThamDinh}`,
         DELETE: (maNhaThamDinh: number) => `${BASE_URL}/api/v1/admin/nha-tham-dinh/delete/${maNhaThamDinh}`,
         BAN: (maNhaThamDinh: number) => `${BASE_URL}/api/v1/admin/nha-tham-dinh/ban/${maNhaThamDinh}`,
+    },
+    NHAKHO: {
+        GET_NHAKHOS: `${BASE_URL}/api/v1/admin/nha-kho/list`,
+        GET_BY_MANHAKHO: (maNhaKho: number) =>`${BASE_URL}/api/v1/admin/nha-kho/maNhaKho=${maNhaKho}`,
+        ADD: `${BASE_URL}/api/v1/admin/nha-kho/add`,
+        UPDATE: (maNhaKho: number) => `${BASE_URL}/api/v1/admin/nha-kho/edit/${maNhaKho}`,
+        DELETE: (maNhaKho: number) => `${BASE_URL}/api/v1/admin/nha-kho/delete/${maNhaKho}`,
     },
     
 }

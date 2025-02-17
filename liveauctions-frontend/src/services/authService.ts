@@ -8,6 +8,7 @@ import {
     setMaNguoiDung
 } from './localStorageService'
 import { apiClient } from '@/config/apiClient'
+import axios from 'axios'
 
 export const getNguoiDungByMaNguoiDung = async (maNguoiDung: number) => {
     const response = await apiClient.get(API_ENDPOINTS.NGUOIDUNG.GET_BY_MANGUOIDUNG(maNguoiDung), {
@@ -69,4 +70,22 @@ export const dangKy = async (email: string, matKhau: string, hoVaTen: string) =>
     } else {
         return { success: false, message: 'Tên đăng nhập hoặc email đã tồn tại!' }
     }
+}
+
+export const getQuanHuyens = async () => {
+    const response = await axios.get(API_ENDPOINTS.AUTH.GET_QUANHUYENS)
+
+    return response.data.result
+}
+
+export const getPhuongXaByMaQuanHuyen = async (maQuanHuyen: number) => {
+    const response = await axios.get(API_ENDPOINTS.AUTH.GET_PHUONGXA_BY_MAQUANHUYEN(maQuanHuyen))
+
+    return response.data.result
+}
+
+export const getPhuongXas = async () => {
+    const response = await axios.get(API_ENDPOINTS.AUTH.GET_PHUONGXAS)
+
+    return response.data.result
 }
