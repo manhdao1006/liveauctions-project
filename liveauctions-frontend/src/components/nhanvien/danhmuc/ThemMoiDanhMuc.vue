@@ -94,8 +94,8 @@
 </template>
 
 <script lang="ts">
-    import { addDanhMucCon } from '@/services/quantrivien/danhMucConService'
-    import { addDanhMuc, getDanhMucs } from '@/services/quantrivien/danhMucService'
+    import { addDanhMucCon } from '@/services/nhanvien/danhMucConService'
+    import { addDanhMuc, getDanhMucs } from '@/services/nhanvien/danhMucService'
     import { defineComponent, onMounted, Ref, ref } from 'vue'
     import { useRouter } from 'vue-router'
 

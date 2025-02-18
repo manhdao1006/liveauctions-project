@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-    import { getDanhMucByMaDanhMuc, updateDanhMuc } from '@/services/quantrivien/danhMucService'
+    import { getDanhMucByMaDanhMuc, updateDanhMuc } from '@/services/nhanvien/danhMucService'
     import { defineComponent, onMounted, Ref, ref } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
 

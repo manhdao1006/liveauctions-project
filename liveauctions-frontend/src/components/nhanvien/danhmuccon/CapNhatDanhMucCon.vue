@@ -65,8 +65,8 @@
     import {
         getDanhMucConByMaDanhMucCon,
         updateDanhMucCon
-    } from '@/services/quantrivien/danhMucConService'
-    import { getDanhMucs } from '@/services/quantrivien/danhMucService'
+    } from '@/services/nhanvien/danhMucConService'
+    import { getDanhMucs } from '@/services/nhanvien/danhMucService'
     import { defineComponent, onMounted, Ref, ref } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
 

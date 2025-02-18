@@ -21,14 +21,10 @@
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li>
-                                    <button class="dropdown-item">
-                                        Người dùng
-                                    </button>
+                                    <button class="dropdown-item">Người dùng</button>
                                 </li>
                                 <li>
-                                    <button class="dropdown-item">
-                                        Quản trị viên
-                                    </button>
+                                    <button class="dropdown-item">Quản trị viên</button>
                                 </li>
                             </ul>
                         </div>
@@ -37,14 +33,19 @@
 
                 <div class="row justify-content-evenly">
                     <div class="card-header col-xl-6">
-                        <h5 class="card-title mb-0">
-                            Danh sách danh mục
-                        </h5>
+                        <h5 class="card-title mb-0">Danh sách danh mục con</h5>
                     </div>
                     <div class="card-header col-xl-6 text-end">
-                        <router-link class="text-success" :to="{ name: 'ThemMoiDanhMucView' }">
+                        <router-link class="text-success me-3" :to="{ name: 'ThemMoiDanhMucView' }">
                             <i class="fas fa-plus-circle"></i>
                             <span class="ps-1">Thêm mới</span>
+                        </router-link>
+                        <router-link
+                            class="text-primary-emphasis"
+                            :to="{ name: 'DanhSachDanhMucView' }"
+                        >
+                            <i class="fas fa-chevron-circle-left"></i>
+                            <span class="ps-1">Quay lại</span>
                         </router-link>
                     </div>
                 </div>
@@ -53,28 +54,55 @@
                         <tr>
                             <th class="d-none d-xl-table-cell">STT</th>
                             <th>Tên danh mục</th>
-                            <th class="d-none d-md-table-cell">Thao tác</th>
+                            <th class="d-none d-md-table-cell">Danh mục cha</th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(danhMuc, index) in paginatedDanhMucs" :key=" typeof danhMuc.maDanhMuc === 'string' ? danhMuc.maDanhMuc : undefined">
+                        <tr
+                            v-for="(danhMucCon, index) in paginatedDanhMucCons"
+                            :key="
+                                typeof danhMucCon.maDanhMucCon === 'string'
+                                    ? danhMucCon.maDanhMucCon
+                                    : undefined
+                            "
+                        >
                             <td class="d-none d-xl-table-cell">
                                 {{ index + 1 }}
                             </td>
                             <td>
-                                {{ danhMuc.tenDanhMuc }}
+                                {{ danhMucCon.tenDanhMucCon }}
+                            </td>
+                            <td class="d-none d-md-table-cell">
+                                {{ getTenDanhMuc(Number(danhMucCon.maDanhMuc)) }}
                             </td>
                             <td>
-                                <router-link :to="{ name: 'DanhSachDanhMucConView', params: { maDanhMuc: Number(danhMuc.maDanhMuc) } }">
-                                    <i class="fa-solid fa-layer-group text-warning" title="Xem cấp con"></i>
+                                <router-link
+                                    :to="{
+                                        name: 'DanhSachDanhMucConView',
+                                        params: { maDanhMuc: Number(danhMucCon.maDanhMuc) }
+                                    }"
+                                >
+                                    <i
+                                        class="fa-solid fa-layer-group text-warning"
+                                        title="Xem cấp con"
+                                    ></i>
                                 </router-link>
                                 |
-                                <router-link :to="{ name: 'CapNhatDanhMucView', params: { maDanhMuc: Number(danhMuc.maDanhMuc) } }">
+                                <router-link
+                                    :to="{
+                                        name: 'CapNhatDanhMucConView',
+                                        params: {
+                                            maDanhMuc: Number(danhMucCon.maDanhMuc),
+                                            maDanhMucCon: Number(danhMucCon.maDanhMucCon)
+                                        }
+                                    }"
+                                >
                                     <i class="far fa-edit text-success" title="Cập nhật"></i
                                 ></router-link>
                                 |
                                 <button
-                                    @click="showConfirmPopup(Number(danhMuc.maDanhMuc))"
+                                    @click="showConfirmPopup(Number(danhMucCon.maDanhMucCon))"
                                     class="border-0 p-0 bg-transparent"
                                 >
                                     <i class="fas fa-trash-alt text-danger" title="Xóa"></i>
@@ -106,80 +134,98 @@
     import PaginationComponent from '@/components/dungchung/PaginationComponent.vue'
     import PopupDelete from '@/components/dungchung/PopupDelete.vue'
     import SearchComponent from '@/components/dungchung/SearchComponent.vue'
-    import { deleteDanhMuc, getDanhMucs } from '@/services/quantrivien/danhMucService'
+    import {
+        deleteDanhMucCon,
+        getDanhMucConsByMaDanhMuc
+    } from '@/services/nhanvien/danhMucConService'
+    import { getDanhMucs } from '@/services/nhanvien/danhMucService'
     import { computed, defineComponent, onMounted, ref, Ref, watch } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
 
     export default defineComponent({
-        name: 'DanhSachDanhMuc',
+        name: 'DanhSachDanhMucCon',
         components: {
             SearchComponent,
             PaginationComponent,
-            PopupDelete,
+            PopupDelete
         },
         setup() {
-            const totalPages = computed(() => Math.ceil(danhMucs.value.length / pageSize.value))
+            const totalPages = computed(() => Math.ceil(danhMucCons.value.length / pageSize.value))
             const route = useRoute()
             const router = useRouter()
+            const maDanhMuc = ref(Number(route.params.maDanhMuc))
             const currentPage = ref(Number(route.query.page) || 1) as Ref<number>
+            const danhMucCons: Ref<Record<string, unknown>[]> = ref([])
             const danhMucs: Ref<Record<string, unknown>[]> = ref([])
             const totalElements = ref() as Ref<number>
             const pageSize = ref(10) as Ref<number>
             const showDeletePopup = ref(false) as Ref<boolean>
-            const danhMucToDelete = ref(null) as Ref<number | null>
+            const danhMucConToDelete = ref(null) as Ref<number | null>
             const keyword = ref('') as Ref<string>
+
+            const fetchDanhMucCons = async () => {
+                const result = await getDanhMucConsByMaDanhMuc(maDanhMuc.value)
+                danhMucCons.value = result
+            }
 
             const fetchDanhMucs = async () => {
                 const result = await getDanhMucs()
                 danhMucs.value = result
             }
 
-            const paginatedDanhMucs = computed(() => {
+            const paginatedDanhMucCons = computed(() => {
                 const start = (currentPage.value - 1) * pageSize.value
-                return danhMucs.value.slice(start, start + pageSize.value)
+                return danhMucCons.value.slice(start, start + pageSize.value)
             })
+
+            const getTenDanhMuc = (maDanhMuc: number) => {
+                const danhMuc = danhMucs.value.find((dm) => dm.maDanhMuc === maDanhMuc)
+                return danhMuc ? danhMuc.tenDanhMuc : 'Không xác định'
+            }
 
             watch(currentPage, (newPage) => {
                 router.replace({ query: { ...route.query, page: newPage.toString() } })
-                fetchDanhMucs()
+                fetchDanhMucCons()
             })
 
             const onChangePage = (page: number) => {
                 currentPage.value = page
             }
 
-            const showConfirmPopup = (maDanhMuc: unknown) => {
-                if (typeof maDanhMuc === "number") {
-                    danhMucToDelete.value = maDanhMuc
+            const showConfirmPopup = (maDanhMucCon: unknown) => {
+                if (typeof maDanhMucCon === 'number') {
+                    danhMucConToDelete.value = maDanhMucCon
                     showDeletePopup.value = true
                 } else {
-                    console.error("Lỗi: Mã danh mục không phải số", maDanhMuc)
+                    console.error('Lỗi: Mã danh mục không phải số', maDanhMucCon)
                 }
             }
 
             const confirmDelete = async () => {
-                if (danhMucToDelete.value) {
-                    await deleteDanhMuc(danhMucToDelete.value)
-                    fetchDanhMucs()
+                if (danhMucConToDelete.value) {
+                    await deleteDanhMucCon(danhMucConToDelete.value)
+                    fetchDanhMucCons()
                 }
             }
 
             onMounted(() => {
+                fetchDanhMucCons()
                 fetchDanhMucs()
             })
 
-            return { 
-                paginatedDanhMucs,
+            return {
+                paginatedDanhMucCons,
                 currentPage,
                 totalPages,
                 totalElements,
                 pageSize,
                 onChangePage,
                 showDeletePopup,
-                danhMucToDelete,
+                danhMucConToDelete,
                 showConfirmPopup,
                 confirmDelete,
                 keyword,
+                getTenDanhMuc
             }
         }
     })

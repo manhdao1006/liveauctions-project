@@ -3,23 +3,23 @@
         <SideBarAdmin />
         <div class="main">
             <HeaderAdmin />
-            <ThemMoiDanhMuc />
+            <CapNhatDanhMucCon />
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import { defineComponent } from 'vue'
-    import SideBarAdmin from '@/components/dungchung/SideBarAdmin.vue'
     import HeaderAdmin from '@/components/dungchung/HeaderAdmin.vue'
-    import ThemMoiDanhMuc from '@/components/quantrivien/danhmuc/ThemMoiDanhMuc.vue'
+    import SideBarAdmin from '@/components/dungchung/SideBarAdmin.vue'
+    import CapNhatDanhMucCon from '@/components/nhanvien/danhmuccon/CapNhatDanhMucCon.vue'
+    import { defineComponent } from 'vue'
 
     export default defineComponent({
-        name: 'ThemMoiDanhMucView',
+        name: 'CapNhatDanhMucConView',
         components: {
             SideBarAdmin,
             HeaderAdmin,
-            ThemMoiDanhMuc,
+            CapNhatDanhMucCon
         }
     })
 </script>
@@ -40,11 +40,8 @@
         min-height: 100vh;
         min-width: 0;
         overflow: hidden;
-        transition:
-            margin-left 0.35s ease-in-out,
-            left 0.35s ease-in-out,
-            margin-right 0.35s ease-in-out,
-            right 0.35s ease-in-out;
+        transition: margin-left 0.35s ease-in-out, left 0.35s ease-in-out,
+            margin-right 0.35s ease-in-out, right 0.35s ease-in-out;
         width: 100%;
     }
     .fs-header-admin {
