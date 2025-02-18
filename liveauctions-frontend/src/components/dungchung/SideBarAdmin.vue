@@ -22,10 +22,10 @@
                 </li>
 
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/posts">
+                    <router-link class="sidebar-link" :to="{ name: 'DanhSachDanhMucView' }">
                         <i class="fa-solid fa-layer-group"></i>
                         <span class="align-middle">Danh mục</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <li class="sidebar-item">
@@ -115,7 +115,7 @@
             left 0.35s ease-in-out,
             margin-right 0.35s ease-in-out,
             right 0.35s ease-in-out;
-        max-height: 100vh;
+        max-height: 120vh;
         overflow-y: auto;
         scrollbar-width: thin;
         scrollbar-color: #6c757d transparent;

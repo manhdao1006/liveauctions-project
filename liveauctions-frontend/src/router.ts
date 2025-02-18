@@ -1,83 +1,97 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import { getNguoiDungByMaNguoiDung } from './services/authService'
-import { getMaNguoiDung } from './services/localStorageService'
 import DangKy from './components/auth/DangKy.vue'
 import DangNhap from './components/auth/DangNhap.vue'
-import ThemMoiNhaThamDinhView from './views/quantrivien/nhathamdinh/ThemMoiNhaThamDinhView.vue'
-import DanhSachNhaThamDinhView from './views/quantrivien/nhathamdinh/DanhSachNhaThamDinhView.vue'
-import CapNhatNhaThamDinhView from './views/quantrivien/nhathamdinh/CapNhatNhaThamDinhView.vue'
+import { getNguoiDungByMaNguoiDung } from './services/authService'
+import { getMaNguoiDung } from './services/localStorageService'
+import CapNhatDanhMucView from './views/quantrivien/danhmuc/CapNhatDanhMucView.vue'
 import DanhSachDanhMucView from './views/quantrivien/danhmuc/DanhSachDanhMucView.vue'
 import ThemMoiDanhMucView from './views/quantrivien/danhmuc/ThemMoiDanhMucView.vue'
-import CapNhatDanhMucView from './views/quantrivien/danhmuc/CapNhatDanhMucView.vue'
+import CapNhatDanhMucConView from './views/quantrivien/danhmuccon/CapNhatDanhMucConView.vue'
+import DanhSachDanhMucConView from './views/quantrivien/danhmuccon/DanhSachDanhMucConView.vue'
+import CapNhatNhaKhoView from './views/quantrivien/nhakho/CapNhatNhaKhoView.vue'
 import DanhSachNhaKhoView from './views/quantrivien/nhakho/DanhSachNhaKhoView.vue'
 import ThemMoiNhaKhoView from './views/quantrivien/nhakho/ThemMoiNhaKhoView.vue'
-import CapNhatNhaKhoView from './views/quantrivien/nhakho/CapNhatNhaKhoView.vue'
+import CapNhatNhaThamDinhView from './views/quantrivien/nhathamdinh/CapNhatNhaThamDinhView.vue'
+import DanhSachNhaThamDinhView from './views/quantrivien/nhathamdinh/DanhSachNhaThamDinhView.vue'
+import ThemMoiNhaThamDinhView from './views/quantrivien/nhathamdinh/ThemMoiNhaThamDinhView.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/dang-ky',
         name: 'DangKy',
-        component: DangKy,
+        component: DangKy
     },
     {
         path: '/dang-nhap',
         name: 'DangNhap',
-        component: DangNhap,
+        component: DangNhap
     },
     {
         path: '/quan-tri/danh-muc/danh-sach',
         name: 'DanhSachDanhMucView',
         component: DanhSachDanhMucView,
-        meta: { requiresRole: 'ROLE_ADMIN' },
+        meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
     },
     {
         path: '/quan-tri/danh-muc/them-moi',
         name: 'ThemMoiDanhMucView',
         component: ThemMoiDanhMucView,
-        meta: { requiresRole: 'ROLE_ADMIN' },
+        meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
     },
     {
         path: '/quan-tri/danh-muc/cap-nhat/:maDanhMuc',
         name: 'CapNhatDanhMucView',
         component: CapNhatDanhMucView,
-        meta: { requiresRole: 'ROLE_ADMIN' },
+        meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
+    },
+    {
+        path: '/quan-tri/danh-muc-con/danh-sach/:maDanhMuc',
+        name: 'DanhSachDanhMucConView',
+        component: DanhSachDanhMucConView,
+        meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
+    },
+    {
+        path: '/quan-tri/danh-muc-con/cap-nhat/:maDanhMuc/:maDanhMucCon',
+        name: 'CapNhatDanhMucConView',
+        component: CapNhatDanhMucConView,
+        meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
     },
     {
         path: '/quan-tri/nha-kho/danh-sach',
         name: 'DanhSachNhaKhoView',
         component: DanhSachNhaKhoView,
-        meta: { requiresRole: 'ROLE_ADMIN' },
+        meta: { requiresRole: 'ROLE_ADMIN' }
     },
     {
         path: '/quan-tri/nha-kho/them-moi',
         name: 'ThemMoiNhaKhoView',
         component: ThemMoiNhaKhoView,
-        meta: { requiresRole: 'ROLE_ADMIN' },
+        meta: { requiresRole: 'ROLE_ADMIN' }
     },
     {
         path: '/quan-tri/nha-kho/cap-nhat/:maNhaKho',
         name: 'CapNhatNhaKhoView',
         component: CapNhatNhaKhoView,
-        meta: { requiresRole: 'ROLE_ADMIN' },
+        meta: { requiresRole: 'ROLE_ADMIN' }
     },
     {
         path: '/quan-tri/nha-tham-dinh/danh-sach',
         name: 'DanhSachNhaThamDinhView',
         component: DanhSachNhaThamDinhView,
-        meta: { requiresRole: 'ROLE_ADMIN' },
+        meta: { requiresRole: 'ROLE_ADMIN' }
     },
     {
         path: '/quan-tri/nha-tham-dinh/them-moi',
         name: 'ThemMoiNhaThamDinhView',
         component: ThemMoiNhaThamDinhView,
-        meta: { requiresRole: 'ROLE_ADMIN' },
+        meta: { requiresRole: 'ROLE_ADMIN' }
     },
     {
         path: '/quan-tri/nha-tham-dinh/cap-nhat/:maNhaThamDinh',
         name: 'CapNhatNhaThamDinhView',
         component: CapNhatNhaThamDinhView,
-        meta: { requiresRole: 'ROLE_ADMIN' },
-    },
+        meta: { requiresRole: 'ROLE_ADMIN' }
+    }
 ]
 
 const router = createRouter({
@@ -92,7 +106,9 @@ router.beforeEach(async (to, from, next) => {
 
     try {
         const result = await getNguoiDungByMaNguoiDung(getMaNguoiDung())
-        const hasVaiTroQuanTri = result.vaiTro.tenVaiTro.includes('ROLE_ADMIN')
+        const hasVaiTroQuanTri =
+            result.vaiTro.tenVaiTro.includes('ROLE_ADMIN') ||
+            result.vaiTro.tenVaiTro.includes('ROLE_STAFF')
 
         if (!hasVaiTroQuanTri) {
             return next('/')

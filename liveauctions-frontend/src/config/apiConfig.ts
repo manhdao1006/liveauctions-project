@@ -40,5 +40,20 @@ export const API_ENDPOINTS = {
         UPDATE: (maNhaKho: number) => `${BASE_URL}/api/v1/admin/nha-kho/edit/${maNhaKho}`,
         DELETE: (maNhaKho: number) => `${BASE_URL}/api/v1/admin/nha-kho/delete/${maNhaKho}`,
     },
+    DANHMUC: {
+        GET_DANHMUCS: `${BASE_URL}/api/v1/staff/danh-muc/list`,
+        GET_BY_MADANHMUC: (maDanhMuc: number) =>`${BASE_URL}/api/v1/staff/danh-muc/maDanhMuc=${maDanhMuc}`,
+        ADD: `${BASE_URL}/api/v1/staff/danh-muc/add`,
+        UPDATE: (maDanhMuc: number) => `${BASE_URL}/api/v1/staff/danh-muc/edit/${maDanhMuc}`,
+        DELETE: (maDanhMuc: number) => `${BASE_URL}/api/v1/staff/danh-muc/delete/${maDanhMuc}`,
+    },
+    DANHMUCCON: {
+        GET_DANHMUCCONS: `${BASE_URL}/api/v1/staff/danh-muc-con/list`,
+        GET_DANHMUCCONS_BY_MADANHMUC: (maDanhMuc: number) =>`${BASE_URL}/api/v1/staff/danh-muc-con/maDanhMuc=${maDanhMuc}`,
+        GET_BY_MADANHMUCCON: (maDanhMucCon: number) =>`${BASE_URL}/api/v1/staff/danh-muc-con/maDanhMucCon=${maDanhMucCon}`,
+        ADD: `${BASE_URL}/api/v1/staff/danh-muc-con/add`,
+        UPDATE: (maDanhMucCon: number) => `${BASE_URL}/api/v1/staff/danh-muc-con/edit/${maDanhMucCon}`,
+        DELETE: (maDanhMucCon: number) => `${BASE_URL}/api/v1/staff/danh-muc-con/delete/${maDanhMucCon}`,
+    },
     
 }
