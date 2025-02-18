@@ -9,17 +9,17 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent } from 'vue'
-    import SideBarAdmin from '@/components/dungchung/SideBarAdmin.vue'
     import HeaderAdmin from '@/components/dungchung/HeaderAdmin.vue'
-    import DanhSachNhaKho from '@/components/quantrivien/nhakho/DanhSachNhaKho.vue';
+    import SideBarAdmin from '@/components/dungchung/SideBarAdmin.vue'
+    import DanhSachNhaKho from '@/components/quantrivien/nhakho/DanhSachNhaKho.vue'
+    import { defineComponent } from 'vue'
 
     export default defineComponent({
         name: 'DanhSachNhaKhoView',
         components: {
             SideBarAdmin,
             HeaderAdmin,
-            DanhSachNhaKho,
+            DanhSachNhaKho
         }
     })
 </script>
@@ -40,11 +40,8 @@
         min-height: 100vh;
         min-width: 0;
         overflow: hidden;
-        transition:
-            margin-left 0.35s ease-in-out,
-            left 0.35s ease-in-out,
-            margin-right 0.35s ease-in-out,
-            right 0.35s ease-in-out;
+        transition: margin-left 0.35s ease-in-out, left 0.35s ease-in-out,
+            margin-right 0.35s ease-in-out, right 0.35s ease-in-out;
         width: 100%;
     }
     .fs-header-admin {

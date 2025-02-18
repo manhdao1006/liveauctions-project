@@ -21,14 +21,10 @@
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li>
-                                    <button class="dropdown-item">
-                                        Người dùng
-                                    </button>
+                                    <button class="dropdown-item">Người dùng</button>
                                 </li>
                                 <li>
-                                    <button class="dropdown-item">
-                                        Quản trị viên
-                                    </button>
+                                    <button class="dropdown-item">Quản trị viên</button>
                                 </li>
                             </ul>
                         </div>
@@ -60,7 +56,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(nhaThamDinh, index) in paginatedNhaThamDinhs" :key=" typeof nhaThamDinh.maNhaThamDinh === 'string' ? nhaThamDinh.maNhaThamDinh : undefined">
+                        <tr
+                            v-for="(nhaThamDinh, index) in paginatedNhaThamDinhs"
+                            :key="
+                                typeof nhaThamDinh.maNhaThamDinh === 'string'
+                                    ? nhaThamDinh.maNhaThamDinh
+                                    : undefined
+                            "
+                        >
                             <td class="d-none d-xl-table-cell">
                                 {{ index + 1 }}
                             </td>
@@ -83,7 +86,12 @@
                                 {{ nhaThamDinh.trangThaiHoatDong }}
                             </td>
                             <td>
-                                <router-link :to="{ name: 'CapNhatNhaThamDinhView', params: { maNhaThamDinh: Number(nhaThamDinh.maNhaThamDinh) } }">
+                                <router-link
+                                    :to="{
+                                        name: 'CapNhatNhaThamDinhView',
+                                        params: { maNhaThamDinh: Number(nhaThamDinh.maNhaThamDinh) }
+                                    }"
+                                >
                                     <i class="far fa-edit text-success" title="Cập nhật"></i
                                 ></router-link>
                                 |
@@ -129,7 +137,7 @@
         components: {
             SearchComponent,
             PaginationComponent,
-            PopupDelete,
+            PopupDelete
         },
         setup() {
             const totalPages = computed(() => Math.ceil(nhaThamDinhs.value.length / pageSize.value))
@@ -164,11 +172,11 @@
             }
 
             const showConfirmPopup = (maNhaThamDinh: unknown) => {
-                if (typeof maNhaThamDinh === "number") {
+                if (typeof maNhaThamDinh === 'number') {
                     nhaThamDinhToDelete.value = maNhaThamDinh
                     showDeletePopup.value = true
                 } else {
-                    console.error("Lỗi: Mã nhà thẩm định không phải số", maNhaThamDinh)
+                    console.error('Lỗi: Mã nhà thẩm định không phải số', maNhaThamDinh)
                 }
             }
 
@@ -179,7 +187,7 @@
                 }
             }
 
-            return { 
+            return {
                 paginatedNhaThamDinhs,
                 currentPage,
                 totalPages,
@@ -190,7 +198,7 @@
                 nhaThamDinhToDelete,
                 showConfirmPopup,
                 confirmDelete,
-                keyword,
+                keyword
             }
         }
     })

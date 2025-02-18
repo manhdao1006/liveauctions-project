@@ -17,7 +17,9 @@
             </div>
             <div class="col-xl-6">
                 <div class="mb-3">
-                    <label for="tenNhaKho" class="form-label">Tên nhà kho<span class="text-danger">*</span></label>
+                    <label for="tenNhaKho" class="form-label"
+                        >Tên nhà kho<span class="text-danger">*</span></label
+                    >
                     <input
                         v-model="nhaKho.tenNhaKho"
                         type="text"
@@ -26,7 +28,9 @@
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="hoTenQuanLy" class="form-label">Quản lý<span class="text-danger">*</span></label>
+                    <label for="hoTenQuanLy" class="form-label"
+                        >Quản lý<span class="text-danger">*</span></label
+                    >
                     <input
                         v-model="nhaKho.hoTenQuanLy"
                         type="text"
@@ -35,23 +39,21 @@
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="diaChi" class="form-label">Địa chỉ<span class="text-danger">*</span></label>
-                    <input
-                        v-model="nhaKho.diaChi"
-                        type="text"
-                        class="form-control"
-                        id="diaChi"
-                    />
+                    <label for="diaChi" class="form-label"
+                        >Địa chỉ<span class="text-danger">*</span></label
+                    >
+                    <input v-model="nhaKho.diaChi" type="text" class="form-control" id="diaChi" />
                 </div>
             </div>
             <div class="col-xl-6">
                 <div class="row mb-3">
                     <div class="col-xl-6">
-                        <label for="quanHuyen" class="form-label">Quận/Huyện<span class="text-danger">*</span></label>
+                        <label for="quanHuyen" class="form-label"
+                            >Quận/Huyện<span class="text-danger">*</span></label
+                        >
                         <select
                             class="form-select"
                             aria-label="Default select example"
-
                             v-model="selectedQuanHuyen"
                         >
                             <option selected disabled>Chọn quận/huyện</option>
@@ -63,12 +65,13 @@
                         </select>
                     </div>
                     <div class="col-xl-6">
-                        <label for="maPhuongXa" class="form-label">Phường/Xã<span class="text-danger">*</span></label>
+                        <label for="maPhuongXa" class="form-label"
+                            >Phường/Xã<span class="text-danger">*</span></label
+                        >
                         <select
                             v-model="nhaKho.maPhuongXa"
                             class="form-select"
                             aria-label="Default select example"
-
                         >
                             <option selected disabled>Chọn phường/xã</option>
                             <template v-for="phuongXa in phuongXas" :key="phuongXa.maPhuongXa">
@@ -80,7 +83,9 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="trangThaiConTrong" class="form-label">Trạng thái còn trống<span class="text-danger">*</span></label>
+                    <label for="trangThaiConTrong" class="form-label"
+                        >Trạng thái còn trống<span class="text-danger">*</span></label
+                    >
                     <select
                         v-model="nhaKho.trangThaiConTrong"
                         class="form-select"
@@ -92,7 +97,9 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="ngayHoatDong" class="form-label">Ngày hoạt động<span class="text-danger">*</span></label>
+                    <label for="ngayHoatDong" class="form-label"
+                        >Ngày hoạt động<span class="text-danger">*</span></label
+                    >
                     <input
                         v-model="nhaKho.ngayHoatDong"
                         type="text"
@@ -102,7 +109,12 @@
                 </div>
             </div>
             <div class="text-center">
-                <button type="button" class="btn btn-success" title="Thêm mới" @click.prevent="handleThemMoi">
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    title="Thêm mới"
+                    @click.prevent="handleThemMoi"
+                >
                     Thêm mới
                 </button>
             </div>
@@ -112,8 +124,7 @@
 <script lang="ts">
     import { getPhuongXaByMaQuanHuyen, getQuanHuyens } from '@/services/authService'
     import { addNhaKho } from '@/services/quantrivien/nhaKhoService'
-    import { onMounted, watch } from 'vue'
-    import { defineComponent, ref } from 'vue'
+    import { defineComponent, onMounted, ref, watch } from 'vue'
     import { useRouter } from 'vue-router'
 
     export default defineComponent({
@@ -123,8 +134,8 @@
             const isError = ref(false)
             const messageError = ref<string>('')
             const nhaKho = ref<Record<string, undefined>>({})
-            const quanHuyens = ref<Array<{ maQuanHuyen: number, tenQuanHuyen: string }>>([])
-            const phuongXas = ref<Array<{ maPhuongXa: number, tenPhuongXa: string }>>([])
+            const quanHuyens = ref<Array<{ maQuanHuyen: number; tenQuanHuyen: string }>>([])
+            const phuongXas = ref<Array<{ maPhuongXa: number; tenPhuongXa: string }>>([])
             const selectedQuanHuyen = ref<string | null>(null)
 
             const fetchQuanHuyens = async () => {
@@ -140,7 +151,7 @@
                     phuongXas.value = []
                 }
             }
-            
+
             watch(selectedQuanHuyen, (newMaQuanHuyen) => {
                 if (newMaQuanHuyen) {
                     fetchPhuongXas(Number(newMaQuanHuyen))
@@ -148,14 +159,21 @@
                     phuongXas.value = []
                 }
             })
-            
+
             onMounted(() => {
                 fetchQuanHuyens()
             })
 
             const handleThemMoi = async () => {
-                if (!nhaKho.value.tenNhaKho || !nhaKho.value.hoTenQuanLy || !nhaKho.value.diaChi || 
-                    !nhaKho.value.trangThaiConTrong || !nhaKho.value.ngayHoatDong || !selectedQuanHuyen.value || !nhaKho.value.maPhuongXa) {
+                if (
+                    !nhaKho.value.tenNhaKho ||
+                    !nhaKho.value.hoTenQuanLy ||
+                    !nhaKho.value.diaChi ||
+                    !nhaKho.value.trangThaiConTrong ||
+                    !nhaKho.value.ngayHoatDong ||
+                    !selectedQuanHuyen.value ||
+                    !nhaKho.value.maPhuongXa
+                ) {
                     isError.value = true
                     messageError.value = 'Vui lòng nhập đầy đủ các trường dữ liệu!'
                     setTimeout(() => {
@@ -184,7 +202,7 @@
                 nhaKho,
                 quanHuyens,
                 phuongXas,
-                handleThemMoi,
+                handleThemMoi
             }
         }
     })

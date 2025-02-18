@@ -9,10 +9,10 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent } from 'vue'
-    import SideBarAdmin from '@/components/dungchung/SideBarAdmin.vue'
-    import HeaderAdmin from '@/components/dungchung/HeaderAdmin.vue'
-    import ThemMoiNhaKho from '@/components/quantrivien/nhakho/ThemMoiNhaKho.vue';
+    import HeaderAdmin from '@/components/dungchung/HeaderAdmin.vue';
+import SideBarAdmin from '@/components/dungchung/SideBarAdmin.vue';
+import ThemMoiNhaKho from '@/components/quantrivien/nhakho/ThemMoiNhaKho.vue';
+import { defineComponent } from 'vue';
 
     export default defineComponent({
         name: 'ThemMoiNhaKhoView',

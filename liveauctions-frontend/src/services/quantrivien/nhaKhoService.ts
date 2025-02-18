@@ -1,6 +1,6 @@
 import { API_ENDPOINTS } from '@/config/apiConfig'
-import { getToken } from '../localStorageService'
 import axios from 'axios'
+import { getToken } from '../localStorageService'
 
 export const getNhaKhos = async () => {
     const response = await axios.get(API_ENDPOINTS.NHAKHO.GET_NHAKHOS, {

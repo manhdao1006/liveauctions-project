@@ -1,6 +1,6 @@
 import { API_ENDPOINTS } from '@/config/apiConfig'
-import { getToken } from '../localStorageService'
 import axios from 'axios'
+import { getToken } from '../localStorageService'
 
 export const getNhaThamDinhs = async () => {
     const response = await axios.get(API_ENDPOINTS.NHATHAMDINH.GET_NHATHAMDINHS, {
@@ -27,11 +27,14 @@ export const getNhaThamDinhs = async () => {
 // }
 
 export const getNhaThamDinhByMaNhaThamDinh = async (maNhaThamDinh: number) => {
-    const response = await axios.get(API_ENDPOINTS.NHATHAMDINH.GET_BY_MANHATHAMDINH(maNhaThamDinh), {
-        headers: {
-            Authorization: `Bearer ${getToken()}`
+    const response = await axios.get(
+        API_ENDPOINTS.NHATHAMDINH.GET_BY_MANHATHAMDINH(maNhaThamDinh),
+        {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
         }
-    })
+    )
 
     return response.data.result
 }
@@ -58,12 +61,16 @@ export const addNhaThamDinh = async (formData: FormData) => {
 
 export const updateNhaThamDinh = async (maNhaThamDinh: number, formData: FormData) => {
     try {
-        const response = await axios.put(API_ENDPOINTS.NHATHAMDINH.UPDATE(maNhaThamDinh), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${getToken()}`
+        const response = await axios.put(
+            API_ENDPOINTS.NHATHAMDINH.UPDATE(maNhaThamDinh),
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${getToken()}`
+                }
             }
-        })
+        )
 
         if (response.data.code === 200) {
             return { success: true, message: response.data.result }

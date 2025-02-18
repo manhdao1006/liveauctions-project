@@ -17,7 +17,9 @@
             </div>
             <div class="col-xl-4">
                 <div class="mb-3">
-                    <label for="hoVaTen" class="form-label">Họ và tên<span class="text-danger">*</span></label>
+                    <label for="hoVaTen" class="form-label"
+                        >Họ và tên<span class="text-danger">*</span></label
+                    >
                     <input
                         type="text"
                         class="form-control"
@@ -26,7 +28,9 @@
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
+                    <label for="email" class="form-label"
+                        >Email<span class="text-danger">*</span></label
+                    >
                     <input
                         type="email"
                         class="form-control"
@@ -38,7 +42,9 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="gioiTinh" class="form-label">Giới tính<span class="text-danger">*</span></label>
+                    <label for="gioiTinh" class="form-label"
+                        >Giới tính<span class="text-danger">*</span></label
+                    >
                     <select
                         class="form-select"
                         aria-label="Default select example"
@@ -51,7 +57,9 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="soDienThoai" class="form-label">Số điện thoại<span class="text-danger">*</span></label>
+                    <label for="soDienThoai" class="form-label"
+                        >Số điện thoại<span class="text-danger">*</span></label
+                    >
                     <input
                         type="text"
                         class="form-control"
@@ -65,7 +73,9 @@
             </div>
             <div class="col-xl-4">
                 <div class="mb-3">
-                    <label for="diaChi" class="form-label">Địa chỉ<span class="text-danger">*</span></label>
+                    <label for="diaChi" class="form-label"
+                        >Địa chỉ<span class="text-danger">*</span></label
+                    >
                     <input
                         type="text"
                         class="form-control"
@@ -74,7 +84,9 @@
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="loai" class="form-label">Loại thẩm định<span class="text-danger">*</span></label>
+                    <label for="loai" class="form-label"
+                        >Loại thẩm định<span class="text-danger">*</span></label
+                    >
                     <select
                         class="form-select"
                         aria-label="Default select example"
@@ -86,7 +98,9 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="trangThaiHoatDong" class="form-label">Trạng thái hoạt động<span class="text-danger">*</span></label>
+                    <label for="trangThaiHoatDong" class="form-label"
+                        >Trạng thái hoạt động<span class="text-danger">*</span></label
+                    >
                     <select
                         class="form-select"
                         aria-label="Default select example"
@@ -98,7 +112,9 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="ngaySinh" class="form-label">Ngày sinh<span class="text-danger">*</span></label>
+                    <label for="ngaySinh" class="form-label"
+                        >Ngày sinh<span class="text-danger">*</span></label
+                    >
                     <input
                         type="date"
                         class="form-control"
@@ -118,12 +134,7 @@
             </div>
             <div class="col-xl-4">
                 <div class="profile-img text-center">
-                    <img
-                        :src="previewAvatar"
-                        alt=""
-                        width="240px"
-                        height="240px"
-                    />
+                    <img :src="previewAvatar" alt="" width="240px" height="240px" />
                     <input
                         type="file"
                         name="file"
@@ -132,11 +143,16 @@
                         accept="image/*"
                         class="form-control mt-2"
                     />
-                    <p v-if="isErrorAnh" class="text-danger">{{ messageAnh}}</p>
+                    <p v-if="isErrorAnh" class="text-danger">{{ messageAnh }}</p>
                 </div>
             </div>
             <div class="text-center">
-                <button type="button" class="btn btn-success" title="Cập nhật" @click.prevent="handleCapNhat">
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    title="Cập nhật"
+                    @click.prevent="handleCapNhat"
+                >
                     Cập nhật
                 </button>
             </div>
@@ -144,10 +160,13 @@
     </div>
 </template>
 <script lang="ts">
-    import { getNhaThamDinhByMaNhaThamDinh, updateNhaThamDinh } from '@/services/quantrivien/nhaThamDinhService';
-    import { validateEmail, validateSoDienThoai } from '@/utils/validation';
+    import {
+        getNhaThamDinhByMaNhaThamDinh,
+        updateNhaThamDinh
+    } from '@/services/quantrivien/nhaThamDinhService'
+    import { validateEmail, validateSoDienThoai } from '@/utils/validation'
     import { defineComponent, onMounted, ref } from 'vue'
-    import { useRoute, useRouter } from 'vue-router';
+    import { useRoute, useRouter } from 'vue-router'
 
     export default defineComponent({
         name: 'CapNhatNhaThamDinh',
@@ -169,7 +188,9 @@
             onMounted(async () => {
                 const maNhaThamDinh = Number(route.params.maNhaThamDinh)
                 nhaThamDinh.value = await getNhaThamDinhByMaNhaThamDinh(maNhaThamDinh)
-                previewAvatar.value = nhaThamDinh.value.avatar || 'https://res.cloudinary.com/springboot-cloud/image/upload/v1739427632/user_vqmka8.png'
+                previewAvatar.value =
+                    nhaThamDinh.value.avatar ||
+                    'https://res.cloudinary.com/springboot-cloud/image/upload/v1739427632/user_vqmka8.png'
             })
 
             const handleFileChange = (event: Event) => {
@@ -188,8 +209,13 @@
 
                 let hasError = false
 
-                if (!nhaThamDinh.value.hoVaTen || !nhaThamDinh.value.email || !nhaThamDinh.value.ngaySinh ||
-                    !nhaThamDinh.value.soDienThoai || !nhaThamDinh.value.diaChi) {
+                if (
+                    !nhaThamDinh.value.hoVaTen ||
+                    !nhaThamDinh.value.email ||
+                    !nhaThamDinh.value.ngaySinh ||
+                    !nhaThamDinh.value.soDienThoai ||
+                    !nhaThamDinh.value.diaChi
+                ) {
                     isError.value = true
                     messageError.value = 'Vui lòng nhập đầy đủ các trường dữ liệu!'
                     setTimeout(() => {
@@ -235,7 +261,10 @@
                     formData.append('file', file)
                 }
 
-                const response = await updateNhaThamDinh(Number(nhaThamDinh.value.maNhaThamDinh), formData)
+                const response = await updateNhaThamDinh(
+                    Number(nhaThamDinh.value.maNhaThamDinh),
+                    formData
+                )
                 if (response.success) {
                     await router.push({ name: 'DanhSachNhaThamDinhView' })
                 }
@@ -254,14 +283,14 @@
                 previewAvatar,
                 nhaThamDinh,
                 handleFileChange,
-                handleCapNhat,
+                handleCapNhat
             }
         }
     })
 </script>
 
 <style>
-    input[type="file"] {
+    input[type='file'] {
         display: block;
         margin-top: 10px;
     }

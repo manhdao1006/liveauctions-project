@@ -1,11 +1,11 @@
-import axios from 'axios'
-import { API_ENDPOINTS, BASE_URL } from './apiConfig'
 import {
     getRefreshToken,
     getToken,
     setRefreshToken,
     setToken
 } from '@/services/localStorageService'
+import axios from 'axios'
+import { API_ENDPOINTS, BASE_URL } from './apiConfig'
 
 export const apiClient = axios.create({
     baseURL: BASE_URL,

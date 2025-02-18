@@ -21,14 +21,10 @@
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li>
-                                    <button class="dropdown-item">
-                                        Người dùng
-                                    </button>
+                                    <button class="dropdown-item">Người dùng</button>
                                 </li>
                                 <li>
-                                    <button class="dropdown-item">
-                                        Quản trị viên
-                                    </button>
+                                    <button class="dropdown-item">Quản trị viên</button>
                                 </li>
                             </ul>
                         </div>
@@ -60,7 +56,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(nhaKho, index) in paginatedNhaKhos" :key=" typeof nhaKho.maNhaKho === 'string' ? nhaKho.maNhaKho : undefined">
+                        <tr
+                            v-for="(nhaKho, index) in paginatedNhaKhos"
+                            :key="typeof nhaKho.maNhaKho === 'string' ? nhaKho.maNhaKho : undefined"
+                        >
                             <td class="d-none d-xl-table-cell">
                                 {{ index + 1 }}
                             </td>
@@ -83,7 +82,12 @@
                                 {{ nhaKho.hoTenQuanLy }}
                             </td>
                             <td>
-                                <router-link :to="{ name: 'CapNhatNhaKhoView', params: { maNhaKho: Number(nhaKho.maNhaKho) } }">
+                                <router-link
+                                    :to="{
+                                        name: 'CapNhatNhaKhoView',
+                                        params: { maNhaKho: Number(nhaKho.maNhaKho) }
+                                    }"
+                                >
                                     <i class="far fa-edit text-success" title="Cập nhật"></i
                                 ></router-link>
                                 |
@@ -129,7 +133,7 @@
         components: {
             SearchComponent,
             PaginationComponent,
-            PopupDelete,
+            PopupDelete
         },
         setup() {
             const totalPages = computed(() => Math.ceil(nhaKhos.value.length / pageSize.value))
@@ -164,11 +168,11 @@
             }
 
             const showConfirmPopup = (maNhaKho: unknown) => {
-                if (typeof maNhaKho === "number") {
+                if (typeof maNhaKho === 'number') {
                     nhaKhoToDelete.value = maNhaKho
                     showDeletePopup.value = true
                 } else {
-                    console.error("Lỗi: Mã nhà kho không phải số", maNhaKho)
+                    console.error('Lỗi: Mã nhà kho không phải số', maNhaKho)
                 }
             }
 
@@ -179,7 +183,7 @@
                 }
             }
 
-            return { 
+            return {
                 paginatedNhaKhos,
                 currentPage,
                 totalPages,
@@ -190,7 +194,7 @@
                 nhaKhoToDelete,
                 showConfirmPopup,
                 confirmDelete,
-                keyword,
+                keyword
             }
         }
     })

@@ -1,14 +1,14 @@
+import { apiClient } from '@/config/apiClient'
 import { API_ENDPOINTS } from '@/config/apiConfig'
+import axios from 'axios'
 import {
     getToken,
     removeRefreshToken,
     removeToken,
+    setMaNguoiDung,
     setRefreshToken,
-    setToken,
-    setMaNguoiDung
+    setToken
 } from './localStorageService'
-import { apiClient } from '@/config/apiClient'
-import axios from 'axios'
 
 export const getNguoiDungByMaNguoiDung = async (maNguoiDung: number) => {
     const response = await apiClient.get(API_ENDPOINTS.NGUOIDUNG.GET_BY_MANGUOIDUNG(maNguoiDung), {
@@ -62,7 +62,7 @@ export const dangKy = async (email: string, matKhau: string, hoVaTen: string) =>
     const response = await apiClient.post(API_ENDPOINTS.AUTH.DANGKY, {
         email,
         matKhau,
-        hoVaTen,
+        hoVaTen
     })
 
     if (response.data.code === 200) {

@@ -17,7 +17,9 @@
             </div>
             <div class="col-xl-4">
                 <div class="mb-3">
-                    <label for="hoVaTen" class="form-label">Họ và tên<span class="text-danger">*</span></label>
+                    <label for="hoVaTen" class="form-label"
+                        >Họ và tên<span class="text-danger">*</span></label
+                    >
                     <input
                         v-model="nhaThamDinh.hoVaTen"
                         type="text"
@@ -26,7 +28,9 @@
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
+                    <label for="email" class="form-label"
+                        >Email<span class="text-danger">*</span></label
+                    >
                     <input
                         v-model="nhaThamDinh.email"
                         type="email"
@@ -38,7 +42,9 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="gioiTinh" class="form-label">Giới tính<span class="text-danger">*</span></label>
+                    <label for="gioiTinh" class="form-label"
+                        >Giới tính<span class="text-danger">*</span></label
+                    >
                     <select
                         v-model="nhaThamDinh.gioiTinh"
                         class="form-select"
@@ -51,7 +57,9 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="soDienThoai" class="form-label">Số điện thoại<span class="text-danger">*</span></label>
+                    <label for="soDienThoai" class="form-label"
+                        >Số điện thoại<span class="text-danger">*</span></label
+                    >
                     <input
                         v-model="nhaThamDinh.soDienThoai"
                         type="text"
@@ -65,7 +73,9 @@
             </div>
             <div class="col-xl-4">
                 <div class="mb-3">
-                    <label for="diaChi" class="form-label">Địa chỉ<span class="text-danger">*</span></label>
+                    <label for="diaChi" class="form-label"
+                        >Địa chỉ<span class="text-danger">*</span></label
+                    >
                     <input
                         v-model="nhaThamDinh.diaChi"
                         type="text"
@@ -74,18 +84,19 @@
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="loai" class="form-label">Loại thẩm định<span class="text-danger">*</span></label>
-                    <select
-                        v-model="nhaThamDinh.loai"
-                        class="form-select"
+                    <label for="loai" class="form-label"
+                        >Loại thẩm định<span class="text-danger">*</span></label
                     >
+                    <select v-model="nhaThamDinh.loai" class="form-select">
                         <option value="" disabled selected hidden>Chọn loại</option>
                         <option value="Nội bộ">Nhà thẩm định nội bộ</option>
                         <option value="Bên ngoài">Nhà thẩm định bên ngoài</option>
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="ngaySinh" class="form-label">Ngày sinh<span class="text-danger">*</span></label>
+                    <label for="ngaySinh" class="form-label"
+                        >Ngày sinh<span class="text-danger">*</span></label
+                    >
                     <input
                         v-model="nhaThamDinh.ngaySinh"
                         type="date"
@@ -106,7 +117,10 @@
             <div class="col-xl-4">
                 <div class="profile-img text-center">
                     <img
-                        :src="previewImage || 'https://res.cloudinary.com/springboot-cloud/image/upload/v1739427632/user_vqmka8.png'"
+                        :src="
+                            previewImage ||
+                            'https://res.cloudinary.com/springboot-cloud/image/upload/v1739427632/user_vqmka8.png'
+                        "
                         alt=""
                         width="240px"
                         height="240px"
@@ -119,11 +133,16 @@
                         accept="image/*"
                         class="form-control mt-2"
                     />
-                    <p v-if="isErrorAnh" class="text-danger">{{ messageAnh}}</p>
+                    <p v-if="isErrorAnh" class="text-danger">{{ messageAnh }}</p>
                 </div>
             </div>
             <div class="text-center">
-                <button type="button" class="btn btn-success" title="Thêm mới" @click.prevent="handleThemMoi">
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    title="Thêm mới"
+                    @click.prevent="handleThemMoi"
+                >
                     Thêm mới
                 </button>
             </div>
@@ -151,7 +170,7 @@
             const messageEmail = ref<string>('')
             const nhaThamDinh = ref<Record<string, undefined>>({})
             const previewImage = ref<string | null>(null)
-            
+
             const handleFileChange = (event: Event) => {
                 const target = event.target as HTMLInputElement
                 const file = target.files?.[0]
@@ -169,8 +188,15 @@
                 const file = fileInput.value?.files?.[0]
                 let hasError = false
 
-                if (!nhaThamDinh.value.hoVaTen || !nhaThamDinh.value.email || !nhaThamDinh.value.gioiTinh || !nhaThamDinh.value.ngaySinh ||
-                    !nhaThamDinh.value.soDienThoai || !nhaThamDinh.value.diaChi || !nhaThamDinh.value.loai) {
+                if (
+                    !nhaThamDinh.value.hoVaTen ||
+                    !nhaThamDinh.value.email ||
+                    !nhaThamDinh.value.gioiTinh ||
+                    !nhaThamDinh.value.ngaySinh ||
+                    !nhaThamDinh.value.soDienThoai ||
+                    !nhaThamDinh.value.diaChi ||
+                    !nhaThamDinh.value.loai
+                ) {
                     isError.value = true
                     messageError.value = 'Vui lòng nhập đầy đủ các trường dữ liệu!'
                     setTimeout(() => {
@@ -184,7 +210,7 @@
                     isErrorAnh.value = true
                     messageAnh.value = 'Vui lòng chọn ảnh!'
                     hasError = true
-                    return                    
+                    return
                 }
 
                 const soDienThoaiCheck = validateSoDienThoai(String(nhaThamDinh.value.soDienThoai))
@@ -240,14 +266,14 @@
                 previewImage,
                 nhaThamDinh,
                 handleFileChange,
-                handleThemMoi,
+                handleThemMoi
             }
         }
     })
 </script>
 
 <style>
-    input[type="file"] {
+    input[type='file'] {
         display: block;
         margin-top: 10px;
     }

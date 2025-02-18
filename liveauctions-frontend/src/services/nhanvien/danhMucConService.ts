@@ -1,6 +1,6 @@
 import { API_ENDPOINTS } from '@/config/apiConfig'
-import { getToken } from '../localStorageService'
 import axios from 'axios'
+import { getToken } from '../localStorageService'
 
 export const getDanhMucCons = async () => {
     const response = await axios.get(API_ENDPOINTS.DANHMUCCON.GET_DANHMUCCONS, {
@@ -13,11 +13,14 @@ export const getDanhMucCons = async () => {
 }
 
 export const getDanhMucConsByMaDanhMuc = async (maDanhMuc: number) => {
-    const response = await axios.get(API_ENDPOINTS.DANHMUCCON.GET_DANHMUCCONS_BY_MADANHMUC(maDanhMuc), {
-        headers: {
-            Authorization: `Bearer ${getToken()}`
+    const response = await axios.get(
+        API_ENDPOINTS.DANHMUCCON.GET_DANHMUCCONS_BY_MADANHMUC(maDanhMuc),
+        {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
         }
-    })
+    )
 
     return response.data.result
 }
