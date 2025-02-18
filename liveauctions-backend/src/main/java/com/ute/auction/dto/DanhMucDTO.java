@@ -15,6 +15,7 @@ public class DanhMucDTO {
 
     private Long maDanhMuc;
     private String tenDanhMuc;
+    private String trangThaiXoa;
     private List<DanhMucConDTO> danhMucCons;
 
 }

@@ -24,7 +24,7 @@ public class DanhMucService implements IDanhMucService {
 
     @Override
     public List<DanhMucDTO> getDanhMucs() {
-        List<DanhMucEntity> entities = danhMucRepository.findAll();
+        List<DanhMucEntity> entities = danhMucRepository.findDanhMucsByTrangThaiXoa("1");
         return entities.stream().map(danhMucConverter::toDTO).collect(Collectors.toList());
     }
 
@@ -51,9 +51,16 @@ public class DanhMucService implements IDanhMucService {
         DanhMucEntity danhMucEntity = danhMucRepository.findOneByMaDanhMuc(maDanhMuc)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Không tìm thấy danh mục nào với mã danh mục là " + maDanhMuc));
-        if (danhMucEntity != null) {
-            danhMucRepository.deleteByMaDanhMuc(maDanhMuc);
-        }
+        danhMucEntity.setTrangThaiXoa("0");
+        danhMucRepository.save(danhMucEntity);
+    }
+
+    @Override
+    public DanhMucDTO getDanhMucByMaDanhMuc(long maDanhMuc) {
+        DanhMucEntity danhMucEntity = danhMucRepository.findOneByMaDanhMuc(maDanhMuc)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy danh mục nào với mã danh mục là " + maDanhMuc));
+        return danhMucConverter.toDTO(danhMucEntity);
     }
 
 }

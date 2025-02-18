@@ -16,6 +16,7 @@ public interface DanhMucConverter {
 
     DanhMucDTO toDTO(DanhMucEntity entity);
 
+    @Mapping(target = "trangThaiXoa", defaultValue = "1")
     DanhMucEntity toEntity(DanhMucDTO dto);
 
     @Mapping(target = "maDanhMuc", ignore = true)

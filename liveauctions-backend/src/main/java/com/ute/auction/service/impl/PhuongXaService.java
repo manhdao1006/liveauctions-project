@@ -27,7 +27,7 @@ public class PhuongXaService implements IPhuongXaService {
     }
 
     @Override
-    public List<PhuongXaDTO> getPhuongXaByMaQuanHuyen(long maQuanHuyen) {
+    public List<PhuongXaDTO> getPhuongXasByMaQuanHuyen(long maQuanHuyen) {
         List<PhuongXaEntity> entities = phuongXaRepository.findPhuongXasByQuanHuyen_MaQuanHuyen(maQuanHuyen);
         return entities.stream().map(phuongXaConverter::toDTO).collect(Collectors.toList());
     }

@@ -32,6 +32,9 @@ public class DanhMucConEntity {
     @Column(name = "tenDanhMucCon")
     private String tenDanhMucCon;
 
+    @Column(name = "trangThaiXoa", nullable = false)
+    private String trangThaiXoa = "1";
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "maDanhMuc")
     private DanhMucEntity danhMuc;

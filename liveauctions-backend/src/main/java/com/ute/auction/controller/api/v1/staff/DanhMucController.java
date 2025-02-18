@@ -2,7 +2,6 @@ package com.ute.auction.controller.api.v1.staff;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +34,15 @@ public class DanhMucController {
                 .build();
     }
 
+    @GetMapping("/maDanhMuc={maDanhMuc}")
+    public ApiResponse<DanhMucDTO> getDanhMucByMaDanhMuc(@PathVariable("maDanhMuc") long maDanhMuc) {
+        return ApiResponse.<DanhMucDTO>builder()
+                .code(200)
+                .message("Danh mục với mã danh mục là " + maDanhMuc)
+                .result(danhMucService.getDanhMucByMaDanhMuc(maDanhMuc))
+                .build();
+    }
+
     @PostMapping("/add")
     public ApiResponse<DanhMucDTO> addDanhMuc(@RequestBody DanhMucDTO danhMucDTO) {
         return ApiResponse.<DanhMucDTO>builder()
@@ -54,7 +62,7 @@ public class DanhMucController {
                 .build();
     }
 
-    @DeleteMapping("/delete/{maDanhMuc}")
+    @PutMapping("/delete/{maDanhMuc}")
     public ApiResponse<String> deleteDanhMuc(@PathVariable("maDanhMuc") long maDanhMuc) {
         danhMucService.deleteDanhMuc(maDanhMuc);
         return ApiResponse.<String>builder()

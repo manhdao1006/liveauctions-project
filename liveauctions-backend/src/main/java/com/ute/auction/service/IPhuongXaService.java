@@ -8,6 +8,6 @@ public interface IPhuongXaService {
 
     List<PhuongXaDTO> getPhuongXas();
 
-    List<PhuongXaDTO> getPhuongXaByMaQuanHuyen(long maQuanHuyen);
+    List<PhuongXaDTO> getPhuongXasByMaQuanHuyen(long maQuanHuyen);
 
 }

@@ -2,7 +2,6 @@ package com.ute.auction.controller.api.v1.staff;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +34,24 @@ public class DanhMucConController {
                 .build();
     }
 
+    @GetMapping("/maDanhMuc={maDanhMuc}")
+    public ApiResponse<List<DanhMucConDTO>> getDanhMucConsByMaDanhMuc(@PathVariable("maDanhMuc") long maDanhMuc) {
+        return ApiResponse.<List<DanhMucConDTO>>builder()
+                .code(200)
+                .message("Danh mục con với mã danh mục là " + maDanhMuc)
+                .result(danhMucConService.getDanhMucConsByMaDanhMuc(maDanhMuc))
+                .build();
+    }
+
+    @GetMapping("/maDanhMucCon={maDanhMucCon}")
+    public ApiResponse<DanhMucConDTO> getDanhMucConByMaDanhMucCon(@PathVariable("maDanhMucCon") long maDanhMucCon) {
+        return ApiResponse.<DanhMucConDTO>builder()
+                .code(200)
+                .message("Danh mục con với mã danh mục con là " + maDanhMucCon)
+                .result(danhMucConService.getDanhMucConByMaDanhMucCon(maDanhMucCon))
+                .build();
+    }
+
     @PostMapping("/add")
     public ApiResponse<DanhMucConDTO> addDanhMucCon(@RequestBody DanhMucConDTO danhMucDTO) {
         return ApiResponse.<DanhMucConDTO>builder()
@@ -54,10 +71,10 @@ public class DanhMucConController {
                 .build();
     }
 
-    @DeleteMapping("/delete/{maDanhMucCon}")
-    public ApiResponse<?> deleteDanhMucCon(@PathVariable("maDanhMucCon") long maDanhMucCon) {
+    @PutMapping("/delete/{maDanhMucCon}")
+    public ApiResponse<String> deleteDanhMucCon(@PathVariable("maDanhMucCon") long maDanhMucCon) {
         danhMucConService.deleteDanhMucCon(maDanhMucCon);
-        return ApiResponse.<DanhMucConDTO>builder()
+        return ApiResponse.<String>builder()
                 .code(200)
                 .message("Xóa thành công")
                 .build();

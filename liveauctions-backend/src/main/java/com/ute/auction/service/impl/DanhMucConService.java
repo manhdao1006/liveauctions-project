@@ -27,14 +27,15 @@ public class DanhMucConService implements IDanhMucConService {
 
     @Override
     public List<DanhMucConDTO> getDanhMucCons() {
-        List<DanhMucConEntity> entities = danhMucConRepository.findAll();
+        List<DanhMucConEntity> entities = danhMucConRepository.findDanhMucConsByTrangThaiXoa("1");
         return entities.stream().map(danhMucConConverter::toDTO).collect(Collectors.toList());
     }
 
     @Override
     public List<DanhMucConDTO> getDanhMucConsByMaDanhMuc(long maDanhMuc) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDanhMucConsByMaDanhMuc'");
+        List<DanhMucConEntity> entities = danhMucConRepository.findDanhMucConsByTrangThaiXoaAndDanhMuc_MaDanhMuc("1",
+                maDanhMuc);
+        return entities.stream().map(danhMucConConverter::toDTO).collect(Collectors.toList());
     }
 
     @Transactional
@@ -70,9 +71,16 @@ public class DanhMucConService implements IDanhMucConService {
         DanhMucConEntity danhMucConEntity = danhMucConRepository.findOneByMaDanhMucCon(maDanhMucCon)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Không tìm thấy danh mục nào với mã danh mục là " + maDanhMucCon));
-        if (danhMucConEntity != null) {
-            danhMucConRepository.deleteByMaDanhMucCon(maDanhMucCon);
-        }
+        danhMucConEntity.setTrangThaiXoa("0");
+        danhMucConRepository.save(danhMucConEntity);
+    }
+
+    @Override
+    public DanhMucConDTO getDanhMucConByMaDanhMucCon(long maDanhMucCon) {
+        DanhMucConEntity danhMucConEntity = danhMucConRepository.findOneByMaDanhMucCon(maDanhMucCon)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy danh mục con nào với mã danh mục con là " + maDanhMucCon));
+        return danhMucConConverter.toDTO(danhMucConEntity);
     }
 
 }

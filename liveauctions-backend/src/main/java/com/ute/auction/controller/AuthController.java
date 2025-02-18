@@ -56,11 +56,11 @@ public class AuthController {
     }
 
     @GetMapping("/phuong-xa/maQuanHuyen={maQuanHuyen}")
-    public ApiResponse<List<PhuongXaDTO>> getPhuongXaByMaQuanHuyen(@PathVariable("maQuanHuyen") long maQuanHuyen) {
+    public ApiResponse<List<PhuongXaDTO>> getPhuongXasByMaQuanHuyen(@PathVariable("maQuanHuyen") long maQuanHuyen) {
         return ApiResponse.<List<PhuongXaDTO>>builder()
                 .code(200)
                 .message("Danh sách phường xã")
-                .result(phuongXaService.getPhuongXaByMaQuanHuyen(maQuanHuyen))
+                .result(phuongXaService.getPhuongXasByMaQuanHuyen(maQuanHuyen))
                 .build();
     }
 

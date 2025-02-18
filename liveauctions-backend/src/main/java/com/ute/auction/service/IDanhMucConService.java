@@ -16,4 +16,6 @@ public interface IDanhMucConService {
 
     void deleteDanhMucCon(long maDanhMucCon);
 
+    DanhMucConDTO getDanhMucConByMaDanhMucCon(long maDanhMucCon);
+
 }

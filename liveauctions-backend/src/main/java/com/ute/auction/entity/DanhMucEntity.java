@@ -29,6 +29,9 @@ public class DanhMucEntity {
     @Column(name = "tenDanhMuc")
     private String tenDanhMuc;
 
+    @Column(name = "trangThaiXoa", nullable = false)
+    private String trangThaiXoa = "1";
+
     @OneToMany(mappedBy = "danhMuc")
     private List<DanhMucConEntity> danhMucCons = new ArrayList<>();
 
