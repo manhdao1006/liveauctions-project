@@ -15,10 +15,20 @@
                 <li class="sidebar-header">Quản lý</li>
 
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/users">
+                    <router-link class="sidebar-link" :to="{ name: 'DashBoardView' }">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span class="align-middle">Dashboard</span>
+                    </router-link>
+                </li>
+
+                <li class="sidebar-item">
+                    <router-link
+                        class="sidebar-link"
+                        :to="{ name: 'DanhSachNguoiDungView', params: { maVaiTro: 2 } }"
+                    >
                         <i class="fas fa-users"></i>
                         <span class="align-middle">Người dùng</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <li class="sidebar-item">
@@ -48,28 +58,28 @@
                         <span class="align-middle">Phiên đấu giá</span>
                     </a>
                 </li>
-                
+
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="/admin/dashboard">
                         <i class="fa-solid fa-pen-to-square"></i>
                         <span class="align-middle">Sản phẩm đăng ký</span>
                     </a>
                 </li>
-                
+
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="/admin/dashboard">
                         <i class="fa-solid fa-database"></i>
                         <span class="align-middle">Sản phẩm</span>
                     </a>
                 </li>
-                
+
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="/admin/dashboard">
                         <i class="fa-brands fa-shopify"></i>
                         <span class="align-middle">Sản phẩm đấu giá</span>
                     </a>
                 </li>
-                
+
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="/admin/dashboard">
                         <i class="fa-solid fa-clipboard-list"></i>
@@ -110,11 +120,8 @@
     .sidebar,
     .sidebar-content {
         background: #ffece1;
-        transition:
-            margin-left 0.35s ease-in-out,
-            left 0.35s ease-in-out,
-            margin-right 0.35s ease-in-out,
-            right 0.35s ease-in-out;
+        transition: margin-left 0.35s ease-in-out, left 0.35s ease-in-out,
+            margin-right 0.35s ease-in-out, right 0.35s ease-in-out;
         max-height: 120vh;
         overflow-y: auto;
         scrollbar-width: thin;

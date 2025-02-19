@@ -27,7 +27,9 @@
                                                 required
                                                 v-model="email"
                                             />
-                                            <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
+                                            <label for="email" class="form-label"
+                                                >Email<span class="text-danger">*</span></label
+                                            >
                                         </div>
                                     </div>
                                     <div class="col-12 row align-items-center">
@@ -41,7 +43,9 @@
                                                 required
                                                 v-model="matKhau"
                                             />
-                                            <label for="password" class="form-label ms-3">Mật khẩu<span class="text-danger">*</span></label>
+                                            <label for="password" class="form-label ms-3"
+                                                >Mật khẩu<span class="text-danger">*</span></label
+                                            >
                                         </div>
                                         <span
                                             class="col-xl-2 col-md-2 col-sm-2 col-2 h-50 justify-content-center"
@@ -195,8 +199,9 @@
 </template>
 
 <script lang="ts">
-    import { useTogglePassword } from '@/composables/useTogglePassword';
-    import { dangNhap } from '@/services/authService';
+    import { useTogglePassword } from '@/composables/useTogglePassword'
+    import { dangNhap, getNguoiDungByMaNguoiDung } from '@/services/authService'
+    import { getMaNguoiDung } from '@/services/localStorageService'
     import { defineComponent, inject, Ref, ref } from 'vue'
     import { useRouter } from 'vue-router'
 
@@ -218,19 +223,24 @@
                         isLoggedIn.value = true
                     }
                     localStorage.setItem('isLoggedIn', 'true')
-                    router.push('/')
+                    const result = await getNguoiDungByMaNguoiDung(getMaNguoiDung())
+                    if (result.vaiTro.tenVaiTro.includes('ROLE_ADMIN')) {
+                        router.push('quan-tri/dashboard')
+                    } else {
+                        router.push('/')
+                    }
                 } else {
                     error.value = response.message
                 }
             }
 
-            return { 
-                error, 
-                email, 
-                matKhau, 
-                showMatKhau, 
-                handleDangNhap, 
-                toggleShowPassword 
+            return {
+                error,
+                email,
+                matKhau,
+                showMatKhau,
+                handleDangNhap,
+                toggleShowPassword
             }
         }
     })

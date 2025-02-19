@@ -122,7 +122,7 @@
     </div>
 </template>
 <script lang="ts">
-    import { getPhuongXaByMaQuanHuyen, getQuanHuyens } from '@/services/authService'
+    import { getPhuongXasByMaQuanHuyen, getQuanHuyens } from '@/services/authService'
     import { addNhaKho } from '@/services/quantrivien/nhaKhoService'
     import { defineComponent, onMounted, ref, watch } from 'vue'
     import { useRouter } from 'vue-router'
@@ -144,7 +144,7 @@
             }
 
             const fetchPhuongXas = async (maQuanHuyen: number) => {
-                const result = await getPhuongXaByMaQuanHuyen(maQuanHuyen)
+                const result = await getPhuongXasByMaQuanHuyen(maQuanHuyen)
                 if (result) {
                     phuongXas.value = result
                 } else {

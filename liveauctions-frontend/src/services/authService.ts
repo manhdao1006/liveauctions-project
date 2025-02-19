@@ -78,8 +78,14 @@ export const getQuanHuyens = async () => {
     return response.data.result
 }
 
-export const getPhuongXaByMaQuanHuyen = async (maQuanHuyen: number) => {
-    const response = await axios.get(API_ENDPOINTS.AUTH.GET_PHUONGXA_BY_MAQUANHUYEN(maQuanHuyen))
+export const getQuanHuyenByMaPhuongXa = async (maPhuongXa: number) => {
+    const response = await axios.get(API_ENDPOINTS.AUTH.GET_QUANHUYEN_BY_MAPHUONGXA(maPhuongXa))
+
+    return response.data.result
+}
+
+export const getPhuongXasByMaQuanHuyen = async (maQuanHuyen: number) => {
+    const response = await axios.get(API_ENDPOINTS.AUTH.GET_PHUONGXAS_BY_MAQUANHUYEN(maQuanHuyen))
 
     return response.data.result
 }
