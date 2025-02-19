@@ -2,7 +2,6 @@ package com.ute.auction.controller.api.v1.admin;
 
 import java.io.IOException;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,9 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.ApiResponse;
-import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.NguoiBanDTO;
 import com.ute.auction.dto.NguoiBanResponseDTO;
+import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.PageResponse;
 import com.ute.auction.service.INguoiBanService;
 
@@ -76,15 +75,21 @@ public class NguoiBanController {
     }
 
     @PutMapping("delete/{maNguoiDung}")
-    public ResponseEntity<String> deleteNguoiBan(@PathVariable("maNguoiDung") long maNguoiDung) {
+    public ApiResponse<String> deleteNguoiBan(@PathVariable("maNguoiDung") long maNguoiDung) {
         nguoiBanService.deleteNguoiBan(maNguoiDung);
-        return ResponseEntity.ok("Xóa thành công");
+        return ApiResponse.<String>builder()
+                .code(200)
+                .message("Xóa thành công!")
+                .build();
     }
 
     @PutMapping("ban/{maNguoiDung}")
-    public ResponseEntity<String> banNguoiBan(@PathVariable("maNguoiDung") long maNguoiDung) {
+    public ApiResponse<String> banNguoiBan(@PathVariable("maNguoiDung") long maNguoiDung) {
         nguoiBanService.banNguoiBan(maNguoiDung);
-        return ResponseEntity.ok("Cấm thành công");
+        return ApiResponse.<String>builder()
+                .code(200)
+                .message("Cấm thành công!")
+                .build();
     }
 
 }

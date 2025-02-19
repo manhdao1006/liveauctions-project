@@ -55,6 +55,15 @@ public class AuthController {
                 .build();
     }
 
+    @GetMapping("/quan-huyen/maPhuongXa={maPhuongXa}")
+    public ApiResponse<QuanHuyenDTO> getQuanHuyenByMaPhuongXa(@PathVariable("maPhuongXa") long maPhuongXa) {
+        return ApiResponse.<QuanHuyenDTO>builder()
+                .code(200)
+                .message("Danh sách quận huyện")
+                .result(quanHuyenService.getQuanHuyenByMaPhuongXa(maPhuongXa))
+                .build();
+    }
+
     @GetMapping("/phuong-xa/maQuanHuyen={maQuanHuyen}")
     public ApiResponse<List<PhuongXaDTO>> getPhuongXasByMaQuanHuyen(@PathVariable("maQuanHuyen") long maQuanHuyen) {
         return ApiResponse.<List<PhuongXaDTO>>builder()

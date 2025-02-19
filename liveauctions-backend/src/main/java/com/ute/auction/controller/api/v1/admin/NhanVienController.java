@@ -2,7 +2,6 @@ package com.ute.auction.controller.api.v1.admin;
 
 import java.io.IOException;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,15 +75,21 @@ public class NhanVienController {
     }
 
     @PutMapping("delete/{maNguoiDung}")
-    public ResponseEntity<String> deleteNhanVien(@PathVariable("maNguoiDung") long maNguoiDung) {
+    public ApiResponse<String> deleteNhanVien(@PathVariable("maNguoiDung") long maNguoiDung) {
         nhanVienService.deleteNhanVien(maNguoiDung);
-        return ResponseEntity.ok("Xóa thành công");
+        return ApiResponse.<String>builder()
+                .code(200)
+                .message("Xóa thành công!")
+                .build();
     }
 
     @PutMapping("ban/{maNguoiDung}")
-    public ResponseEntity<String> banNhanVien(@PathVariable("maNguoiDung") long maNguoiDung) {
+    public ApiResponse<String> banNhanVien(@PathVariable("maNguoiDung") long maNguoiDung) {
         nhanVienService.banNhanVien(maNguoiDung);
-        return ResponseEntity.ok("Cấm thành công");
+        return ApiResponse.<String>builder()
+                .code(200)
+                .message("Cấm thành công!")
+                .build();
     }
 
 }

@@ -149,7 +149,7 @@ public class NguoiDungService implements INguoiDungService {
 
     @Override
     public List<NguoiDungDTO> getNguoiDungsByMaVaiTro(long maVaiTro) {
-        List<NguoiDungEntity> entities = nguoiDungRepository.findNguoiDungsByVaiTro(maVaiTro);
+        List<NguoiDungEntity> entities = nguoiDungRepository.findNguoiDungsByVaiTro(maVaiTro, "1");
 
         return entities.stream().map(nguoiDungConverter::toDTO).toList();
     }

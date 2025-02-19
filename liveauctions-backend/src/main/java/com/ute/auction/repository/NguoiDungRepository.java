@@ -25,8 +25,8 @@ public interface NguoiDungRepository extends JpaRepository<NguoiDungEntity, Long
             "WHERE u.maNguoiDung = ?1")
     NguoiDungEntity findByUserId(long userId);
 
-    @Query("SELECT u FROM NguoiDungEntity u JOIN u.vaiTros r WHERE r.maVaiTro = ?1")
-    List<NguoiDungEntity> findNguoiDungsByVaiTro(long maVaiTro);
+    @Query("SELECT u FROM NguoiDungEntity u JOIN u.vaiTros r WHERE r.maVaiTro = ?1 AND u.trangThaiXoa = ?2")
+    List<NguoiDungEntity> findNguoiDungsByVaiTro(long maVaiTro, String trangThaiXoa);
 
     Optional<NguoiDungEntity> findByEmail(String email);
 

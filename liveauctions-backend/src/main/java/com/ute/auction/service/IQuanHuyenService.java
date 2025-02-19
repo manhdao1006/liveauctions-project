@@ -8,4 +8,6 @@ public interface IQuanHuyenService {
 
     List<QuanHuyenDTO> getQuanHuyens();
 
+    QuanHuyenDTO getQuanHuyenByMaPhuongXa(long maPhuongXa);
+
 }
