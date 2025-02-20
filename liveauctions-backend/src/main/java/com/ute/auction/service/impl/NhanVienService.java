@@ -7,10 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +18,6 @@ import com.ute.auction.converter.NhanVienConverter;
 import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.NhanVienDTO;
 import com.ute.auction.dto.NhanVienResponseDTO;
-import com.ute.auction.dto.PageResponse;
 import com.ute.auction.entity.NguoiDungEntity;
 import com.ute.auction.entity.NhanVienEntity;
 import com.ute.auction.entity.PhuongXaEntity;
@@ -52,10 +47,9 @@ public class NhanVienService implements INhanVienService {
     private final Cloudinary cloudinary;
 
     @Override
-    public PageResponse<NhanVienResponseDTO> getNhanViens(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("maNhanVien").descending());
+    public List<NhanVienResponseDTO> getNhanViens() {
 
-        Page<NhanVienEntity> entities = nhanVienRepository.findNhanViensByTrangThaiXoa("1", pageable);
+        List<NhanVienEntity> entities = nhanVienRepository.findNhanViensByTrangThaiXoa("1");
         List<NhanVienResponseDTO> responseList = new ArrayList<>();
         for (NhanVienEntity nhanVienEntity : entities) {
             NhanVienDTO nhanVienDTO = nhanVienConverter.toDTO(nhanVienEntity);
@@ -66,13 +60,7 @@ public class NhanVienService implements INhanVienService {
             responseList.add(new NhanVienResponseDTO(nguoiDungDTO, nhanVienDTO));
         }
 
-        return PageResponse.<NhanVienResponseDTO>builder()
-                .currentPage(page)
-                .pageSize(entities.getSize())
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .data(responseList)
-                .build();
+        return responseList;
     }
 
     @Override
