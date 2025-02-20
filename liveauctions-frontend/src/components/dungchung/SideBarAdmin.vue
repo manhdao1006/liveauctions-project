@@ -53,10 +53,10 @@
                 </li>
 
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/posts">
+                    <router-link class="sidebar-link" :to="{ name: 'DanhSachPhienDauGiaView' }">
                         <i class="fa-solid fa-gavel"></i>
                         <span class="align-middle">Phiên đấu giá</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <li class="sidebar-item">

@@ -4,6 +4,13 @@ interface ValidationResult {
     message?: string
 }
 
+export const validatePhiBaoHiem = (phiBaoHiem: string): ValidationResult => {
+    if (!/^\d+$/.test(phiBaoHiem)) {
+        return { isValid: false, message: 'Phí bảo hiểm chỉ được chứa chữ số!' }
+    }
+    return { isValid: true }
+}
+
 export const validateSoDienThoai = (phone: string): ValidationResult => {
     if (!/^\d+$/.test(phone)) {
         return { isValid: false, message: 'Số điện thoại chỉ được chứa chữ số!' }

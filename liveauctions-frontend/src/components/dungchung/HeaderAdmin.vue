@@ -1,7 +1,9 @@
 <template>
     <nav class="navbar navbar-expand navbar-light navbar-bg">
         <div class="navbar-collapse collapse">
-            <p class="ms-5 mb-0" style="color: #81561d; font-weight: 600;">E - AUCTIONEER * NHÀ ĐẤU GIÁ CHUYÊN NGHIỆP *</p>
+            <p class="ms-5 mb-0" style="color: #81561d; font-weight: 600">
+                E - AUCTIONEER * NHÀ ĐẤU GIÁ CHUYÊN NGHIỆP *
+            </p>
             <ul class="navbar-nav navbar-align">
                 <li class="nav-item dropdown pt-2">
                     <a class="nav-icon" href="#!">
@@ -42,16 +44,16 @@
 </template>
 
 <script lang="ts">
-    import { dangXuat, getNguoiDungByMaNguoiDung } from '@/services/authService';
-    import { getMaNguoiDung } from '@/services/localStorageService';
+    import { dangXuat, getNguoiDungByMaNguoiDung } from '@/services/authService'
+    import { getMaNguoiDung } from '@/services/localStorageService'
     import { defineComponent, inject, onMounted, Ref, ref } from 'vue'
-    import { useRouter } from 'vue-router';
+    import { useRouter } from 'vue-router'
 
     export default defineComponent({
         name: 'HeaderAdmin',
         setup() {
             const router = useRouter()
-            const nguoiDung: Ref<Record<string, unknown> | undefined> = ref(undefined);
+            const nguoiDung: Ref<Record<string, unknown> | undefined> = ref(undefined)
             const isLoggedIn = inject('isLoggedIn') as Ref<boolean> | undefined
 
             onMounted(async () => {
@@ -65,7 +67,7 @@
                 }
                 localStorage.removeItem('isLoggedIn')
                 localStorage.removeItem('maNguoiDung')
-                router.push('/login')
+                router.push('/dang-nhap')
                 dangXuat()
             }
 

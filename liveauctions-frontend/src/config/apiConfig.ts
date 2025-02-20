@@ -23,6 +23,7 @@ export const API_ENDPOINTS = {
             `${BASE_URL}/api/v1/admin/nguoi-dung/role/${maVaiTro}`
     },
     NHANVIEN: {
+        GET_NHANVIENS: `${BASE_URL}/api/v1/admin/nhan-vien/list`,
         GET_BY_MANGUOIDUNG: (maNguoiDung: number) =>
             `${BASE_URL}/api/v1/admin/nhan-vien/${maNguoiDung}`,
         ADD: `${BASE_URL}/api/v1/admin/nhan-vien/add`,
@@ -86,5 +87,18 @@ export const API_ENDPOINTS = {
             `${BASE_URL}/api/v1/staff/danh-muc-con/edit/${maDanhMucCon}`,
         DELETE: (maDanhMucCon: number) =>
             `${BASE_URL}/api/v1/staff/danh-muc-con/delete/${maDanhMucCon}`
+    },
+    LOAIDAUGIA: {
+        GET_LOAIDAUGIAS: `${BASE_URL}/api/v1/staff/loai-dau-gia/list`
+    },
+    PHIENDAUGIA: {
+        GET_PHIENDAUGIAS: `${BASE_URL}/api/v1/staff/phien-dau-gia/list`,
+        GET_BY_MAPHIENDAUGIA: (maPhienDauGia: number) =>
+            `${BASE_URL}/api/v1/staff/phien-dau-gia/maPhienDauGia=${maPhienDauGia}`,
+        ADD: `${BASE_URL}/api/v1/staff/phien-dau-gia/add`,
+        UPDATE: (maPhienDauGia: number) =>
+            `${BASE_URL}/api/v1/staff/phien-dau-gia/edit/${maPhienDauGia}`,
+        DELETE: (maPhienDauGia: number) =>
+            `${BASE_URL}/api/v1/staff/phien-dau-gia/delete/${maPhienDauGia}`
     }
 }

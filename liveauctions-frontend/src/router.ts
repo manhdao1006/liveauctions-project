@@ -8,6 +8,9 @@ import DanhSachDanhMucView from './views/nhanvien/danhmuc/DanhSachDanhMucView.vu
 import ThemMoiDanhMucView from './views/nhanvien/danhmuc/ThemMoiDanhMucView.vue'
 import CapNhatDanhMucConView from './views/nhanvien/danhmuccon/CapNhatDanhMucConView.vue'
 import DanhSachDanhMucConView from './views/nhanvien/danhmuccon/DanhSachDanhMucConView.vue'
+import CapNhatPhienDauGiaView from './views/nhanvien/phiendaugia/CapNhatPhienDauGiaView.vue'
+import DanhSachPhienDauGiaView from './views/nhanvien/phiendaugia/DanhSachPhienDauGiaView.vue'
+import ThemMoiPhienDauGiaView from './views/nhanvien/phiendaugia/ThemMoiPhienDauGiaView.vue'
 import DashBoardView from './views/quantrivien/DashBoardView.vue'
 import DanhSachNguoiDungView from './views/quantrivien/nguoidung/DanhSachNguoiDungView.vue'
 import CapNhatNguoiBanView from './views/quantrivien/nguoidung/nguoiban/CapNhatNguoiBanView.vue'
@@ -110,6 +113,24 @@ const routes: Array<RouteRecordRaw> = [
         path: '/quan-tri/danh-muc-con/cap-nhat/:maDanhMuc/:maDanhMucCon',
         name: 'CapNhatDanhMucConView',
         component: CapNhatDanhMucConView,
+        meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
+    },
+    {
+        path: '/quan-tri/phien-dau-gia/danh-sach',
+        name: 'DanhSachPhienDauGiaView',
+        component: DanhSachPhienDauGiaView,
+        meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
+    },
+    {
+        path: '/quan-tri/phien-dau-gia/them-moi',
+        name: 'ThemMoiPhienDauGiaView',
+        component: ThemMoiPhienDauGiaView,
+        meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
+    },
+    {
+        path: '/quan-tri/phien-dau-gia/cap-nhat/:maPhienDauGia',
+        name: 'CapNhatPhienDauGiaView',
+        component: CapNhatPhienDauGiaView,
         meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
     },
     {
