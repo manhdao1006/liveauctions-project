@@ -14,4 +14,6 @@ public interface IPhienDauGiaService {
 
     void deletePhienDauGia(long maPhienDauGia);
 
+    PhienDauGiaDTO getPhienDauGiaByMaPhienDauGia(long maPhienDauGia);
+
 }

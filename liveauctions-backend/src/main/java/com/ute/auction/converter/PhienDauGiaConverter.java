@@ -20,6 +20,7 @@ public interface PhienDauGiaConverter {
     PhienDauGiaDTO toDTO(PhienDauGiaEntity entity);
 
     @Mapping(target = "trangThaiXoa", defaultValue = "1")
+    @Mapping(target = "trangThaiHoatDong", defaultValue = "Sắp diễn ra")
     PhienDauGiaEntity toEntity(PhienDauGiaDTO dto);
 
     @Mapping(target = "maPhienDauGia", ignore = true)

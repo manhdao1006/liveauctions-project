@@ -34,6 +34,16 @@ public class PhienDauGiaController {
                 .build();
     }
 
+    @GetMapping("/maPhienDauGia={maPhienDauGia}")
+    public ApiResponse<PhienDauGiaDTO> getPhienDauGiaByMaPhienDauGia(
+            @PathVariable("maPhienDauGia") long maPhienDauGia) {
+        return ApiResponse.<PhienDauGiaDTO>builder()
+                .code(200)
+                .message("Phiên đấu giá với mã phiên đấu giá là " + maPhienDauGia)
+                .result(phienDauGiaService.getPhienDauGiaByMaPhienDauGia(maPhienDauGia))
+                .build();
+    }
+
     @PostMapping("/add")
     public ApiResponse<PhienDauGiaDTO> addPhienDauGia(@RequestBody PhienDauGiaDTO phienDauGiaDTO) {
         return ApiResponse.<PhienDauGiaDTO>builder()

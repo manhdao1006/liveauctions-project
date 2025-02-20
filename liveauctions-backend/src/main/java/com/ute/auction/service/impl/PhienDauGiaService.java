@@ -84,4 +84,12 @@ public class PhienDauGiaService implements IPhienDauGiaService {
         phienDauGiaRepository.save(phienDauGiaEntity);
     }
 
+    @Override
+    public PhienDauGiaDTO getPhienDauGiaByMaPhienDauGia(long maPhienDauGia) {
+        PhienDauGiaEntity phienDauGiaEntity = phienDauGiaRepository.findOneByMaPhienDauGia(maPhienDauGia)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy phiên đấu giá nào với mã phiên đấu giá là " + maPhienDauGia));
+        return phienDauGiaConverter.toDTO(phienDauGiaEntity);
+    }
+
 }
