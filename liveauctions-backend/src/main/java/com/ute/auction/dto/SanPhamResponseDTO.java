@@ -1,5 +1,7 @@
 package com.ute.auction.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +16,5 @@ public class SanPhamResponseDTO {
     private LoaiDauGiaDTO loaiDauGia;
     private NhaKhoDTO nhaKho;
     private NhaThamDinhDTO nhaThamDinh;
+    private List<AnhSanPhamDTO> anhSanPhams;
 }

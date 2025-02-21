@@ -38,6 +38,15 @@ public class SanPhamController {
                 .build();
     }
 
+    @GetMapping("/maSanPham={maSanPham}")
+    public ApiResponse<SanPhamResponseDTO> getSanPhamByMaSanPham(@PathVariable("maSanPham") String maSanPham) {
+        return ApiResponse.<SanPhamResponseDTO>builder()
+                .code(200)
+                .message("Sản phẩm với mã sản phẩm " + maSanPham)
+                .result(sanPhamService.getSanPhamByMaSanPham(maSanPham))
+                .build();
+    }
+
     @PostMapping("/add")
     public ApiResponse<SanPhamDTO> addSanPham(@ModelAttribute SanPhamDTO sanPhamDTO,
             @RequestParam(value = "anhSanPhamList", required = false) List<MultipartFile> anhSanPhamList)
@@ -52,12 +61,13 @@ public class SanPhamController {
     @PutMapping("edit/{maSanPham}")
     public ApiResponse<SanPhamDTO> updateSanPham(@PathVariable("maSanPham") String maSanPham,
             @ModelAttribute SanPhamDTO sanPhamDTO,
-            @RequestParam(value = "anhSanPhamList", required = false) List<MultipartFile> anhSanPhamList)
+            @RequestParam(value = "anhSanPhamList", required = false) List<MultipartFile> anhSanPhamList,
+            @RequestParam(value = "deletedImageNames", required = false) List<String> deletedImageNames)
             throws IOException {
         return ApiResponse.<SanPhamDTO>builder()
                 .code(200)
                 .message("Cập nhật thành công")
-                .result(sanPhamService.updateSanPham(maSanPham, sanPhamDTO, anhSanPhamList))
+                .result(sanPhamService.updateSanPham(maSanPham, sanPhamDTO, anhSanPhamList, deletedImageNames))
                 .build();
     }
 

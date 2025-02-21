@@ -1,5 +1,7 @@
 package com.ute.auction.converter;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -17,6 +19,9 @@ public interface AnhSanPhamConverter {
 
     @Mapping(target = "maSanPham", source = "sanPham.maSanPham")
     AnhSanPhamDTO toDTO(AnhSanPhamEntity entity);
+
+    @Mapping(target = "maSanPham", source = "sanPham.maSanPham")
+    List<AnhSanPhamDTO> toDTOs(List<AnhSanPhamEntity> entity);
 
     AnhSanPhamEntity toEntity(AnhSanPhamDTO dto);
 

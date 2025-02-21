@@ -14,12 +14,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.ute.auction.converter.AnhSanPhamConverter;
 import com.ute.auction.converter.DanhMucConConverter;
 import com.ute.auction.converter.LoaiDauGiaConverter;
 import com.ute.auction.converter.NguoiBanConverter;
 import com.ute.auction.converter.NhaKhoConverter;
 import com.ute.auction.converter.NhaThamDinhConverter;
 import com.ute.auction.converter.SanPhamConverter;
+import com.ute.auction.dto.AnhSanPhamDTO;
 import com.ute.auction.dto.DanhMucConDTO;
 import com.ute.auction.dto.LoaiDauGiaDTO;
 import com.ute.auction.dto.NguoiBanDTO;
@@ -66,6 +68,7 @@ public class SanPhamService implements ISanPhamService {
     private final LoaiDauGiaConverter loaiDauGiaConverter;
     private final NhaKhoConverter nhaKhoConverter;
     private final NhaThamDinhConverter nhaThamDinhConverter;
+    private final AnhSanPhamConverter anhSanPhamConverter;
     private final Cloudinary cloudinary;
 
     @Override
@@ -92,8 +95,11 @@ public class SanPhamService implements ISanPhamService {
             NhaThamDinhEntity nhaThamDinhEntity = sanPhamEntity.getNhaThamDinh();
             NhaThamDinhDTO nhaThamDinhDTO = nhaThamDinhConverter.toDTO(nhaThamDinhEntity);
 
+            List<AnhSanPhamEntity> anhSanPhamEntities = sanPhamEntity.getAnhSanPhams();
+            List<AnhSanPhamDTO> anhSanPhamDTOs = anhSanPhamConverter.toDTOs(anhSanPhamEntities);
+
             responseList.add(new SanPhamResponseDTO(sanPhamDTO, nguoiBanDTO, danhMucConDTO, loaiDauGiaDTO, nhaKhoDTO,
-                    nhaThamDinhDTO));
+                    nhaThamDinhDTO, anhSanPhamDTOs));
         }
 
         return PageResponse.<SanPhamResponseDTO>builder()
@@ -127,8 +133,11 @@ public class SanPhamService implements ISanPhamService {
             NhaThamDinhEntity nhaThamDinhEntity = sanPhamEntity.getNhaThamDinh();
             NhaThamDinhDTO nhaThamDinhDTO = nhaThamDinhConverter.toDTO(nhaThamDinhEntity);
 
+            List<AnhSanPhamEntity> anhSanPhamEntities = sanPhamEntity.getAnhSanPhams();
+            List<AnhSanPhamDTO> anhSanPhamDTOs = anhSanPhamConverter.toDTOs(anhSanPhamEntities);
+
             responseList.add(new SanPhamResponseDTO(sanPhamDTO, nguoiBanDTO, danhMucConDTO, loaiDauGiaDTO, nhaKhoDTO,
-                    nhaThamDinhDTO));
+                    nhaThamDinhDTO, anhSanPhamDTOs));
         }
         return responseList;
     }
@@ -180,7 +189,8 @@ public class SanPhamService implements ISanPhamService {
 
     @Transactional
     @Override
-    public SanPhamDTO updateSanPham(String maSanPham, SanPhamDTO sanPhamDTO, List<MultipartFile> anhSanPhamList)
+    public SanPhamDTO updateSanPham(String maSanPham, SanPhamDTO sanPhamDTO, List<MultipartFile> anhSanPhamList,
+            List<String> deletedImageNames)
             throws IOException {
         SanPhamEntity sanPhamEntity = sanPhamRepository.findOneByMaSanPham(maSanPham)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -225,6 +235,16 @@ public class SanPhamService implements ISanPhamService {
                             "Không tìm thấy nhà thẩm định nào với mã nhà thẩm định là: "
                                     + sanPhamDTO.getMaNhaThamDinh()));
             sanPhamEntity.setNhaThamDinh(nhaThamDinhEntity);
+        }
+
+        if (deletedImageNames != null && !deletedImageNames.isEmpty()) {
+            for (String imageName : deletedImageNames) {
+                AnhSanPhamEntity anhSanPham = anhSanPhamRepository.findOneByTenAnh(imageName)
+                        .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy ảnh: " + imageName));
+                cloudinary.uploader().destroy(anhSanPham.getTenAnhId(), ObjectUtils.emptyMap());
+                sanPhamEntity.getAnhSanPhams().remove(anhSanPham);
+                anhSanPhamRepository.delete(anhSanPham);
+            }
         }
 
         if (anhSanPhamList != null && !anhSanPhamList.isEmpty()) {
@@ -278,6 +298,36 @@ public class SanPhamService implements ISanPhamService {
         }
 
         return anhSanPhamInfo;
+    }
+
+    @Override
+    public SanPhamResponseDTO getSanPhamByMaSanPham(String maSanPham) {
+        SanPhamEntity sanPhamEntity = sanPhamRepository.findOneByMaSanPham(maSanPham)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy sản phẩm nào với mã sản phẩm là: "
+                                + maSanPham));
+        SanPhamDTO sanPhamDTO = sanPhamConverter.toDTO(sanPhamEntity);
+
+        NguoiBanEntity nguoiBanEntity = sanPhamEntity.getNguoiBan();
+        NguoiBanDTO nguoiBanDTO = nguoiBanConverter.toDTO(nguoiBanEntity);
+
+        DanhMucConEntity danhMucConEntity = sanPhamEntity.getDanhMucCon();
+        DanhMucConDTO danhMucConDTO = danhMucConConverter.toDTO(danhMucConEntity);
+
+        LoaiDauGiaEntity loaiDauGiaEntity = sanPhamEntity.getLoaiDauGia();
+        LoaiDauGiaDTO loaiDauGiaDTO = loaiDauGiaConverter.toDTO(loaiDauGiaEntity);
+
+        NhaKhoEntity nhaKhoEntity = sanPhamEntity.getNhaKho();
+        NhaKhoDTO nhaKhoDTO = nhaKhoConverter.toDTO(nhaKhoEntity);
+
+        NhaThamDinhEntity nhaThamDinhEntity = sanPhamEntity.getNhaThamDinh();
+        NhaThamDinhDTO nhaThamDinhDTO = nhaThamDinhConverter.toDTO(nhaThamDinhEntity);
+
+        List<AnhSanPhamEntity> anhSanPhamEntities = sanPhamEntity.getAnhSanPhams();
+        List<AnhSanPhamDTO> anhSanPhamDTOs = anhSanPhamConverter.toDTOs(anhSanPhamEntities);
+
+        return new SanPhamResponseDTO(sanPhamDTO, nguoiBanDTO, danhMucConDTO, loaiDauGiaDTO, nhaKhoDTO, nhaThamDinhDTO,
+                anhSanPhamDTOs);
     }
 
 }

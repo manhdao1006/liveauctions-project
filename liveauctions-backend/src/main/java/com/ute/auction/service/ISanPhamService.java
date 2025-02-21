@@ -17,9 +17,12 @@ public interface ISanPhamService {
 
     SanPhamDTO addSanPham(SanPhamDTO sanPhamDTO, List<MultipartFile> anhSanPhamList) throws IOException;
 
-    SanPhamDTO updateSanPham(String maSanPham, SanPhamDTO sanPhamDTO, List<MultipartFile> anhSanPhamList)
+    SanPhamDTO updateSanPham(String maSanPham, SanPhamDTO sanPhamDTO, List<MultipartFile> anhSanPhamList,
+            List<String> deletedImageNames)
             throws IOException;
 
     void deleteSanPham(String maSanPham);
+
+    SanPhamResponseDTO getSanPhamByMaSanPham(String maSanPham);
 
 }
