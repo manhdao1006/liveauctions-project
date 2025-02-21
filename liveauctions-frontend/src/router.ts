@@ -11,6 +11,9 @@ import DanhSachDanhMucConView from './views/nhanvien/danhmuccon/DanhSachDanhMucC
 import CapNhatPhienDauGiaView from './views/nhanvien/phiendaugia/CapNhatPhienDauGiaView.vue'
 import DanhSachPhienDauGiaView from './views/nhanvien/phiendaugia/DanhSachPhienDauGiaView.vue'
 import ThemMoiPhienDauGiaView from './views/nhanvien/phiendaugia/ThemMoiPhienDauGiaView.vue'
+import CapNhatSanPhamView from './views/nhanvien/sanpham/CapNhatSanPhamView.vue'
+import DanhSachSanPhamView from './views/nhanvien/sanpham/DanhSachSanPhamView.vue'
+import ThemMoiSanPhamView from './views/nhanvien/sanpham/ThemMoiSanPhamView.vue'
 import DashBoardView from './views/quantrivien/DashBoardView.vue'
 import DanhSachNguoiDungView from './views/quantrivien/nguoidung/DanhSachNguoiDungView.vue'
 import CapNhatNguoiBanView from './views/quantrivien/nguoidung/nguoiban/CapNhatNguoiBanView.vue'
@@ -131,6 +134,24 @@ const routes: Array<RouteRecordRaw> = [
         path: '/quan-tri/phien-dau-gia/cap-nhat/:maPhienDauGia',
         name: 'CapNhatPhienDauGiaView',
         component: CapNhatPhienDauGiaView,
+        meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
+    },
+    {
+        path: '/quan-tri/san-pham/danh-sach',
+        name: 'DanhSachSanPhamView',
+        component: DanhSachSanPhamView,
+        meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
+    },
+    {
+        path: '/quan-tri/san-pham/them-moi',
+        name: 'ThemMoiSanPhamView',
+        component: ThemMoiSanPhamView,
+        meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
+    },
+    {
+        path: '/quan-tri/san-pham/cap-nhat/:maSanPham',
+        name: 'CapNhatSanPhamView',
+        component: CapNhatSanPhamView,
         meta: { requiresRole: ['ROLE_ADMIN', 'ROLE_STAFF'] }
     },
     {
