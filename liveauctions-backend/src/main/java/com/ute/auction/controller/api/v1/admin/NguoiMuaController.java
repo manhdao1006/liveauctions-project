@@ -1,6 +1,7 @@
 package com.ute.auction.controller.api.v1.admin;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,7 +19,6 @@ import com.ute.auction.dto.ApiResponse;
 import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.NguoiMuaDTO;
 import com.ute.auction.dto.NguoiMuaResponseDTO;
-import com.ute.auction.dto.PageResponse;
 import com.ute.auction.service.INguoiMuaService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,13 +31,11 @@ public class NguoiMuaController {
     private final INguoiMuaService nguoiMuaService;
 
     @GetMapping("/list")
-    public ApiResponse<PageResponse<NguoiMuaResponseDTO>> getNguoiMuas(
-            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(value = "size", required = false, defaultValue = "3") int size) {
-        return ApiResponse.<PageResponse<NguoiMuaResponseDTO>>builder()
+    public ApiResponse<List<NguoiMuaResponseDTO>> getNguoiMuas() {
+        return ApiResponse.<List<NguoiMuaResponseDTO>>builder()
                 .code(200)
                 .message("Danh sách người mua")
-                .result(nguoiMuaService.getNguoiMuas(page, size))
+                .result(nguoiMuaService.getNguoiMuas())
                 .build();
     }
 

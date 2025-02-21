@@ -1,17 +1,17 @@
 package com.ute.auction.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.NguoiMuaDTO;
 import com.ute.auction.dto.NguoiMuaResponseDTO;
-import com.ute.auction.dto.PageResponse;
 
 public interface INguoiMuaService {
 
-    PageResponse<NguoiMuaResponseDTO> getNguoiMuas(int page, int size);
+    List<NguoiMuaResponseDTO> getNguoiMuas();
 
     NguoiMuaResponseDTO getNguoiMuaByMaNguoiMua(long maNguoiDung);
 

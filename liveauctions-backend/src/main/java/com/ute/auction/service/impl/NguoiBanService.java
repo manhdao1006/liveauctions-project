@@ -7,10 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,9 +18,8 @@ import com.ute.auction.converter.NguoiDungConverter;
 import com.ute.auction.dto.NguoiBanDTO;
 import com.ute.auction.dto.NguoiBanResponseDTO;
 import com.ute.auction.dto.NguoiDungDTO;
-import com.ute.auction.dto.PageResponse;
-import com.ute.auction.entity.NguoiDungEntity;
 import com.ute.auction.entity.NguoiBanEntity;
+import com.ute.auction.entity.NguoiDungEntity;
 import com.ute.auction.entity.PhuongXaEntity;
 import com.ute.auction.entity.VaiTroEntity;
 import com.ute.auction.exception.ResourceNotFormatException;
@@ -52,10 +47,8 @@ public class NguoiBanService implements INguoiBanService {
     private final Cloudinary cloudinary;
 
     @Override
-    public PageResponse<NguoiBanResponseDTO> getNguoiBans(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("maNguoiBan").descending());
-
-        Page<NguoiBanEntity> entities = nguoiBanRepository.findNguoiBansByTrangThaiXoa("1", pageable);
+    public List<NguoiBanResponseDTO> getNguoiBans() {
+        List<NguoiBanEntity> entities = nguoiBanRepository.findNguoiBansByTrangThaiXoa("1");
         List<NguoiBanResponseDTO> responseList = new ArrayList<>();
         for (NguoiBanEntity nguoiBanEntity : entities) {
             NguoiBanDTO nguoiBanDTO = nguoiBanConverter.toDTO(nguoiBanEntity);
@@ -66,13 +59,7 @@ public class NguoiBanService implements INguoiBanService {
             responseList.add(new NguoiBanResponseDTO(nguoiDungDTO, nguoiBanDTO));
         }
 
-        return PageResponse.<NguoiBanResponseDTO>builder()
-                .currentPage(page)
-                .pageSize(entities.getSize())
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .data(responseList)
-                .build();
+        return responseList;
     }
 
     @Override

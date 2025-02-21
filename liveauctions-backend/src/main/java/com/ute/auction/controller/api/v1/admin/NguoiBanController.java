@@ -1,6 +1,7 @@
 package com.ute.auction.controller.api.v1.admin;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,7 +19,6 @@ import com.ute.auction.dto.ApiResponse;
 import com.ute.auction.dto.NguoiBanDTO;
 import com.ute.auction.dto.NguoiBanResponseDTO;
 import com.ute.auction.dto.NguoiDungDTO;
-import com.ute.auction.dto.PageResponse;
 import com.ute.auction.service.INguoiBanService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,13 +31,11 @@ public class NguoiBanController {
     private final INguoiBanService nguoiBanService;
 
     @GetMapping("/list")
-    public ApiResponse<PageResponse<NguoiBanResponseDTO>> getNguoiBans(
-            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(value = "size", required = false, defaultValue = "3") int size) {
-        return ApiResponse.<PageResponse<NguoiBanResponseDTO>>builder()
+    public ApiResponse<List<NguoiBanResponseDTO>> getNguoiBans() {
+        return ApiResponse.<List<NguoiBanResponseDTO>>builder()
                 .code(200)
                 .message("Danh sách người bán")
-                .result(nguoiBanService.getNguoiBans(page, size))
+                .result(nguoiBanService.getNguoiBans())
                 .build();
     }
 

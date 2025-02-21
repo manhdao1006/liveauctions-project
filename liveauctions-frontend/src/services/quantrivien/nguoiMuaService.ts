@@ -2,6 +2,16 @@ import { API_ENDPOINTS } from '@/config/apiConfig'
 import axios from 'axios'
 import { getToken } from '../localStorageService'
 
+export const getNguoiMuas = async () => {
+    const response = await axios.get(API_ENDPOINTS.NGUOIMUA.GET_NGUOIMUAS, {
+        headers: {
+            Authorization: `Bearer ${getToken()}`
+        }
+    })
+
+    return response.data.result
+}
+
 export const getNguoiMuaByMaNguoiDung = async (maNguoiDung: number) => {
     const response = await axios.get(API_ENDPOINTS.NGUOIMUA.GET_BY_MANGUOIDUNG(maNguoiDung), {
         headers: {

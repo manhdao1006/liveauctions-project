@@ -7,30 +7,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.ute.auction.converter.NguoiMuaConverter;
 import com.ute.auction.converter.NguoiDungConverter;
+import com.ute.auction.converter.NguoiMuaConverter;
+import com.ute.auction.dto.NguoiDungDTO;
 import com.ute.auction.dto.NguoiMuaDTO;
 import com.ute.auction.dto.NguoiMuaResponseDTO;
-import com.ute.auction.dto.NguoiDungDTO;
-import com.ute.auction.dto.PageResponse;
-import com.ute.auction.entity.NguoiMuaEntity;
 import com.ute.auction.entity.NguoiDungEntity;
+import com.ute.auction.entity.NguoiMuaEntity;
 import com.ute.auction.entity.PhuongXaEntity;
 import com.ute.auction.entity.VaiTroEntity;
 import com.ute.auction.exception.ResourceNotFormatException;
 import com.ute.auction.exception.ResourceNotFoundException;
-import com.ute.auction.repository.NguoiMuaRepository;
 import com.ute.auction.repository.NguoiDungRepository;
+import com.ute.auction.repository.NguoiMuaRepository;
 import com.ute.auction.repository.PhuongXaRepository;
 import com.ute.auction.repository.VaiTroRepository;
 import com.ute.auction.service.INguoiMuaService;
@@ -52,10 +47,9 @@ public class NguoiMuaService implements INguoiMuaService {
     private final Cloudinary cloudinary;
 
     @Override
-    public PageResponse<NguoiMuaResponseDTO> getNguoiMuas(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("maNguoiMua").descending());
+    public List<NguoiMuaResponseDTO> getNguoiMuas() {
 
-        Page<NguoiMuaEntity> entities = nguoiMuaRepository.findNguoiMuasByTrangThaiXoa("1", pageable);
+        List<NguoiMuaEntity> entities = nguoiMuaRepository.findNguoiMuasByTrangThaiXoa("1");
         List<NguoiMuaResponseDTO> responseList = new ArrayList<>();
         for (NguoiMuaEntity nguoiMuaEntity : entities) {
             NguoiMuaDTO nguoiMuaDTO = nguoiMuaConverter.toDTO(nguoiMuaEntity);
@@ -66,13 +60,7 @@ public class NguoiMuaService implements INguoiMuaService {
             responseList.add(new NguoiMuaResponseDTO(nguoiDungDTO, nguoiMuaDTO));
         }
 
-        return PageResponse.<NguoiMuaResponseDTO>builder()
-                .currentPage(page)
-                .pageSize(entities.getSize())
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .data(responseList)
-                .build();
+        return responseList;
     }
 
     @Override
