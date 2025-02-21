@@ -122,7 +122,11 @@
     </div>
 </template>
 <script lang="ts">
-    import { getPhuongXasByMaQuanHuyen, getQuanHuyens } from '@/services/authService'
+    import {
+        getPhuongXasByMaQuanHuyen,
+        getQuanHuyenByMaPhuongXa,
+        getQuanHuyens
+    } from '@/services/authService'
     import { getNhaKhoByMaNhaKho, updateNhaKho } from '@/services/quantrivien/nhaKhoService'
     import { defineComponent, onMounted, ref, watch } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
@@ -163,10 +167,42 @@
                 quanHuyens.value = result
             }
 
+            watch(
+                () => nhaKho.value.maPhuongXa,
+                async (newMaPhuongXa) => {
+                    if (newMaPhuongXa) {
+                        try {
+                            const quanHuyenResponse = await getQuanHuyenByMaPhuongXa(newMaPhuongXa)
+                            selectedQuanHuyen.value = quanHuyenResponse.maQuanHuyen
+
+                            const phuongXaResponse = await getPhuongXasByMaQuanHuyen(
+                                quanHuyenResponse.maQuanHuyen
+                            )
+                            phuongXas.value = phuongXaResponse
+                        } catch (error) {
+                            console.error('Lỗi khi lấy dữ liệu quận/huyện:', error)
+                        }
+                    }
+                }
+            )
+
             watch(selectedQuanHuyen, async (newMaQuanHuyen) => {
-                phuongXas.value = newMaQuanHuyen
-                    ? await getPhuongXasByMaQuanHuyen(Number(newMaQuanHuyen))
-                    : []
+                if (newMaQuanHuyen) {
+                    try {
+                        const phuongXaResponse = await getPhuongXasByMaQuanHuyen(
+                            Number(newMaQuanHuyen)
+                        )
+                        phuongXas.value = phuongXaResponse
+
+                        if (
+                            !phuongXas.value.some((px) => px.maPhuongXa === nhaKho.value.maPhuongXa)
+                        ) {
+                            nhaKho.value.maPhuongXa = undefined
+                        }
+                    } catch (error) {
+                        console.error('Lỗi khi lấy danh sách phường/xã:', error)
+                    }
+                }
             })
 
             onMounted(() => {

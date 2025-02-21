@@ -4,9 +4,9 @@ interface ValidationResult {
     message?: string
 }
 
-export const validatePhiBaoHiem = (phiBaoHiem: string): ValidationResult => {
-    if (!/^\d+$/.test(phiBaoHiem)) {
-        return { isValid: false, message: 'Phí bảo hiểm chỉ được chứa chữ số!' }
+export const validateChuSo = (chuSo: string): ValidationResult => {
+    if (!/^\d+$/.test(chuSo)) {
+        return { isValid: false }
     }
     return { isValid: true }
 }

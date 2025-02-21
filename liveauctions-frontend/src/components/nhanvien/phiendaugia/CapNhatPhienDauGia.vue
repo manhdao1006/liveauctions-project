@@ -144,7 +144,7 @@
         updatePhienDauGia
     } from '@/services/nhanvien/phienDauGiaService'
     import { getNhanViens } from '@/services/quantrivien/nhanVienService'
-    import { validatePhiBaoHiem } from '@/utils/validation'
+    import { validateChuSo } from '@/utils/validation'
     import { defineComponent, onMounted, ref } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
 
@@ -214,10 +214,10 @@
                     return
                 }
 
-                const phiBaoHiemCheck = validatePhiBaoHiem(String(phienDauGia.value.phiBaoHiem))
+                const phiBaoHiemCheck = validateChuSo(String(phienDauGia.value.phiBaoHiem))
                 if (!phiBaoHiemCheck.isValid) {
                     isErrorPhiBaoHiem.value = true
-                    messagePhiBaoHiem.value = phiBaoHiemCheck.message || ''
+                    messagePhiBaoHiem.value = 'Phí bảo hiểm chỉ được chứa chữ số!'
                     setTimeout(() => {
                         isErrorPhiBaoHiem.value = false
                         messagePhiBaoHiem.value = ''
