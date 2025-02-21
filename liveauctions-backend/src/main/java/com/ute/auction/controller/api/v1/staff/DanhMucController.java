@@ -34,6 +34,15 @@ public class DanhMucController {
                 .build();
     }
 
+    @GetMapping("/maDanhMucCon={maDanhMucCon}")
+    public ApiResponse<DanhMucDTO> getDanhMucByMaDanhMucCon(@PathVariable("maDanhMucCon") long maDanhMucCon) {
+        return ApiResponse.<DanhMucDTO>builder()
+                .code(200)
+                .message("Danh mục")
+                .result(danhMucService.getDanhMucByMaDanhMucCon(maDanhMucCon))
+                .build();
+    }
+
     @GetMapping("/maDanhMuc={maDanhMuc}")
     public ApiResponse<DanhMucDTO> getDanhMucByMaDanhMuc(@PathVariable("maDanhMuc") long maDanhMuc) {
         return ApiResponse.<DanhMucDTO>builder()

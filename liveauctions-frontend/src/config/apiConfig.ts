@@ -32,6 +32,7 @@ export const API_ENDPOINTS = {
         BAN: (maNguoiDung: number) => `${BASE_URL}/api/v1/admin/nhan-vien/ban/${maNguoiDung}`
     },
     NGUOIBAN: {
+        GET_NGUOIBANS: `${BASE_URL}/api/v1/admin/nguoi-ban/list`,
         GET_BY_MANGUOIDUNG: (maNguoiDung: number) =>
             `${BASE_URL}/api/v1/admin/nguoi-ban/${maNguoiDung}`,
         ADD: `${BASE_URL}/api/v1/admin/nguoi-ban/add`,
@@ -40,6 +41,7 @@ export const API_ENDPOINTS = {
         BAN: (maNguoiDung: number) => `${BASE_URL}/api/v1/admin/nguoi-ban/ban/${maNguoiDung}`
     },
     NGUOIMUA: {
+        GET_NGUOIMUAS: `${BASE_URL}/api/v1/admin/nguoi-mua/list`,
         GET_BY_MANGUOIDUNG: (maNguoiDung: number) =>
             `${BASE_URL}/api/v1/admin/nguoi-mua/${maNguoiDung}`,
         ADD: `${BASE_URL}/api/v1/admin/nguoi-mua/add`,
@@ -72,6 +74,8 @@ export const API_ENDPOINTS = {
         GET_DANHMUCS: `${BASE_URL}/api/v1/staff/danh-muc/list`,
         GET_BY_MADANHMUC: (maDanhMuc: number) =>
             `${BASE_URL}/api/v1/staff/danh-muc/maDanhMuc=${maDanhMuc}`,
+        GET_BY_MADANHMUCCON: (maDanhMucCon: number) =>
+            `${BASE_URL}/api/v1/staff/danh-muc/maDanhMucCon=${maDanhMucCon}`,
         ADD: `${BASE_URL}/api/v1/staff/danh-muc/add`,
         UPDATE: (maDanhMuc: number) => `${BASE_URL}/api/v1/staff/danh-muc/edit/${maDanhMuc}`,
         DELETE: (maDanhMuc: number) => `${BASE_URL}/api/v1/staff/danh-muc/delete/${maDanhMuc}`
@@ -100,5 +104,13 @@ export const API_ENDPOINTS = {
             `${BASE_URL}/api/v1/staff/phien-dau-gia/edit/${maPhienDauGia}`,
         DELETE: (maPhienDauGia: number) =>
             `${BASE_URL}/api/v1/staff/phien-dau-gia/delete/${maPhienDauGia}`
+    },
+    SANPHAM: {
+        GET_SANPHAMS: `${BASE_URL}/api/v1/staff/san-pham/list`,
+        GET_SANPHAM_BY_MASANPHAM: (maSanPham: string) =>
+            `${BASE_URL}/api/v1/staff/san-pham/maSanPham=${maSanPham}`,
+        ADD: `${BASE_URL}/api/v1/staff/san-pham/add`,
+        UPDATE: (maSanPham: string) => `${BASE_URL}/api/v1/staff/san-pham/edit/${maSanPham}`,
+        DELETE: (maSanPham: string) => `${BASE_URL}/api/v1/staff/san-pham/delete/${maSanPham}`
     }
 }

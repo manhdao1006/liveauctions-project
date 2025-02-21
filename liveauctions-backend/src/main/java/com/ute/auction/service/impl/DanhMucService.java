@@ -63,4 +63,12 @@ public class DanhMucService implements IDanhMucService {
         return danhMucConverter.toDTO(danhMucEntity);
     }
 
+    @Override
+    public DanhMucDTO getDanhMucByMaDanhMucCon(long maDanhMucCon) {
+        DanhMucEntity danhMucEntity = danhMucRepository.findByMaDanhMucCon(maDanhMucCon)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Không tìm thấy danh mục nào với mã danh mục con là " + maDanhMucCon));
+        return danhMucConverter.toDTO(danhMucEntity);
+    }
+
 }

@@ -22,6 +22,16 @@ export const getDanhMucByMaDanhMuc = async (maDanhMuc: number) => {
     return response.data.result
 }
 
+export const getDanhMucByMaDanhMucCon = async (maDanhMucCon: number) => {
+    const response = await axios.get(API_ENDPOINTS.DANHMUC.GET_BY_MADANHMUCCON(maDanhMucCon), {
+        headers: {
+            Authorization: `Bearer ${getToken()}`
+        }
+    })
+
+    return response.data.result
+}
+
 export const addDanhMuc = async (formData: FormData) => {
     try {
         const response = await axios.post(API_ENDPOINTS.DANHMUC.ADD, formData, {

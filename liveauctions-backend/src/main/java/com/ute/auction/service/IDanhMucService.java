@@ -16,4 +16,6 @@ public interface IDanhMucService {
 
     DanhMucDTO getDanhMucByMaDanhMuc(long maDanhMuc);
 
+    DanhMucDTO getDanhMucByMaDanhMucCon(long maDanhMucCon);
+
 }
