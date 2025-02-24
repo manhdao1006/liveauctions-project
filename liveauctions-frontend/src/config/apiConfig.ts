@@ -71,6 +71,7 @@ export const API_ENDPOINTS = {
         DELETE: (maNhaKho: number) => `${BASE_URL}/api/v1/admin/nha-kho/delete/${maNhaKho}`
     },
     DANHMUC: {
+        GET_NAVIGATIONS: `${BASE_URL}/api/trang-chu/danh-muc`,
         GET_DANHMUCS: `${BASE_URL}/api/v1/staff/danh-muc/list`,
         GET_BY_MADANHMUC: (maDanhMuc: number) =>
             `${BASE_URL}/api/v1/staff/danh-muc/maDanhMuc=${maDanhMuc}`,
@@ -112,5 +113,11 @@ export const API_ENDPOINTS = {
         ADD: `${BASE_URL}/api/v1/staff/san-pham/add`,
         UPDATE: (maSanPham: string) => `${BASE_URL}/api/v1/staff/san-pham/edit/${maSanPham}`,
         DELETE: (maSanPham: string) => `${BASE_URL}/api/v1/staff/san-pham/delete/${maSanPham}`
+    },
+    SANPHAMDAUGIA: {
+        GET_SANPHAMDAUGIAS_UPCOMING: `${BASE_URL}/api/trang-chu/dau-gia-san-pham-upcoming`,
+        GET_SANPHAMDAUGIAS_TRENDING: `${BASE_URL}/api/trang-chu/dau-gia-san-pham-trending`,
+        GET_SANPHAMDAUGIAS_KIN: `${BASE_URL}/api/trang-chu/dau-gia-san-pham-kin`,
+        GET_SANPHAMDAUGIAS_ONLINE: `${BASE_URL}/api/trang-chu/dau-gia-san-pham-online`
     }
 }

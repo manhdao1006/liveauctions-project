@@ -3,6 +3,7 @@ import DangKy from './components/auth/DangKy.vue'
 import DangNhap from './components/auth/DangNhap.vue'
 import { getNguoiDungByMaNguoiDung } from './services/authService'
 import { getMaNguoiDung } from './services/localStorageService'
+import TrangChuView from './views/nguoiban/TrangChuView.vue'
 import CapNhatDanhMucView from './views/nhanvien/danhmuc/CapNhatDanhMucView.vue'
 import DanhSachDanhMucView from './views/nhanvien/danhmuc/DanhSachDanhMucView.vue'
 import ThemMoiDanhMucView from './views/nhanvien/danhmuc/ThemMoiDanhMucView.vue'
@@ -30,6 +31,15 @@ import DanhSachNhaThamDinhView from './views/quantrivien/nhathamdinh/DanhSachNha
 import ThemMoiNhaThamDinhView from './views/quantrivien/nhathamdinh/ThemMoiNhaThamDinhView.vue'
 
 const routes: Array<RouteRecordRaw> = [
+    {
+        path: '/',
+        redirect: '/trang-chu'
+    },
+    {
+        path: '/trang-chu',
+        name: 'TrangChu',
+        component: TrangChuView
+    },
     {
         path: '/dang-ky',
         name: 'DangKy',

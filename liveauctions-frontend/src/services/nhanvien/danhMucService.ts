@@ -2,6 +2,12 @@ import { API_ENDPOINTS } from '@/config/apiConfig'
 import axios from 'axios'
 import { getToken } from '../localStorageService'
 
+export const getNavigations = async () => {
+    const response = await axios.get(API_ENDPOINTS.DANHMUC.GET_NAVIGATIONS)
+
+    return response.data.result
+}
+
 export const getDanhMucs = async () => {
     const response = await axios.get(API_ENDPOINTS.DANHMUC.GET_DANHMUCS, {
         headers: {

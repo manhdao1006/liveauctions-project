@@ -67,7 +67,7 @@
                 }
                 localStorage.removeItem('isLoggedIn')
                 localStorage.removeItem('maNguoiDung')
-                router.push('/dang-nhap')
+                router.push('/trang-chu')
                 dangXuat()
             }
 
