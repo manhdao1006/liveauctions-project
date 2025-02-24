@@ -69,7 +69,7 @@ public class SanPhamEntity {
     @JoinColumn(name = "maNhaThamDinh")
     private NhaThamDinhEntity nhaThamDinh;
 
-    @OneToMany(mappedBy = "sanPham", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "sanPham", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     private List<AnhSanPhamEntity> anhSanPhams = new ArrayList<>();
 
     @OneToMany(mappedBy = "sanPham", cascade = CascadeType.ALL, orphanRemoval = true)

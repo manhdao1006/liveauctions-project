@@ -1,5 +1,7 @@
 package com.ute.auction.controller.api.v1.staff;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ute.auction.constant.ApiName;
 import com.ute.auction.constant.ApiUrl;
 import com.ute.auction.dto.ApiResponse;
-import com.ute.auction.dto.PageResponse;
 import com.ute.auction.dto.SanPhamDauGiaDTO;
 import com.ute.auction.dto.SanPhamDauGiaResponseDTO;
 import com.ute.auction.service.ISanPhamDauGiaService;
@@ -27,13 +28,13 @@ public class SanPhamDauGiaController {
     private final ISanPhamDauGiaService sanPhamDauGiaService;
 
     @GetMapping("/list")
-    public ApiResponse<PageResponse<SanPhamDauGiaResponseDTO>> getSanPhamDauGias(
+    public ApiResponse<List<SanPhamDauGiaResponseDTO>> getSanPhamDauGias(
             @RequestParam(value = "page", required = false, defaultValue = "1") int page,
             @RequestParam(value = "size", required = false, defaultValue = "3") int size) {
-        return ApiResponse.<PageResponse<SanPhamDauGiaResponseDTO>>builder()
+        return ApiResponse.<List<SanPhamDauGiaResponseDTO>>builder()
                 .code(200)
                 .message("Danh sách sản phẩm đấu giá")
-                .result(sanPhamDauGiaService.getSanPhamDauGias(page, size))
+                .result(sanPhamDauGiaService.getSanPhamDauGias())
                 .build();
     }
 

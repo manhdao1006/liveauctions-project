@@ -71,4 +71,10 @@ public class DanhMucService implements IDanhMucService {
         return danhMucConverter.toDTO(danhMucEntity);
     }
 
+    @Override
+    public List<DanhMucDTO> getNavigations() {
+        List<DanhMucEntity> entities = danhMucRepository.findFirst6ByTrangThaiXoaOrderByMaDanhMucAsc("1");
+        return entities.stream().map(danhMucConverter::toDTO).collect(Collectors.toList());
+    }
+
 }

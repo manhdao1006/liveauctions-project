@@ -2,23 +2,19 @@ package com.ute.auction.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 
 import com.ute.auction.converter.PhienDauGiaConverter;
 import com.ute.auction.converter.SanPhamConverter;
 import com.ute.auction.converter.SanPhamDauGiaConverter;
-import com.ute.auction.dto.SanPhamDTO;
 import com.ute.auction.dto.PhienDauGiaDTO;
-import com.ute.auction.dto.PageResponse;
+import com.ute.auction.dto.SanPhamDTO;
 import com.ute.auction.dto.SanPhamDauGiaDTO;
 import com.ute.auction.dto.SanPhamDauGiaResponseDTO;
-import com.ute.auction.entity.SanPhamEntity;
 import com.ute.auction.entity.PhienDauGiaEntity;
 import com.ute.auction.entity.SanPhamDauGiaEntity;
+import com.ute.auction.entity.SanPhamEntity;
 import com.ute.auction.exception.ResourceNotFoundException;
 import com.ute.auction.repository.PhienDauGiaRepository;
 import com.ute.auction.repository.SanPhamDauGiaRepository;
@@ -40,10 +36,8 @@ public class SanPhamDauGiaService implements ISanPhamDauGiaService {
     private final SanPhamConverter sanPhamConverter;
 
     @Override
-    public PageResponse<SanPhamDauGiaResponseDTO> getSanPhamDauGias(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("ngayDangKy").descending());
-
-        Page<SanPhamDauGiaEntity> entities = sanPhamDauGiaRepository.findAll(pageable);
+    public List<SanPhamDauGiaResponseDTO> getSanPhamDauGias() {
+        List<SanPhamDauGiaEntity> entities = sanPhamDauGiaRepository.findAll();
         List<SanPhamDauGiaResponseDTO> responseList = new ArrayList<>();
         for (SanPhamDauGiaEntity sanPhamDauGiaEntity : entities) {
             SanPhamDauGiaDTO sanPhamDauGiaDTO = sanPhamDauGiaConverter.toDTO(sanPhamDauGiaEntity);
@@ -57,13 +51,7 @@ public class SanPhamDauGiaService implements ISanPhamDauGiaService {
             responseList.add(new SanPhamDauGiaResponseDTO(sanPhamDauGiaDTO, phienDauGiaDTO, sanPhamDTO));
         }
 
-        return PageResponse.<SanPhamDauGiaResponseDTO>builder()
-                .currentPage(page)
-                .pageSize(entities.getSize())
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .data(responseList)
-                .build();
+        return responseList;
 
     }
 
@@ -115,6 +103,88 @@ public class SanPhamDauGiaService implements ISanPhamDauGiaService {
         SanPhamDauGiaEntity sanPhamDauGiaUpdated = sanPhamDauGiaConverter.toEntity(updatedSanPhamDauGia,
                 sanPhamDauGiaEntity);
         return sanPhamDauGiaConverter.toDTO(sanPhamDauGiaRepository.save(sanPhamDauGiaUpdated));
+    }
+
+    @Override
+    public List<SanPhamDauGiaResponseDTO> getSanPhamDauGiasUpcoming() {
+        List<SanPhamDauGiaEntity> entities = sanPhamDauGiaRepository
+                .findFirst2ByPhienDauGia_TrangThaiHoatDongOrderByPhienDauGia_NgayBatDauAsc("Sắp diễn ra");
+        List<SanPhamDauGiaResponseDTO> responseList = new ArrayList<>();
+        for (SanPhamDauGiaEntity sanPhamDauGiaEntity : entities) {
+            SanPhamDauGiaDTO sanPhamDauGiaDTO = sanPhamDauGiaConverter.toDTO(sanPhamDauGiaEntity);
+
+            PhienDauGiaEntity phienDauGiaEntity = sanPhamDauGiaEntity.getPhienDauGia();
+            PhienDauGiaDTO phienDauGiaDTO = phienDauGiaConverter.toDTO(phienDauGiaEntity);
+
+            SanPhamEntity sanPhamEntity = sanPhamDauGiaEntity.getSanPham();
+            SanPhamDTO sanPhamDTO = sanPhamConverter.toDTO(sanPhamEntity);
+
+            responseList.add(new SanPhamDauGiaResponseDTO(sanPhamDauGiaDTO, phienDauGiaDTO, sanPhamDTO));
+        }
+
+        return responseList;
+    }
+
+    @Override
+    public List<SanPhamDauGiaResponseDTO> getSanPhamDauGiasTrending() {
+        List<SanPhamDauGiaEntity> entities = sanPhamDauGiaRepository
+                .findFirst8ByPhienDauGia_TrangThaiHoatDongOrderBySanPham_GiaKhoiDiemDesc("Đang diễn ra");
+        List<SanPhamDauGiaResponseDTO> responseList = new ArrayList<>();
+        for (SanPhamDauGiaEntity sanPhamDauGiaEntity : entities) {
+            SanPhamDauGiaDTO sanPhamDauGiaDTO = sanPhamDauGiaConverter.toDTO(sanPhamDauGiaEntity);
+
+            PhienDauGiaEntity phienDauGiaEntity = sanPhamDauGiaEntity.getPhienDauGia();
+            PhienDauGiaDTO phienDauGiaDTO = phienDauGiaConverter.toDTO(phienDauGiaEntity);
+
+            SanPhamEntity sanPhamEntity = sanPhamDauGiaEntity.getSanPham();
+            SanPhamDTO sanPhamDTO = sanPhamConverter.toDTO(sanPhamEntity);
+
+            responseList.add(new SanPhamDauGiaResponseDTO(sanPhamDauGiaDTO, phienDauGiaDTO, sanPhamDTO));
+        }
+
+        return responseList;
+    }
+
+    @Override
+    public List<SanPhamDauGiaResponseDTO> getSanPhamDauGiasKin() {
+        List<SanPhamDauGiaEntity> entities = sanPhamDauGiaRepository
+                .findFirst8ByPhienDauGia_TrangThaiHoatDongAndPhienDauGia_LoaiDauGia_TenLoaiDauGiaOrderByPhienDauGia_NgayBatDauAsc(
+                        "Đang diễn ra", "Đấu giá kín");
+        List<SanPhamDauGiaResponseDTO> responseList = new ArrayList<>();
+        for (SanPhamDauGiaEntity sanPhamDauGiaEntity : entities) {
+            SanPhamDauGiaDTO sanPhamDauGiaDTO = sanPhamDauGiaConverter.toDTO(sanPhamDauGiaEntity);
+
+            PhienDauGiaEntity phienDauGiaEntity = sanPhamDauGiaEntity.getPhienDauGia();
+            PhienDauGiaDTO phienDauGiaDTO = phienDauGiaConverter.toDTO(phienDauGiaEntity);
+
+            SanPhamEntity sanPhamEntity = sanPhamDauGiaEntity.getSanPham();
+            SanPhamDTO sanPhamDTO = sanPhamConverter.toDTO(sanPhamEntity);
+
+            responseList.add(new SanPhamDauGiaResponseDTO(sanPhamDauGiaDTO, phienDauGiaDTO, sanPhamDTO));
+        }
+
+        return responseList;
+    }
+
+    @Override
+    public List<SanPhamDauGiaResponseDTO> getSanPhamDauGiasOnline() {
+        List<SanPhamDauGiaEntity> entities = sanPhamDauGiaRepository
+                .findFirst6ByPhienDauGia_TrangThaiHoatDongAndPhienDauGia_LoaiDauGia_TenLoaiDauGiaOrderByPhienDauGia_NgayBatDauAsc(
+                        "Đang diễn ra", "Đấu giá trực tuyến");
+        List<SanPhamDauGiaResponseDTO> responseList = new ArrayList<>();
+        for (SanPhamDauGiaEntity sanPhamDauGiaEntity : entities) {
+            SanPhamDauGiaDTO sanPhamDauGiaDTO = sanPhamDauGiaConverter.toDTO(sanPhamDauGiaEntity);
+
+            PhienDauGiaEntity phienDauGiaEntity = sanPhamDauGiaEntity.getPhienDauGia();
+            PhienDauGiaDTO phienDauGiaDTO = phienDauGiaConverter.toDTO(phienDauGiaEntity);
+
+            SanPhamEntity sanPhamEntity = sanPhamDauGiaEntity.getSanPham();
+            SanPhamDTO sanPhamDTO = sanPhamConverter.toDTO(sanPhamEntity);
+
+            responseList.add(new SanPhamDauGiaResponseDTO(sanPhamDauGiaDTO, phienDauGiaDTO, sanPhamDTO));
+        }
+
+        return responseList;
     }
 
 }

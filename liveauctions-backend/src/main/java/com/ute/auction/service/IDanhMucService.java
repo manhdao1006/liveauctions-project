@@ -18,4 +18,6 @@ public interface IDanhMucService {
 
     DanhMucDTO getDanhMucByMaDanhMucCon(long maDanhMucCon);
 
+    List<DanhMucDTO> getNavigations();
+
 }

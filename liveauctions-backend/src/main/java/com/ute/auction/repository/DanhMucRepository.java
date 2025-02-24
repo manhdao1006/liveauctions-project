@@ -22,4 +22,6 @@ public interface DanhMucRepository extends JpaRepository<DanhMucEntity, Long> {
     @Query("SELECT dm FROM DanhMucEntity dm JOIN dm.danhMucCons dmc WHERE dmc.maDanhMucCon = :maDanhMucCon")
     Optional<DanhMucEntity> findByMaDanhMucCon(@Param("maDanhMucCon") Long maDanhMucCon);
 
+    List<DanhMucEntity> findFirst6ByTrangThaiXoaOrderByMaDanhMucAsc(String trangThaiXoa);
+
 }
